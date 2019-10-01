@@ -1,22 +1,58 @@
 package br.com.argus.argus.models;
 
-import java.util.Calendar;
+import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.DateSerializer;
 
 @Entity
+@Table(name = "pessoas")
 public class Pessoa {
-
+	
+	@Id
+	@JsonIgnore
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	
+	@Column(name = "nome", nullable = false, length = 100)
+//	@NotBlank(message = "Campo nomeé obrigatório")
 	private String nome;
-	private Calendar dataNascimento;
+	
+//	@Temporal(TemporalType.DATE)
+	@JsonSerialize(using = DateSerializer.class)
+	@Column(name = "data_nascimento", nullable = false)
+//	@NotBlank(message = "Campo data de nascimento é obrigatório")
+	private Date dataNascimento;
+
+	@Column(name = "naturalidade", nullable = false)
+//	@NotBlank(message = "Campo naturalidade é obrigatório")
 	private String naturalidade;// Alterar para enum
-	private String endereco;// Alterar para tabela
+	
+	@OneToOne
+	private Endereco endereco;// Alterar para tabela
 
-	public Pessoa() {
+	public Pessoa() {}
+
+	//Teste para o funcionario dto
+	public Pessoa(String nome, Date dataNascimento, String naturalidade, Endereco endereco) {
+		this.nome = nome;
+		this.dataNascimento = dataNascimento;
+		this.naturalidade = naturalidade;
+		this.endereco = endereco;
 	}
-
-	public Pessoa(Long id, String nome, Calendar dataNascimento, String naturalidade, String endereco) {
+	
+	public Pessoa(Long id, String nome, Date dataNascimento, String naturalidade, Endereco endereco) {
 		this.id = id;
 		this.nome = nome;
 		this.dataNascimento = dataNascimento;
@@ -32,11 +68,13 @@ public class Pessoa {
 		this.nome = nome;
 	}
 
-	public Calendar getDataNascimento() {
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	public Date getDataNascimento() {
 		return dataNascimento;
 	}
 
-	public void setDataNascimento(Calendar dataNascimento) {
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	public void setDataNascimento(Date dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
 
@@ -48,16 +86,15 @@ public class Pessoa {
 		this.naturalidade = naturalidade;
 	}
 
-	public String getEndereco() {
+	public Endereco getEndereco() {
 		return endereco;
 	}
 
-	public void setEndereco(String endereco) {
+	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
 	}
 
 	public Long getId() {
 		return id;
 	}
-
 }
