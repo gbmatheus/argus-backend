@@ -9,6 +9,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.argus.argus.exception.ServicesException;
 import br.com.argus.argus.models.Usuario;
 import br.com.argus.argus.repositories.UsuarioRepository;
 
@@ -30,8 +31,17 @@ public class UsuarioService {
 	 * @param id
 	 * @return usuário
 	 */
-	public Optional<Usuario> findById(long id) {
-		return usuarioRepository.findById(id);
+	public Usuario findById(long id) {
+		Usuario usuario = usuarioRepository.findOne(id);
+		
+		if(usuario == null) {
+			try {
+				throw new ServicesException("Usuário não existe cadastrado");
+			} catch (ServicesException e) {
+				e.printStackTrace();
+			}
+		}
+		return usuario;
 	}
 
 	/**
@@ -50,6 +60,7 @@ public class UsuarioService {
 	 * @return
 	 */
 	public Usuario save(Usuario usuario) {
+		//Dá para usar o padrão DTO
 		return usuarioRepository.save(usuario);
 	}
 
