@@ -21,31 +21,46 @@ public class Aluno {
 	private Long id;
 
 	@OneToOne
-	@NotBlank(message = "Campo pai é obrigatório")
+//	@NotBlank(message = "Campo pessoa é obrigátorio")
+	private Pessoa pessoa;
+	
+	@OneToOne
+//	@NotBlank(message = "Campo pai é obrigatório")
 	private Pessoa pai;
 
 	@OneToOne
-	@NotBlank(message = "Campo mãe é obrigatório")
+//	@NotBlank(message = "Campo mãe é obrigatório")
 	private Pessoa mae;
 
 	@OneToOne
-	@NotBlank(message = "Compo responsavvel é obrigatório")
-	private Responsavel responsavel;
+//	@NotBlank(message = "Compo responsavvel é obrigatório")
+//	private Responsavel responsavel;
+	private Pessoa responsavelTeste;
 
 	@Column(nullable = false, length = 10)
-	@NotBlank(message = "Compo matricula é obrigatório")
+//	@NotBlank(message = "Compo matricula é obrigatório")
 	private String matricula;
 
-	public Aluno() {
-	}
+	public Aluno() {}
 
-	public Aluno(Long id, Pessoa pai, Pessoa mae, Responsavel responsavel, String matricula) {
+	public Aluno(Long id, Pessoa pessoa, Pessoa pai, Pessoa mae, Responsavel responsavel, String matricula) {
 		this.id = id;
+		this.pessoa = pessoa;
 		this.pai = pai;
 		this.mae = mae;
-		this.responsavel = responsavel;
+//		this.responsavel = responsavel;
 		this.matricula = matricula;
 	}
+	
+	
+
+	public Pessoa getPessoa() {
+		return pessoa;
+	}
+
+	public void setPessoa(Pessoa pessoa) {
+		this.pessoa = pessoa;
+	}	
 
 	public Pessoa getPai() {
 		return pai;
@@ -63,12 +78,20 @@ public class Aluno {
 		this.mae = mae;
 	}
 
-	public Responsavel getResponsavel() {
-		return responsavel;
+//	public Responsavel getResponsavel() {
+//		return responsavel;
+//	}
+//
+//	public void setResponsavel(Responsavel responsavel) {
+//		this.responsavel = responsavel;
+//	}
+	
+	public Pessoa getResponsavelTeste() {
+		return responsavelTeste;
 	}
 
-	public void setResponsavel(Responsavel responsavel) {
-		this.responsavel = responsavel;
+	public void setResponsavelTeste(Pessoa responsavelTeste) {
+		this.responsavelTeste = responsavelTeste;
 	}
 
 	public String getMatricula() {
