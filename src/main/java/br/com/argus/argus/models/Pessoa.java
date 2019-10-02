@@ -26,7 +26,7 @@ public class Pessoa {
 	private Long id;
 	
 	@Column(name = "nome", nullable = false, length = 100)
-//	@NotBlank(message = "Campo nomeé obrigatório")
+//	@NotBlank(message = "Campo nome é obrigatório")
 	private String nome;
 	
 //	@Temporal(TemporalType.DATE)
