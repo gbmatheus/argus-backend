@@ -1,6 +1,18 @@
 package br.com.argus.argus.dtos;
 
-public class EnderecoDto {
+import java.io.Serializable;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+public class EnderecoDto implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private Long id;
 
@@ -12,77 +24,64 @@ public class EnderecoDto {
 	private String uf;
 	private String cep;
 
-	public EnderecoDto() {}
-
-	public EnderecoDto(String rua, Integer numero, String complemento, String bairro, String cidade, String uf,
-			String cep) {
-		this.rua = rua;
-		this.numero = numero;
-		this.complemento = complemento;
-		this.bairro = bairro;
-		this.cidade = cidade;
-		this.uf = uf;
-		this.cep = cep;
+	public EnderecoDto() {
 	}
 
-	public String getRua() {
-		return rua;
-	}
-
-	public void setRua(String rua) {
-		this.rua = rua;
-	}
-
-	public Integer getNumero() {
-		return numero;
-	}
-
-	public void setNumero(Integer numero) {
-		this.numero = numero;
-	}
-
-	public String getComplemento() {
-		return complemento;
-	}
-
-	public void setComplemento(String complemento) {
-		this.complemento = complemento;
-	}
-
-	public String getBairro() {
-		return bairro;
-	}
-
-	public void setBairro(String bairro) {
-		this.bairro = bairro;
-	}
-
-	public String getCidade() {
-		return cidade;
-	}
-
-	public void setCidade(String cidade) {
-		this.cidade = cidade;
-	}
-
-	public String getUf() {
-		return uf;
-	}
-
-	public void setUf(String uf) {
-		this.uf = uf;
-	}
-
-	public String getCep() {
-		return cep;
-	}
-
-	public void setCep(String cep) {
-		this.cep = cep;
+	@Override
+	public String toString() {
+		return "Endereco: {\n rua: " + rua + "\n numero: " + numero + "\n complemento: " + complemento + "\n bairro:"
+				+ bairro + "\n cidade: " + cidade + "\n uf: " + uf + "\n cep: " + cep + "\n}";
 	}
 
 	public Long getId() {
 		return id;
+	}
+
+	@NotNull
+	@NotBlank(message = "Rua é uma infromação obrigatória")
+	@Size(min = 1, max = 100, message = "A rua deve ter mais de um caractere")
+	public String getRua() {
+		return rua;
+	}
+
+	@NotNull
+	@NotBlank(message = "Numero da residência é uma informação obrigatória")
+	public Integer getNumero() {
+		return numero;
+	}
+
+	@Size(max = 50)
+	public String getComplemento() {
+		return complemento;
+	}
+
+	@NotNull
+	@NotBlank(message = "Bairro é uma informação obrigatória")
+	@Size(min = 5, max = 30)
+	public String getBairro() {
+		return bairro;
+	}
+
+	@NotNull
+	@NotBlank(message = "Cidade é uma informação obrigatória")
+	@Size(min = 3, max = 30)
+	public String getCidade() {
+		return cidade;
+	}
+
+	@NotNull
+	@NotBlank(message = "UF é uma informação obrigatória")
+	@Size(min = 2, max = 2)
+	public String getUf() {
+		return uf;
+	}
+
+	@NotNull
+	@NotBlank(message = "CEP é uma informação obrigatória")
+	@Size(min = 10, max = 10)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "xx.xxx-xxx")
+	public String getCep() {
+		return cep;
 	}
 
 }

@@ -1,41 +1,46 @@
 package br.com.argus.argus.dtos;
 
-import java.util.Date;
+import java.io.Serializable;
 
-import br.com.argus.argus.models.Endereco;
-import br.com.argus.argus.models.Pessoa;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
-public class ResponsavelDto {
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+public class ResponsavelDto implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8889293700183151602L;
 
 	private Long id;
 	private String cpf;
-	private Pessoa responsavel;
-	
-	public ResponsavelDto() {}
-	
-	public ResponsavelDto(String cpf, Pessoa resPessoa) {
-		this.cpf = cpf;
-		this.responsavel = resPessoa;
+	private PessoaDto pessoa;
+
+	public ResponsavelDto() {
 	}
 
+	@Override
+	public String toString() {
+		return "Responsavel: {\n cpf: " + cpf + "\n responsavel: " + pessoa + "\n }";
+	}
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "xxx.xxx.xxx-xx")
 	public String getCpf() {
 		return cpf;
 	}
 
+	@NotNull(message = "Os dados do responsável são obrigatórios")
+	public PessoaDto getPessoa() {
+		return pessoa;
+	}
+
+	@NotBlank(message = "Cpf é um dado obrigatório")
+	@Size(min = 14, max = 14, message = "CPF deve ter 14 caracteres")
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
-	}
-
-	public Pessoa getResPessoa() {
-		return responsavel;
-	}
-
-	public void setResponsavel(Pessoa resPessoa) {
-		this.responsavel = resPessoa;
-	}
-	
-	public void setResponsavel(String nome, Date dataNascimento, String naturalidade, Endereco endereco) {
-		this.responsavel = new Pessoa(nome, dataNascimento, naturalidade, endereco);
 	}
 
 	public Long getId() {

@@ -1,93 +1,65 @@
 package br.com.argus.argus.dtos;
 
-import java.util.Date;
+import java.io.Serializable;
 
-import br.com.argus.argus.models.Endereco;
-import br.com.argus.argus.models.Pessoa;
-import br.com.argus.argus.models.Responsavel;
+import javax.validation.constraints.NotNull;
 
-public class AlunoDto {
+public class AlunoDto implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8957405544371610948L;
 
 	private Long id;
-	private Pessoa pessoa;
-	private Pessoa pai;
-	private Pessoa mae;
-	private Pessoa responsavelTeste;
-	private Responsavel responsavel;
+
+	private PessoaDto pessoa;
+	private PessoaDto pai;
+	private PessoaDto mae;
+	private PessoaDto responsavelTeste;
+	private ResponsavelDto responsavel;
+
 	private String matricula;
 
-	public AlunoDto() {}
+	public AlunoDto() {
+	}
 
-	public AlunoDto(Pessoa pessoa, Pessoa pai, Pessoa mae, Responsavel responsavel, String matricula) {
-		this.pessoa = pessoa;
-		this.pai = pai;
-		this.mae = mae;
-		this.responsavel = responsavel;
-		this.matricula = matricula;
+	@Override
+	public String toString() {
+		return "\nAlunoDto: { pessoa: " + pessoa + "\n pai: " + pai + "\n mae: " + mae + "\n responsavelTeste: "
+				+ responsavelTeste + "\n responsavel: " + responsavel + "\n matricula: " + matricula + "\n}\n";
 	}
 
 	public Long getId() {
 		return id;
 	}
-
-	public Pessoa getPessoa() {
+	
+	@NotNull(message = "{pessoa.not.null}")
+	public PessoaDto getPessoa() {
 		return pessoa;
 	}
 
-	public void setPessoa(Pessoa pessoa) {
-		this.pessoa = pessoa;
-	}
-	
-	public void setPessoa(String nome, Date dataNascimento, String naturalidade, Endereco endereco) {
-		this.pessoa = new Pessoa(nome, dataNascimento, naturalidade, endereco);
-	}
-
-	public Pessoa getPai() {
+	@NotNull(message = "{mae.not.null}")
+	public PessoaDto getPai() {
 		return pai;
 	}
 
-	public void setPai(Pessoa pai) {
-		this.pai = pai;
-	}
-	
-	public void setPai(String nome, Date dataNascimento, String naturalidade, Endereco endereco) {
-		this.pai = new Pessoa(nome, dataNascimento, naturalidade, endereco);
-	}
-
-	public Pessoa getMae() {
+	@NotNull(message = "{mae.not.null}")
+	public PessoaDto getMae() {
 		return mae;
 	}
 
-	public void setMae(Pessoa mae) {
-		this.mae = mae;
-	}
-	
-	public void setMae(String nome, Date dataNascimento, String naturalidade, Endereco endereco) {
-		this.mae = new Pessoa(nome, dataNascimento, naturalidade, endereco);
+	public PessoaDto getResponsavelTeste() {
+		return responsavelTeste;
 	}
 
-	public Responsavel getResponsavel() {
+	@NotNull(message = "{responsavel.not.null}")
+	public ResponsavelDto getResponsavel() {
 		return responsavel;
-	}
-
-	public void setResponsavel(Responsavel responsavel) {
-		this.responsavel = responsavel;
 	}
 
 	public String getMatricula() {
 		return matricula;
-	}
-
-	public void setMatricula(String matricula) {
-		this.matricula = matricula;
-	}
-
-	public Pessoa getResponsavelTeste() {
-		return responsavelTeste;
-	}
-
-	public void setResponsavelTeste(Pessoa responsavelTeste) {
-		this.responsavelTeste = responsavelTeste;
 	}
 
 }
