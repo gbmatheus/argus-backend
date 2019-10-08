@@ -36,7 +36,7 @@ public class UsuarioService {
 		
 		if(usuario == null) {
 			try {
-				throw new ServicesException("Usuário não existe cadastrado");
+				throw new ServicesException("Usuário não está cadastrado");
 			} catch (ServicesException e) {
 				e.printStackTrace();
 			}
