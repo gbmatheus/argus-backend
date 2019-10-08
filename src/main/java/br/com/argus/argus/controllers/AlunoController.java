@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.argus.argus.dtos.AlunoDto;
+import br.com.argus.argus.exception.RestExceptionHandler;
 import br.com.argus.argus.models.Aluno;
 import br.com.argus.argus.responses.Response;
 import br.com.argus.argus.services.AlunoService;
@@ -35,7 +36,7 @@ public class AlunoController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Response<Aluno>> create(@Valid @RequestBody AlunoDto alunoDto, BindingResult result){
+	public ResponseEntity<Response<Aluno>> create(@RequestBody @Valid AlunoDto alunoDto, BindingResult result) {
 		Response<Aluno> response = new Response<Aluno>();
 		
 		if(result.hasErrors()) {
@@ -44,7 +45,7 @@ public class AlunoController {
 		}
 		
 		Aluno obj = this.alunoService.save(alunoDto);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();	
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(alunoDto.getId()).toUri();	
 		response.setData(obj);
 		return ResponseEntity.created(uri).body(response);
 		

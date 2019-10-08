@@ -44,7 +44,7 @@ public class FuncionarioController {
 		}
 		
 		Funcionario obj = this.funcionarioService.save(funcionarioDto);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(funcionarioDto.getId()).toUri();
 		response.setData(obj);
 		return ResponseEntity.created(uri).body(response);
 
