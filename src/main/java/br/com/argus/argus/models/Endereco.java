@@ -6,7 +6,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -20,36 +19,30 @@ public class Endereco {
 	private Long id;
 
 	@Column(nullable = false, length = 100)
-//	@NotBlank(message = "Campo rua é obrigatório")
 	private String rua;
 
 	@Column(nullable = false)
-//	@NotBlank(message = "Campo numero é obrigatório")
 	private Integer numero;
 
-	@Column(nullable = false, length = 30)
-//	@NotBlank(message = "Campo complemento é obrigatório")
+	@Column(nullable = true, length = 50)
 	private String complemento;
 
 	@Column(nullable = false, length = 30)
-//	@NotBlank(message = "Campo bairo é obrigatório")
 	private String bairro;
 
 	@Column(nullable = false, length = 30)
-//	@NotBlank(message = "Campo cidade é obrigatório")
 	private String cidade;
 
 	@Column(nullable = false, length = 2)
-//	@NotBlank(message = "Campo estado é obrigatório")
 	private String uf;
 
 	@Column(nullable = false, length = 10)
-//	@NotBlank(message = "Campo login é obrigatório")
 	private String cep;
 
-	public Endereco() {}
-	
-	//Teste para o funcionario dto
+	public Endereco() {
+	}
+
+	// Teste para o funcionario dto
 	public Endereco(String rua, Integer numero, String complemento, String bairro, String cidade, String uf,
 			String cep) {
 		this.rua = rua;

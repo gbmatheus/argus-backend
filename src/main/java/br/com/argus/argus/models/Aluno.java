@@ -1,5 +1,7 @@
 package br.com.argus.argus.models;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,13 +9,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "alunos")
-public class Aluno {
+public class Aluno implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5671116911706195166L;
 
 	@Id
 	@JsonIgnore
@@ -21,38 +27,30 @@ public class Aluno {
 	private Long id;
 
 	@OneToOne
-//	@NotBlank(message = "Campo pessoa é obrigátorio")
 	private Pessoa pessoa;
-	
+
 	@OneToOne
-//	@NotBlank(message = "Campo pai é obrigatório")
 	private Pessoa pai;
 
 	@OneToOne
-//	@NotBlank(message = "Campo mãe é obrigatório")
 	private Pessoa mae;
 
 	@OneToOne
-//	@NotBlank(message = "Compo responsavvel é obrigatório")
-//	private Responsavel responsavel;
-	private Pessoa responsavelTeste;
+	private Responsavel responsavel;
 
 	@Column(nullable = false, length = 10)
-//	@NotBlank(message = "Compo matricula é obrigatório")
 	private String matricula;
 
-	public Aluno() {}
+	public Aluno() {
+	}
 
 	public Aluno(Long id, Pessoa pessoa, Pessoa pai, Pessoa mae, Responsavel responsavel, String matricula) {
 		this.id = id;
 		this.pessoa = pessoa;
 		this.pai = pai;
 		this.mae = mae;
-//		this.responsavel = responsavel;
-		this.matricula = matricula;
+		this.responsavel = responsavel;
 	}
-	
-	
 
 	public Pessoa getPessoa() {
 		return pessoa;
@@ -60,7 +58,7 @@ public class Aluno {
 
 	public void setPessoa(Pessoa pessoa) {
 		this.pessoa = pessoa;
-	}	
+	}
 
 	public Pessoa getPai() {
 		return pai;
@@ -78,20 +76,12 @@ public class Aluno {
 		this.mae = mae;
 	}
 
-//	public Responsavel getResponsavel() {
-//		return responsavel;
-//	}
-//
-//	public void setResponsavel(Responsavel responsavel) {
-//		this.responsavel = responsavel;
-//	}
-	
-	public Pessoa getResponsavelTeste() {
-		return responsavelTeste;
+	public Responsavel getResponsavel() {
+		return responsavel;
 	}
 
-	public void setResponsavelTeste(Pessoa responsavelTeste) {
-		this.responsavelTeste = responsavelTeste;
+	public void setResponsavel(Responsavel responsavel) {
+		this.responsavel = responsavel;
 	}
 
 	public String getMatricula() {

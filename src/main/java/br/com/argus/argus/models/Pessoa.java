@@ -1,5 +1,6 @@
 package br.com.argus.argus.models;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -10,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -18,40 +20,42 @@ import com.fasterxml.jackson.databind.ser.std.DateSerializer;
 
 @Entity
 @Table(name = "pessoas")
-public class Pessoa {
-	
+public class Pessoa implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3817717553523601535L;
+
 	@Id
 	@JsonIgnore
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
+	@NotNull
 	@Column(name = "nome", nullable = false, length = 100)
-//	@NotBlank(message = "Campo nome é obrigatório")
 	private String nome;
-	
-//	@Temporal(TemporalType.DATE)
+
 	@JsonSerialize(using = DateSerializer.class)
 	@Column(name = "data_nascimento", nullable = false)
-//	@NotBlank(message = "Campo data de nascimento é obrigatório")
 	private Date dataNascimento;
 
 	@Column(name = "naturalidade", nullable = false)
-//	@NotBlank(message = "Campo naturalidade é obrigatório")
 	private String naturalidade;// Alterar para enum
-	
+
 	@OneToOne
-	private Endereco endereco;// Alterar para tabela
+	private Endereco endereco;
 
-	public Pessoa() {}
+	public Pessoa() {
+	}
 
-	//Teste para o funcionario dto
 	public Pessoa(String nome, Date dataNascimento, String naturalidade, Endereco endereco) {
 		this.nome = nome;
 		this.dataNascimento = dataNascimento;
 		this.naturalidade = naturalidade;
 		this.endereco = endereco;
 	}
-	
+
 	public Pessoa(Long id, String nome, Date dataNascimento, String naturalidade, Endereco endereco) {
 		this.id = id;
 		this.nome = nome;
