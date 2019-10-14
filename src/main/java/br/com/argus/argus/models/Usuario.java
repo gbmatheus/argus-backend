@@ -1,95 +1,126 @@
 package br.com.argus.argus.models;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import br.com.argus.argus.enums.Tipo;
+
 @Entity
 @Table(name = "usuarios")
-public class Usuario {
+public class Usuario implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -323345484627801915L;
 
 	@Id
 	@JsonIgnore
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@Column(nullable = false, length = 100)
-//	@NotBlank(message = "Campo login é obrigatório")
+
+	@Column(nullable = false, length = 50)
 	private String login;
 
-	@Column(nullable = false, length = 100)
-//	@NotBlank(message = "Campo senha é obrigatório")
+	@Column(nullable = false, length = 50)
 	private String senha;
 
 	@Column(nullable = false, length = 100)
-//	@NotBlank(message = "Campo email é obrigatório")
 	private String email;
-	
-	@Column(nullable = false, length = 10)
-//	@NotBlank(message = "Campo tipo é obrigatório")
-	private String tipo;
-	
-//	@Column(nullable = false)
-//	private Boolean ativo = true;
 
-	public Usuario() {}
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
+	private Tipo tipo = Tipo.PRO;
 
-	//Teste para o funcionario DTO
-	public Usuario(String login, String senha, String email, String tipo) {
-		this.login = login;
-		this.senha = senha;
-		this.email = email;
-		this.tipo = tipo;
+	@Column(nullable = false)
+	private Boolean ativo = true;
+
+	public Usuario() {
 	}
-	
-	public Usuario(Long id, String login, String senha, String email, String tipo) {
+
+	public Usuario(Long id, String login, String senha, String email, Tipo tipo, Boolean ativo) {
 		this.id = id;
 		this.login = login;
 		this.senha = senha;
 		this.email = email;
 		this.tipo = tipo;
+		this.ativo = ativo;
 	}
 
+
+
+	public Long getId() {
+		return id;
+	}
+	
+	@NotBlank(message = "Login é obrigatório")
+	@Size(min = 8, max = 50, message = "Login deve ter no mínimo 8 caracteres e no máximo 50")
 	public String getLogin() {
 		return login;
+	}
+
+
+	@NotBlank(message = "Senha é obrigatório")
+	@Size(min = 8, max = 50, message = "Senha deve ter no mínimo 8 caracteres e no máximo 50")
+	public String getSenha() {
+		return senha;
+	}
+
+
+	@NotBlank(message = "Email é obrigatório")
+	@Email(message = "Formato incorreto. Ex: seuemail@email.com")
+	@Size(min = 8, max = 50, message = "Login deve ter no mínimo 8 caracteres e no máximo 50")
+	public String getEmail() {
+		return email;
+	}
+
+//	@NotBlank(message = "Tipo de Usuário é obtigatório")
+	public Tipo getTipo() {
+		return tipo;
+	}
+
+	public Boolean getAtivo() {
+		return ativo;
 	}
 
 	public void setLogin(String login) {
 		this.login = login;
 	}
 
-	public String getSenha() {
-		return senha;
-	}
-
 	public void setSenha(String senha) {
 		this.senha = senha;
-	}
-
-	public String getEmail() {
-		return email;
 	}
 
 	public void setEmail(String email) {
 		this.email = email;
 	}
 
-	public String getTipo() {
-		return tipo;
-	}
-
-	public void setTipo(String tipo) {
+	public void setTipo(Tipo tipo) {
 		this.tipo = tipo;
 	}
 
-	public Long getId() {
-		return id;
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
 	}
 
+	@Override
+	public String toString() {
+		return "Usuario [id=" + id + ", login=" + login + ", senha=" + senha + ", email=" + email + ", tipo=" + tipo
+				+ ", ativo=" + ativo + "]";
+	}
+	
+	
 }

@@ -2,13 +2,13 @@ package br.com.argus.argus.models;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -23,7 +23,7 @@ public class Aluno implements Serializable {
 
 	@Id
 	@JsonIgnore
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@OneToOne
@@ -38,9 +38,6 @@ public class Aluno implements Serializable {
 	@OneToOne
 	private Responsavel responsavel;
 
-	@Column(nullable = false, length = 10)
-	private String matricula;
-
 	public Aluno() {
 	}
 
@@ -52,48 +49,52 @@ public class Aluno implements Serializable {
 		this.responsavel = responsavel;
 	}
 
+	@NotNull(message = "Informaao não pode ser vazia")
 	public Pessoa getPessoa() {
 		return pessoa;
+	}
+
+	@NotNull(message = "Infomação do pai são obrigatórias")
+	public Pessoa getPai() {
+		return pai;
+	}
+	
+	@NotNull(message = "Informações da mãe são obrigatórias")
+	public Pessoa getMae() {
+		return mae;
+	}
+
+	@NotNull(message = "Informações do responsável são obrigatórias")
+	public Responsavel getResponsavel() {
+		return responsavel;
+	}
+
+	public Long getId() {
+		return id;
 	}
 
 	public void setPessoa(Pessoa pessoa) {
 		this.pessoa = pessoa;
 	}
 
-	public Pessoa getPai() {
-		return pai;
-	}
-
 	public void setPai(Pessoa pai) {
 		this.pai = pai;
-	}
-
-	public Pessoa getMae() {
-		return mae;
 	}
 
 	public void setMae(Pessoa mae) {
 		this.mae = mae;
 	}
 
-	public Responsavel getResponsavel() {
-		return responsavel;
-	}
-
 	public void setResponsavel(Responsavel responsavel) {
 		this.responsavel = responsavel;
 	}
+	
+	
 
-	public String getMatricula() {
-		return matricula;
-	}
-
-	public void setMatricula(String matricula) {
-		this.matricula = matricula;
-	}
-
-	public Long getId() {
-		return id;
+	@Override
+	public String toString() {
+		return "Aluno [getPessoa()=" + getPessoa() + ", getPai()=" + getPai() + ", getMae()=" + getMae()
+				+ ", getResponsavel()=" + getResponsavel() + ", getId()=" + getId() + "]";
 	}
 
 }

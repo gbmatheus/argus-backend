@@ -12,6 +12,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -29,10 +30,9 @@ public class Pessoa implements Serializable {
 
 	@Id
 	@JsonIgnore
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotNull
 	@Column(name = "nome", nullable = false, length = 100)
 	private String nome;
 
@@ -40,20 +40,13 @@ public class Pessoa implements Serializable {
 	@Column(name = "data_nascimento", nullable = false)
 	private Date dataNascimento;
 
-	@Column(name = "naturalidade", nullable = false)
+	@Column(name = "naturalidade", nullable = false, length = 2)
 	private String naturalidade;// Alterar para enum
 
 	@OneToOne
 	private Endereco endereco;
 
 	public Pessoa() {
-	}
-
-	public Pessoa(String nome, Date dataNascimento, String naturalidade, Endereco endereco) {
-		this.nome = nome;
-		this.dataNascimento = dataNascimento;
-		this.naturalidade = naturalidade;
-		this.endereco = endereco;
 	}
 
 	public Pessoa(Long id, String nome, Date dataNascimento, String naturalidade, Endereco endereco) {
@@ -63,13 +56,11 @@ public class Pessoa implements Serializable {
 		this.naturalidade = naturalidade;
 		this.endereco = endereco;
 	}
-
+	
+	@NotBlank(message = "Nome é obrigatório")
+	@Size(min = 2, max = 100, message = "Nome deve ter mais de 3 caracteres")
 	public String getNome() {
 		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
 	}
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
@@ -77,21 +68,28 @@ public class Pessoa implements Serializable {
 		return dataNascimento;
 	}
 
+	@NotBlank(message = "Naturalidade é obrigatório")
+	@Size(min = 2, max = 2)
+	public String getNaturalidade() {
+		return naturalidade;
+	}
+
+	@NotNull(message = "Endereço é obrigatório")
+	public Endereco getEndereco() {
+		return endereco;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	public void setDataNascimento(Date dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
 
-	public String getNaturalidade() {
-		return naturalidade;
-	}
-
 	public void setNaturalidade(String naturalidade) {
 		this.naturalidade = naturalidade;
-	}
-
-	public Endereco getEndereco() {
-		return endereco;
 	}
 
 	public void setEndereco(Endereco endereco) {
@@ -101,4 +99,13 @@ public class Pessoa implements Serializable {
 	public Long getId() {
 		return id;
 	}
+
+	@Override
+	public String toString() {
+		return "Pessoa [getNome()=" + getNome() + ", getDataNascimento()=" + getDataNascimento()
+				+ ", getNaturalidade()=" + getNaturalidade() + ", getEndereco()=" + getEndereco() + ", getId()="
+				+ getId() + "]";
+	}
+	
+	
 }
