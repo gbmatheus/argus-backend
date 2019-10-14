@@ -20,7 +20,7 @@ public class PessoaService {
 	@Autowired
 	PessoaRepository pessoaRepository;
 
-	public Pessoa save(PessoaDto pessoaDto) {
+	public Pessoa save(Pessoa pessoaDto) {
 		Pessoa pessoa = new Pessoa();
 		pessoa.setNome(pessoaDto.getNome());
 		pessoa.setDataNascimento(pessoaDto.getDataNascimento());
@@ -29,6 +29,9 @@ public class PessoaService {
 		pessoa.setEndereco(
 				enderecoService.save(pessoaDto.getEndereco())
 				);
+		
+//		FacadeCreateService
+//		pessoa.setEndereco(pessoaDto.getEndereco());
 
 		return pessoaRepository.save(pessoa);
 	}
