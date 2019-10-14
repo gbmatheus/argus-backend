@@ -2,8 +2,8 @@ package br.com.argus.argus.controllers;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,37 +24,22 @@ import br.com.argus.argus.models.Usuario;
 import br.com.argus.argus.responses.Response;
 import br.com.argus.argus.services.UsuarioService;
 
-/**
- * UsuarioController possuí os endpoint da api onde os recursos estão
- * disponíveis, com diferentes métodos para interagir com os recursos
- *
- */
-@RestController // Marca a classe como um controlador, não é preciso adicionar o @RequestBody
-@RequestMapping("/api/usuarios") // prefixo da rota, definição da rota padrão
+@RestController
+@RequestMapping("/api/usuarios")
 public class UsuarioController {
-	/**
-	 * Get - pede ao servidor o recusro Post - pede ao servidor que crie um recurso
-	 * novo Delete - pede ao servidor que apague um recurso Put - pede ao servidor a
-	 * atualização ou edição de um recurso
-	 */
 
-	@Autowired // Marcar ponto de injeção na class
+	@Autowired
 	private UsuarioService usuarioService;
 
-//	@GetMapping
-//	public String index() {
-//		return "Api Funcionando";
-//	}
-
 	@GetMapping
-	public ResponseEntity<List<Usuario>> findAll() {
+	public ResponseEntity<List<Usuario>> index() {
 		List<Usuario> usuarios = usuarioService.findByAll();
 		return ResponseEntity.status(HttpStatus.OK).body(usuarios);
 	}
 
 	@GetMapping(path = "/{id}")
-	public ResponseEntity<Response<Usuario>> findById(@PathVariable long id) {
-		Usuario usuario = usuarioService.findById(id);
+	public ResponseEntity<Response<Usuario>> show(@PathVariable long id) {
+		Usuario usuario = usuarioService.findBy(id);
 		Response<Usuario> response = new Response<Usuario>();
 		response.setData(usuario);
 		return ResponseEntity.status(HttpStatus.OK).body(response);
@@ -63,12 +48,12 @@ public class UsuarioController {
 	@PostMapping
 	public ResponseEntity<Response<Usuario>> create(@Valid @RequestBody Usuario usuario, BindingResult result) {
 		Response<Usuario> response = new Response<Usuario>();
-		
-		if(result.hasErrors()) {
+
+		if (result.hasErrors()) {
 			result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()));
 			return ResponseEntity.badRequest().body(response);
 		}
-		
+
 		Usuario obj = this.usuarioService.save(usuario);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		response.setData(obj);
@@ -77,27 +62,41 @@ public class UsuarioController {
 	}
 
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Response<Usuario>> update(@PathVariable("id") long id,
-			@RequestBody Usuario usuario) {
-		
-//		return usuarioService.findById(id).map(
-//				record -> {
-//					record.setLogin(usuario.getLogin());
-//					record.setSenha(usuario.getSenha());
-//					record.setEmail(usuario.getEmail());
-//					Usuario updated = usuarioService.save(record);
-//					return ResponseEntity.accepted().body(updated);
-//				}).orElse(ResponseEntity.notFound().build());
-		return null;
+	public ResponseEntity<Response<Usuario>> update(@PathVariable("id") long id, @RequestBody Usuario usuario) {
+		Response<Usuario> response = new Response<Usuario>();
+
+		return usuarioService.findById(id).map(record -> {
+			Usuario updated = usuarioService.save(usuario);
+			response.setData(updated);
+			return ResponseEntity.accepted().body(response);
+		}).orElse(ResponseEntity.notFound().build());
+
 	}
 
-//	@PutMapping("/{id}")
-//	public void remove(@PathVariable Long id) {
-//		
-//	}
+	@DeleteMapping(path = "/{id}")
+	public void remove(@PathVariable Long id) {
 
-	@DeleteMapping(value = "/{id}")
+	}
+
+	@DeleteMapping(path = "/delete/{id}")
 	public void delete(@PathVariable long id) {
+
+	}
+
+	@PostMapping(value = "/login")
+	public ResponseEntity<String> Login(Usuario usuario, HttpSession session, BindingResult result) {
+		Usuario obj = usuarioService.login(usuario);
+
+		if (obj != null) {
+
+			session.setAttribute("usuarioLogado", usuario);
+	
+			return ResponseEntity.accepted().body("Logado");
+		}
+			
+
+
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Não autorizado");
 
 	}
 
