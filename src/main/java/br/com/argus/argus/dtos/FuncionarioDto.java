@@ -56,17 +56,6 @@ public class FuncionarioDto implements Serializable{
 	//Ao inves de passar todos os usuario atributos para atribuido
 	// contruir um metodo contrutor para o funcionarioDto com todos
 	//  os parametros de suas dependecias, e atrinuindo ao objeto instanciado
-	public FuncionarioDto(String nome, Date dataNascimento, String naturalidade, String rua, Integer numero,
-			String complemento, String bairro, String cidade, String uf, String cep, String login, String senha,
-			String email, String tipo, String cpf, Integer cargaHoraria) {
-		this.cpf = cpf;
-		this.cargaHoraria = cargaHoraria;
-		
-		this.pessoaDto = new Pessoa(nome, dataNascimento, naturalidade,
-				new Endereco(rua, numero, complemento, bairro, cidade, uf, cep));
-		this.usuarioDto = new Usuario(login, senha, email, tipo);
-	}
-
 	public FuncionarioDto(Long id, String nome, Date dataNascimento, String naturalidade, String rua, Integer numero,
 			String complemento, String bairro, String cidade, String uf, String cep, String login, String senha,
 			String email, String tipo, String cpf, Integer cargaHoraria) {
