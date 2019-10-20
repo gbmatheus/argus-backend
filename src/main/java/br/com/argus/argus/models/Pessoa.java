@@ -42,6 +42,9 @@ public class Pessoa implements Serializable {
 
 	@Column(name = "naturalidade", nullable = false, length = 2)
 	private String naturalidade;// Alterar para enum
+	
+	@Column(nullable = false)
+	private boolean ativo = true;
 
 	@OneToOne
 	private Endereco endereco;
@@ -63,13 +66,14 @@ public class Pessoa implements Serializable {
 		return nome;
 	}
 
+	@NotNull(message = "Data de nascimento é obrigatório")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	public Date getDataNascimento() {
 		return dataNascimento;
 	}
 
 	@NotBlank(message = "Naturalidade é obrigatório")
-	@Size(min = 2, max = 2)
+	@Size(min = 3, max = 3)
 	public String getNaturalidade() {
 		return naturalidade;
 	}
@@ -94,6 +98,14 @@ public class Pessoa implements Serializable {
 
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
+	}
+	
+	public boolean isAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
 	}
 
 	public Long getId() {
