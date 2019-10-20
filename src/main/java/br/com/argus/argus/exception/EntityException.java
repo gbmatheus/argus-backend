@@ -1,13 +1,13 @@
 package br.com.argus.argus.exception;
 
-public class ServicesException extends Exception{
-
+public class EntityException extends Exception{
+	 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public ServicesException(String string) {
+	public EntityException(String msg) {
 	}
 
 }
