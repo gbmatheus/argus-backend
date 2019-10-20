@@ -6,9 +6,12 @@ package br.com.argus.argus.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityExistsException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.argus.argus.exception.EntityException;
 import br.com.argus.argus.models.Usuario;
 import br.com.argus.argus.repositories.UsuarioRepository;
 
@@ -41,16 +44,22 @@ public class UsuarioService extends GenericService<Usuario> {
 		return usuarioRepository.findAll();
 	}
 
-	public Usuario save(Usuario usuario) {
-		return usuarioRepository.save(usuario);
-	}
+	public Usuario save(Usuario usuarioDto) throws EntityExistsException {
+		List<Usuario> usuarios = findByAll();
 
-	public Usuario update(Usuario usuario) {
-		return null;
-	}
-
-	public Usuario active(long id) {
-		return null;
+		if (usuarios != null) {
+			System.out.println("Lista de usuários não vazia");
+			for (Usuario u : usuarios) {
+				if (u.getLogin().equalsIgnoreCase(usuarioDto.getLogin())
+						|| u.getEmail().equalsIgnoreCase(usuarioDto.getEmail())) {
+					System.out.println("Usuário já existe");
+					throw new EntityExistsException("Usuário já existe");
+				}
+			}
+			return usuarioRepository.save(usuarioDto);
+		}
+		System.out.println("Lista de usuários vazia");
+		return usuarioRepository.save(usuarioDto);
 	}
 
 	public void deleteById(long id) {
@@ -62,7 +71,13 @@ public class UsuarioService extends GenericService<Usuario> {
 	}
 
 	@Override
-	public void remove(Usuario obj) {
+	public Usuario update(long id, Usuario obj) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void remove(long id) {
 		// TODO Auto-generated method stub
 
 	}
@@ -79,11 +94,10 @@ public class UsuarioService extends GenericService<Usuario> {
 					return null;
 			} else
 				return null;
-		
+
 		}
 		return null;
 
 	}
-
 
 }

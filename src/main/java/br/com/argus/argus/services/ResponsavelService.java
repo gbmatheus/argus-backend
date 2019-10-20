@@ -57,19 +57,19 @@ public class ResponsavelService extends GenericService<Responsavel>{
 	}
 
 	@Override
-	public Responsavel update(Responsavel obj) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void remove(Responsavel obj) {
+	public void deleteById(long id) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void deleteById(long id) {
+	public Responsavel update(long id, Responsavel obj) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void remove(long id) {
 		// TODO Auto-generated method stub
 		
 	}

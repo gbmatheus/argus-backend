@@ -44,17 +44,31 @@ public class FuncionarioService {
 	}
 
 	public Funcionario save(Funcionario funcionarioDto) {
+		List<Funcionario> funcionarios = findByAll();
+		
 		Funcionario funcionario = new Funcionario();
 
 		funcionario.setPessoa(pessoaService.save(funcionarioDto.getPessoa()));
 		funcionario.setUsuario(usuarioService.save(funcionarioDto.getUsuario()));
-		funcionario.setCpf(funcionarioDto.getCpf());
+		
+		if(funcionario.getPessoa() == null) {
+			return null;
+		}
+		
+		if(funcionarios != null) {
+			for (Funcionario f : funcionarios) {
+				if(f.getCpf().equalsIgnoreCase(funcionarioDto.getCpf())) {
+					return null;
+				}
+				
+			}
+			funcionario.setCpf(funcionarioDto.getCpf());
+			
+		}else {
+			funcionario.setCpf(funcionarioDto.getCpf());
+		}
+		
 		funcionario.setCargaHoraria(funcionarioDto.getCargaHoraria());
-
-		return funcionarioReporitory.save(funcionario);
-	}
-
-	public Funcionario saveTest(Funcionario funcionario) {
 
 		return funcionarioReporitory.save(funcionario);
 	}

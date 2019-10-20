@@ -38,19 +38,19 @@ public class DisciplinaService extends GenericService<Disciplina> {
 	}
 
 	@Override
-	public Disciplina update(Disciplina obj) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void remove(Disciplina obj) {
+	public void deleteById(long id) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void deleteById(long id) {
+	public Disciplina update(long id, Disciplina obj) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void remove(long id) {
 		// TODO Auto-generated method stub
 		
 	}
