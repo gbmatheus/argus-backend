@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.argus.argus.models.Aluno;
+import br.com.argus.argus.models.Pessoa;
 import br.com.argus.argus.repositories.AlunoRepository;
 
 @Service
@@ -30,6 +31,7 @@ public class AlunoService extends GenericService<Aluno> {
 
 	@Override
 	public Aluno findBy(long id) {
+		
 //		Aluno aluno = alunoRepository.findOne(id);
 //
 //		if (aluno == null) {
@@ -59,25 +61,22 @@ public class AlunoService extends GenericService<Aluno> {
 		aluno.setPai(pessoaService.save(alunoDto.getPai()));
 
 		aluno.setResponsavel(responsavelService.save(alunoDto.getResponsavel()));
-
-//		FacadeCreateService
-//		aluno.setPessoa(alunoDto.getPessoa());
-//		aluno.setMae(alunoDto.getMae());
-//		aluno.setPai(alunoDto.getPai());
-//		aluno.setResponsavel(alunoDto.getResponsavel());
-
 		
 		return alunoRepository.save(aluno);
 	}
 
+
 	@Override
-	public Aluno update(Aluno obj) {
-		return alunoRepository.save(obj);
+	public Aluno update(long id, Aluno alunoDto) {
+		return null;
 	}
 
 	@Override
-	public void remove(Aluno obj) {
-
+	public void remove(long id) {
+		Optional<Aluno> a = findById(id);
+		pessoaService.remove(
+				a.get().getPessoa().getId()				
+				);
 	}
 
 	@Override
