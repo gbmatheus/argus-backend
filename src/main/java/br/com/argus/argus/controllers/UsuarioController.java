@@ -91,7 +91,7 @@ public class UsuarioController {
 
 			session.setAttribute("usuarioLogado", usuario);
 	
-			return ResponseEntity.accepted().body("Logado");
+			return ResponseEntity.status(HttpStatus.OK).body("Logado");
 		}
 			
 
