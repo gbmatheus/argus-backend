@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "enderecos")
-public class Endereco implements Serializable{
+public class Endereco implements Serializable {
 
 	/**
 	 * 
@@ -49,20 +49,8 @@ public class Endereco implements Serializable{
 
 	@Column(nullable = false, length = 10)
 	private String cep;
-	
-	public Endereco() {
-	}
 
-	public Endereco(Long id, String rua, Integer numero, String complemento, String bairro, String cidade, String uf,
-			String cep) {
-		this.id = id;
-		this.rua = rua;
-		this.numero = numero;
-		this.complemento = complemento;
-		this.bairro = bairro;
-		this.cidade = cidade;
-		this.uf = uf;
-		this.cep = cep;
+	public Endereco() {
 	}
 
 	public Long getId() {
@@ -145,6 +133,5 @@ public class Endereco implements Serializable{
 				+ ", getComplemento()=" + getComplemento() + ", getBairro()=" + getBairro() + ", getCidade()="
 				+ getCidade() + ", getUf()=" + getUf() + ", getCep()=" + getCep() + "]";
 	}
-	
 
 }

@@ -3,6 +3,7 @@ package br.com.argus.argus.models;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -42,24 +43,19 @@ public class Pessoa implements Serializable {
 
 	@Column(name = "naturalidade", nullable = false, length = 2)
 	private String naturalidade;// Alterar para enum
-	
+
+	@Column(nullable = false, length = 20, unique = true)
+	private String rg;
+
 	@Column(nullable = false)
 	private boolean ativo = true;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private Endereco endereco;
 
 	public Pessoa() {
 	}
 
-	public Pessoa(Long id, String nome, Date dataNascimento, String naturalidade, Endereco endereco) {
-		this.id = id;
-		this.nome = nome;
-		this.dataNascimento = dataNascimento;
-		this.naturalidade = naturalidade;
-		this.endereco = endereco;
-	}
-	
 	@NotBlank(message = "Nome é obrigatório")
 	@Size(min = 2, max = 100, message = "Nome deve ter mais de 3 caracteres")
 	public String getNome() {
@@ -92,6 +88,16 @@ public class Pessoa implements Serializable {
 		this.dataNascimento = dataNascimento;
 	}
 
+	@NotBlank(message = "Rg é obrigatório")
+	@Size(min = 5, max = 20)
+	public String getRg() {
+		return rg;
+	}
+
+	public boolean isAtivo() {
+		return ativo;
+	}
+
 	public void setNaturalidade(String naturalidade) {
 		this.naturalidade = naturalidade;
 	}
@@ -99,9 +105,9 @@ public class Pessoa implements Serializable {
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
 	}
-	
-	public boolean isAtivo() {
-		return ativo;
+
+	public void setRg(String rg) {
+		this.rg = rg;
 	}
 
 	public void setAtivo(boolean ativo) {
@@ -118,6 +124,5 @@ public class Pessoa implements Serializable {
 				+ ", getNaturalidade()=" + getNaturalidade() + ", getEndereco()=" + getEndereco() + ", getId()="
 				+ getId() + "]";
 	}
-	
-	
+
 }

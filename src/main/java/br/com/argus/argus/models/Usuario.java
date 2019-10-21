@@ -43,7 +43,7 @@ public class Usuario implements Serializable {
 
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
-	private Tipo tipo = Tipo.PRO;
+	private Tipo tipo = Tipo.SEC;
 
 	@Column(nullable = false)
 	private Boolean ativo = true;
@@ -51,34 +51,21 @@ public class Usuario implements Serializable {
 	public Usuario() {
 	}
 
-	public Usuario(Long id, String login, String senha, String email, Tipo tipo, Boolean ativo) {
-		this.id = id;
-		this.login = login;
-		this.senha = senha;
-		this.email = email;
-		this.tipo = tipo;
-		this.ativo = ativo;
-	}
-
-
-
 	public Long getId() {
 		return id;
 	}
-	
+
 	@NotBlank(message = "Login é obrigatório")
 	@Size(min = 8, max = 50, message = "Login deve ter no mínimo 8 caracteres e no máximo 50")
 	public String getLogin() {
 		return login;
 	}
 
-
 	@NotBlank(message = "Senha é obrigatório")
 	@Size(min = 8, max = 50, message = "Senha deve ter no mínimo 8 caracteres e no máximo 50")
 	public String getSenha() {
 		return senha;
 	}
-
 
 	@NotBlank(message = "Email é obrigatório")
 	@Email(message = "Formato incorreto. Ex: seuemail@email.com")
@@ -87,12 +74,12 @@ public class Usuario implements Serializable {
 		return email;
 	}
 
-//	@NotBlank(message = "Tipo de Usuário é obtigatório")
+	@NotBlank(message = "Tipo de Usuário é obtigatório")
 	public Tipo getTipo() {
 		return tipo;
 	}
 
-	public Boolean getAtivo() {
+	public Boolean isAtivo() {
 		return ativo;
 	}
 
@@ -121,6 +108,5 @@ public class Usuario implements Serializable {
 		return "Usuario [id=" + id + ", login=" + login + ", senha=" + senha + ", email=" + email + ", tipo=" + tipo
 				+ ", ativo=" + ativo + "]";
 	}
-	
-	
+
 }

@@ -2,6 +2,7 @@ package br.com.argus.argus.models;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -12,6 +13,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.argus.argus.enums.AnoLetivo;
 
@@ -20,59 +26,60 @@ import br.com.argus.argus.enums.AnoLetivo;
 public class Curriculo {
 
 	@Id
+	@JsonIgnore
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	@Column(length = 10, nullable = false)
 	private String codigo;
 
-	@Column(length = 50, nullable = false)
+	@Column(length = 30, nullable = false)
 	private String nome;
 
 	@Column(name = "ano_letivo", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private AnoLetivo anoLetivo;
 
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "curriculos_id")
 	private List<Turma> turma;
 
-	@OneToMany
-	@JoinColumn(name = "curriculos_id")
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "disciplinas_id")
 	private List<Disciplina> disciplinas;
 
 	public Curriculo() {
-	}
-
-	public Curriculo(Long id, String codigo, String nome, AnoLetivo anoLetivo, List<Turma> turma,
-			List<Disciplina> disciplinas) {
-		super();
-		this.id = id;
-		this.codigo = codigo;
-		this.nome = nome;
-		this.anoLetivo = anoLetivo;
-		this.turma = turma;
-		this.disciplinas = disciplinas;
 	}
 
 	public Long getId() {
 		return id;
 	}
 
+	@NotBlank(message = "Código é obrigatório")
+	@Size(min = 5, max = 10)
 	public String getCodigo() {
 		return codigo;
 	}
 
+	@NotBlank(message = "Nome é obrigatório")
+	@Size(min = 5, max = 30)
 	public String getNome() {
 		return nome;
 	}
 
+	@NotNull(message = "Ano letivo é obrigatório")
 	public AnoLetivo getAnoLetivo() {
 		return anoLetivo;
 	}
 
+	@NotNull(message = "Turmas são obrigatório")
 	public List<Turma> getTurma() {
 		return turma;
+	}
+
+	@NotNull(message = "Disciplinas são obrigatórias")
+	public List<Disciplina> getDisciplinas() {
+		return disciplinas;
 	}
 
 	public void setCodigo(String codigo) {
@@ -89,10 +96,6 @@ public class Curriculo {
 
 	public void setTurma(List<Turma> turma) {
 		this.turma = turma;
-	}
-
-	public List<Disciplina> getDisciplinas() {
-		return disciplinas;
 	}
 
 	public void setDisciplinas(List<Disciplina> disciplinas) {

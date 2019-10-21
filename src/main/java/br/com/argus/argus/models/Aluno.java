@@ -2,6 +2,7 @@ package br.com.argus.argus.models;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,30 +27,22 @@ public class Aluno implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private Pessoa pessoa;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private Pessoa pai;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private Pessoa mae;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private Responsavel responsavel;
 
 	public Aluno() {
 	}
 
-	public Aluno(Long id, Pessoa pessoa, Pessoa pai, Pessoa mae, Responsavel responsavel, String matricula) {
-		this.id = id;
-		this.pessoa = pessoa;
-		this.pai = pai;
-		this.mae = mae;
-		this.responsavel = responsavel;
-	}
-
-	@NotNull(message = "Informaao não pode ser vazia")
+	@NotNull(message = "Informação pessoais são obrigatórias")
 	public Pessoa getPessoa() {
 		return pessoa;
 	}
@@ -58,7 +51,7 @@ public class Aluno implements Serializable {
 	public Pessoa getPai() {
 		return pai;
 	}
-	
+
 	@NotNull(message = "Informações da mãe são obrigatórias")
 	public Pessoa getMae() {
 		return mae;
@@ -88,8 +81,6 @@ public class Aluno implements Serializable {
 	public void setResponsavel(Responsavel responsavel) {
 		this.responsavel = responsavel;
 	}
-	
-	
 
 	@Override
 	public String toString() {

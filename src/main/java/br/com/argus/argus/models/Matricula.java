@@ -2,6 +2,7 @@ package br.com.argus.argus.models;
 
 import java.math.BigDecimal;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -11,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -25,29 +27,29 @@ public class Matricula {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private Aluno aluno;
 
-	@Column(name = "nota_1", scale = 2, nullable = false)
-	private BigDecimal nota1;
+	@Column(name = "nota_1", precision = 2, scale = 2, nullable = false)
+	private BigDecimal nota1 = new BigDecimal(0);
 
-	@Column(name = "nota_2", scale = 2, nullable = false)
-	private BigDecimal nota2;
+	@Column(name = "nota_2", precision = 2, scale = 2, nullable = false)
+	private BigDecimal nota2 = new BigDecimal(0);
 
-	@Column(name = "nota_3", scale = 2, nullable = false)
-	private BigDecimal nota3;
+	@Column(name = "nota_3", precision = 2, scale = 2, nullable = false)
+	private BigDecimal nota3 = new BigDecimal(0);
 
-	@Column(name = "nota_4", scale = 2, nullable = false)
-	private BigDecimal nota4;
+	@Column(name = "nota_4", precision = 2, scale = 2, nullable = false)
+	private BigDecimal nota4 = new BigDecimal(0);
 
-	@Column(name = "media_geral", scale = 2, nullable = false)
-	private BigDecimal mediaGeral;
+	@Column(name = "media_geral", precision = 2, scale = 2, nullable = false)
+	private BigDecimal mediaGeral = new BigDecimal(0);
 
-	@Column(name = "prova_final", scale = 2, nullable = false)
-	private BigDecimal provaFinal;
+	@Column(name = "prova_final", precision = 2, scale = 2, nullable = false)
+	private BigDecimal provaFinal = new BigDecimal(0);
 
-	@Column(name = "media_final", scale = 2, nullable = false)
-	private BigDecimal mediaFinal;
+	@Column(name = "media_final", precision = 2, scale = 2, nullable = false)
+	private BigDecimal mediaFinal = new BigDecimal(0);
 
 	@Column(length = 20, nullable = false)
 	@Enumerated(EnumType.STRING)
@@ -56,25 +58,11 @@ public class Matricula {
 	public Matricula() {
 	}
 
-	public Matricula(Long id, Aluno aluno, BigDecimal nota1, BigDecimal nota2, BigDecimal nota3, BigDecimal nota4,
-			BigDecimal mediaGeral, BigDecimal provaFinal, BigDecimal mediaFinal, Situacao situacao) {
-		super();
-		this.id = id;
-		this.aluno = aluno;
-		this.nota1 = nota1;
-		this.nota2 = nota2;
-		this.nota3 = nota3;
-		this.nota4 = nota4;
-		this.mediaGeral = mediaGeral;
-		this.provaFinal = provaFinal;
-		this.mediaFinal = mediaFinal;
-		this.situacao = situacao;
-	}
-
 	public Long getId() {
 		return id;
 	}
 
+	@NotNull(message = "Aluno é uma informação obrigatória")
 	public Aluno getAluno() {
 		return aluno;
 	}
@@ -107,6 +95,7 @@ public class Matricula {
 		return mediaFinal;
 	}
 
+	@NotNull(message = "Situação é uma informação obrigatória")
 	public Situacao getSituacao() {
 		return situacao;
 	}

@@ -2,6 +2,7 @@ package br.com.argus.argus.models;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,6 +13,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -31,24 +33,16 @@ public class Funcionario implements Serializable {
 	@Column(length = 14)
 	private String cpf;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private Pessoa pessoa;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private Usuario usuario;
 
-	@Column(name = "carga_horaria")
+	@Column(name = "carga_horaria", nullable = false)
 	private Integer cargaHoraria;
 
 	public Funcionario() {
-	}
-
-	public Funcionario(Long id, String cpf, Pessoa pessoa, Usuario usuario, Integer cargaHoraria) {
-		this.id = id;
-		this.cpf = cpf;
-		this.pessoa = pessoa;
-		this.usuario = usuario;
-		this.cargaHoraria = cargaHoraria;
 	}
 
 	public Long getId() {
@@ -56,7 +50,7 @@ public class Funcionario implements Serializable {
 	}
 
 	@NotBlank(message = "CPF é obrigatório")
-//	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "xxx.xxx.xxx-xx")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "xxx.xxx.xxx-xx")
 	public String getCpf() {
 		return cpf;
 	}
@@ -76,7 +70,7 @@ public class Funcionario implements Serializable {
 		return cargaHoraria;
 	}
 
-//	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "xxx.xxx.xxx-xx")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "xxx.xxx.xxx-xx")
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
@@ -98,8 +92,5 @@ public class Funcionario implements Serializable {
 		return "Funcionario [id=" + id + ", cpf=" + cpf + ", pessoa=" + pessoa + ", usuario=" + usuario
 				+ ", cargaHoraria=" + cargaHoraria + "]";
 	}
-	
-	
-	
 
 }

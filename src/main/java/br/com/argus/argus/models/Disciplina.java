@@ -3,6 +3,7 @@ package br.com.argus.argus.models;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -35,29 +36,20 @@ public class Disciplina implements Serializable{
 	@Column(length = 8, nullable = false)
 	private String codigo;
 	
-	@Column(length = 50, nullable = false)
+	@Column(length = 20, nullable = false)
 	private String nome;
 	
 	@Column(name = "carga_horaria",nullable = false)
 	private Integer cargaHoraria;
 	
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private Funcionario professor;
 
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "disciplinas_id")
 	private List<Matricula> matricula;
 	
 	public Disciplina() {}
-
-	public Disciplina(Long id, String codigo, String nome, Integer cargaHoraria, Funcionario professor) {
-		super();
-		this.id = id;
-		this.codigo = codigo;
-		this.nome = nome;
-		this.cargaHoraria = cargaHoraria;
-		this.professor = professor;
-	}
 
 	public Long getId() {
 		return id;
@@ -70,11 +62,12 @@ public class Disciplina implements Serializable{
 	}
 
 	@NotBlank(message = "Nome da disciplinha é obrigatório")
+	@Size(min = 4, max = 20)
 	public String getNome() {
 		return nome;
 	}
 
-	@NotBlank(message = "Carga horária é obrigatório")
+	@NotNull(message = "Carga horária é obrigatório")
 	public Integer getCargaHoraria() {
 		return cargaHoraria;
 	}
@@ -82,6 +75,10 @@ public class Disciplina implements Serializable{
 	@NotNull(message = "Professor é obrigatório")
 	public Funcionario getProfessor() {
 		return professor;
+	}
+	
+	public List<Matricula> getMatricula() {
+		return matricula;
 	}
 
 	public void setCodigo(String codigo) {
@@ -99,5 +96,5 @@ public class Disciplina implements Serializable{
 	public void setProfessor(Funcionario professor) {
 		this.professor = professor;
 	}
-
+	
 }

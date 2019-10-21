@@ -10,7 +10,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.DateSerializer;
@@ -38,37 +42,34 @@ public class AtendimentoPedagogico {
 	private Date dataAtendimento;
 	
 	@JsonSerialize(using = DateSerializer.class)
-	@Column(name = "data_realizado", nullable = false)
+	@Column(name = "data_realizado")
 	private Date dataRealizado;
 	
 	public AtendimentoPedagogico() {
 	}
 
-	public AtendimentoPedagogico(Long id, String detalheAtendimento, StatusAtendimento situcao, Date dataAtendimento,
-			Date dataRealizado) {
-		this.id = id;
-		this.detalheAtendimento = detalheAtendimento;
-		this.situcao = situcao;
-		this.dataAtendimento = dataAtendimento;
-		this.dataRealizado = dataRealizado;
-	}
-
 	public Long getId() {
 		return id;
 	}
-
+	
+	@NotBlank(message = "Informações sobre o atedimento são obrigatórias")
+	@Size(min = 10, max = 255)
 	public String getDetalheAtendimento() {
 		return detalheAtendimento;
 	}
 
+	@NotNull(message = "Situação é uma informação necessaria")
 	public StatusAtendimento getSitucao() {
 		return situcao;
 	}
-
+	
+	@NotNull(message = "Data do atendimento é obrigatório")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	public Date getDataAtendimento() {
 		return dataAtendimento;
 	}
 
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	public Date getDataRealizado() {
 		return dataRealizado;
 	}
