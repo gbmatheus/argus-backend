@@ -43,9 +43,13 @@ public class Curriculo {
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "curriculos_id")
 	private List<Turma> turma;
+	
+//	@OneToMany
+//	@JoinColumn(name = "pessoa_id")
+//	private List<Cachorro> cachorros;
 
 	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "disciplinas_id")
+	@JoinColumn(name = "curriculos_id")
 	private List<Disciplina> disciplinas;
 
 	public Curriculo() {

@@ -9,7 +9,7 @@ import br.com.argus.argus.exception.ServicesException;
 
 public abstract class ServiceGeneric<T> {
 
-	JpaRepository<T, Long> repository;
+//	JpaRepository<T, Long> repository;
 
 	// Pega um obj do tipo repository das classe filhas e repassa para os métodos
 	public abstract JpaRepository<T, Long> getRepository();

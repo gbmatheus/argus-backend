@@ -26,8 +26,8 @@ public class PessoaService extends GenericService<Pessoa> {
 		List<Pessoa> pessoas = findByAll();
 		Pessoa pessoa = new Pessoa();
 
-		if (!pessoaDto.getRg().matches("^[0-9]*$"))
-			throw new ValidarColunaException("Rg inválido");
+//		if (!pessoaDto.getRg().matches("^[0-9]*$"))
+//			throw new ValidarColunaException("Rg inválido");
 
 		if (pessoas.size() != 0) {
 			for (Pessoa p : pessoas) {

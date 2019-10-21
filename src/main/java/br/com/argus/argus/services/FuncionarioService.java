@@ -53,26 +53,42 @@ public class FuncionarioService extends GenericService<Funcionario> {
 		Funcionario funcionario = new Funcionario();
 
 		try {
-			if (funcionarioDto.getPessoa() == null)
+			System.out.println("Entrou");
+			if (funcionarioDto.getPessoa() == null) {
+				System.out.println("Passou Aki 1");
 				throw new PessoaException("As informações pessoais estão vazias");
-			funcionario.setPessoa(pessoaService.save(funcionarioDto.getPessoa()));
+			}
+			else {
+				System.out.println("Passou Aki 1 - tentou salver");
+				funcionario.setPessoa(pessoaService.save(funcionarioDto.getPessoa()));
+			}
+			if (funcionarioDto.getUsuario() == null) {
 
-			if (funcionarioDto.getUsuario() == null)
+				System.out.println("Passou Aki 2");
 				throw new UsuarioException("As informações do usuário estão vazias");
-			funcionario.setUsuario(usuarioService.save(funcionarioDto.getUsuario()));
+			}			else {
+				System.out.println("Passou Aki 2 - tentou salvar");
+				funcionario.setUsuario(usuarioService.save(funcionarioDto.getUsuario()));
+			}
 
 		} catch (Exception e) {
+			System.out.println("Levantou a exceção");
 			e.printStackTrace();
 		}
 
+		System.out.println("Passou Aki 3");
 		if (funcionarios.size() != 0) {
+			System.out.println("Passou Aki 3 - lista não vázia");
 			for (Funcionario f : funcionarios) {
 				if (f.getCpf().equalsIgnoreCase(funcionarioDto.getCpf())) {
+					System.out.println("Passou Aki 3 - validando cpf");
 					new ValidarColunaException("CPF já está em uso");
 				}
 			}
 		}
 
+
+		System.out.println("Passou Aki 4");
 		funcionario.setCpf(funcionarioDto.getCpf());
 		funcionario.setCargaHoraria(funcionarioDto.getCargaHoraria());
 
