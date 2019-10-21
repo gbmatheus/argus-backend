@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -74,7 +75,7 @@ public class Usuario implements Serializable {
 		return email;
 	}
 
-	@NotBlank(message = "Tipo de Usuário é obtigatório")
+	@NotNull(message = "Tipo de Usuário é obtigatório")
 	public Tipo getTipo() {
 		return tipo;
 	}

@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import br.com.argus.argus.exception.ServicesException;
 import br.com.argus.argus.models.Usuario;
 import br.com.argus.argus.responses.Response;
 import br.com.argus.argus.services.UsuarioService;
@@ -39,15 +41,22 @@ public class UsuarioController {
 
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<Response<Usuario>> show(@PathVariable long id) {
-		Usuario usuario = usuarioService.findBy(id);
+		Usuario usuario;
 		Response<Usuario> response = new Response<Usuario>();
-		response.setData(usuario);
+		try {
+			usuario = usuarioService.findBy(id);
+			response.setData(usuario);
+		} catch (ServicesException e) {
+			e.printStackTrace();
+		}
+		
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 
 	@PostMapping
-	public ResponseEntity<Response<Usuario>> create(@Valid @RequestBody Usuario usuario, BindingResult result) {
+	public ResponseEntity<Response<Usuario>> create(@Valid @RequestBody Usuario usuario, BindingResult result, Model model) {
 		Response<Usuario> response = new Response<Usuario>();
+		System.out.println(model);
 
 		if (result.hasErrors()) {
 			result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()));
@@ -83,21 +92,21 @@ public class UsuarioController {
 
 	}
 
-	@PostMapping(value = "/login")
-	public ResponseEntity<String> Login(Usuario usuario, HttpSession session, BindingResult result) {
-		Usuario obj = usuarioService.login(usuario);
-
-		if (obj != null) {
-
-			session.setAttribute("usuarioLogado", usuario);
-	
-			return ResponseEntity.status(HttpStatus.OK).body("Logado");
-		}
-			
-
-
-		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Não autorizado");
-
-	}
-
+//	@PostMapping(value = "/login")
+//	public ResponseEntity<String> Login(Usuario usuario, HttpSession session, BindingResult result) {
+//		Usuario obj = usuarioService.login(usuario);
+//
+//		if (obj != null) {
+//
+//			session.setAttribute("usuarioLogado", usuario);
+//	
+//			return ResponseEntity.status(HttpStatus.OK).body("Logado");
+//		}
+//			
+//
+//
+//		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Não autorizado");
+//
+//	}
+//
 }

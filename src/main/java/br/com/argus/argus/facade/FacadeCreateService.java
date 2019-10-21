@@ -36,92 +36,92 @@ public class FacadeCreateService {
 	UsuarioService usuarioService;
 	
 	
-	public FacadeCreateService() {
-	}
-
-	public Object create(Object object) {
-
-		if (object instanceof Aluno) {
-			return alunoCreate(object);
-
-		}
-		else if (object instanceof Funcionario) {
-			return funcionarioCreate(object);
-
-		}
-		else if (object instanceof Aluno) {
-			return alunoCreate(object);
-
-		}
-		else if (object instanceof Aluno) {
-			return alunoCreate(object);
-
-		}
-
-		return null;
-	}
-
-	private Object alunoCreate(Object object) {
-		System.out.println("Aluno create \n "+object.toString()+"\n\n");
-		
-		Aluno obj = (Aluno) object;
-		Aluno aluno = new Aluno();
-
-		Endereco endereco = enderecoService.save(obj.getPessoa().getEndereco());
-
-		Pessoa pessoa = obj.getPessoa();
-		pessoa.setEndereco(endereco);
-		aluno.setPessoa(pessoaService.save(pessoa));
-
-		endereco = null;
-		endereco = enderecoService.save(obj.getPessoa().getEndereco());
-
-		Pessoa pai = obj.getPai();
-		pai.setEndereco(endereco);
-		aluno.setPai(pessoaService.save(pai));
-
-		endereco = null;
-		endereco = enderecoService.save(obj.getPessoa().getEndereco());
-
-		Pessoa mae = obj.getMae();
-		mae.setEndereco(endereco);
-		aluno.setMae(pessoaService.save(mae));
-
-		endereco = null;
-		endereco = enderecoService.save(obj.getPessoa().getEndereco());
-
-
-		Responsavel responsavel = obj.getResponsavel();
-		
-		Pessoa responsavelPessoa = obj.getResponsavel().getPessoa();
-		responsavelPessoa.setEndereco(endereco);
-		responsavel.setPessoa(pessoaService.save(responsavelPessoa));
-		aluno.setResponsavel(responsavelService.save(responsavel));
-		
-		System.out.println("Salvando aluno \n Aluno \n"+aluno.toString());
-
-		return alunoService.save(aluno);
-
-	}
-	
-	private Object funcionarioCreate(Object object) {
-		Funcionario obj = (Funcionario) object;
-		Funcionario funcionario = new Funcionario();
-
-		Endereco endereco = enderecoService.save(obj.getPessoa().getEndereco());
-
-		Pessoa pessoa = obj.getPessoa();
-		pessoa.setEndereco(endereco);
-		funcionario.setPessoa(pessoaService.save(pessoa));
-		
-		Usuario usuario = usuarioService.save(obj.getUsuario());
-		funcionario.setUsuario(usuario);
-		
-		funcionario.setCargaHoraria(obj.getCargaHoraria());
-		funcionario.setCpf(obj.getCpf());
-		
-		return funcionarioService.save(funcionario);
-
-	}
+//	public FacadeCreateService() {
+//	}
+//
+//	public Object create(Object object) {
+//
+//		if (object instanceof Aluno) {
+//			return alunoCreate(object);
+//
+//		}
+//		else if (object instanceof Funcionario) {
+//			return funcionarioCreate(object);
+//
+//		}
+//		else if (object instanceof Aluno) {
+//			return alunoCreate(object);
+//
+//		}
+//		else if (object instanceof Aluno) {
+//			return alunoCreate(object);
+//
+//		}
+//
+//		return null;
+//	}
+//
+//	private Object alunoCreate(Object object) {
+//		System.out.println("Aluno create \n "+object.toString()+"\n\n");
+//		
+//		Aluno obj = (Aluno) object;
+//		Aluno aluno = new Aluno();
+//
+//		Endereco endereco = enderecoService.save(obj.getPessoa().getEndereco());
+//
+//		Pessoa pessoa = obj.getPessoa();
+//		pessoa.setEndereco(endereco);
+//		aluno.setPessoa(pessoaService.save(pessoa));
+//
+//		endereco = null;
+//		endereco = enderecoService.save(obj.getPessoa().getEndereco());
+//
+//		Pessoa pai = obj.getPai();
+//		pai.setEndereco(endereco);
+//		aluno.setPai(pessoaService.save(pai));
+//
+//		endereco = null;
+//		endereco = enderecoService.save(obj.getPessoa().getEndereco());
+//
+//		Pessoa mae = obj.getMae();
+//		mae.setEndereco(endereco);
+//		aluno.setMae(pessoaService.save(mae));
+//
+//		endereco = null;
+//		endereco = enderecoService.save(obj.getPessoa().getEndereco());
+//
+//
+//		Responsavel responsavel = obj.getResponsavel();
+//		
+//		Pessoa responsavelPessoa = obj.getResponsavel().getPessoa();
+//		responsavelPessoa.setEndereco(endereco);
+//		responsavel.setPessoa(pessoaService.save(responsavelPessoa));
+//		aluno.setResponsavel(responsavelService.save(responsavel));
+//		
+//		System.out.println("Salvando aluno \n Aluno \n"+aluno.toString());
+//
+//		return alunoService.save(aluno);
+//
+//	}
+//	
+//	private Object funcionarioCreate(Object object) {
+//		Funcionario obj = (Funcionario) object;
+//		Funcionario funcionario = new Funcionario();
+//
+//		Endereco endereco = enderecoService.save(obj.getPessoa().getEndereco());
+//
+//		Pessoa pessoa = obj.getPessoa();
+//		pessoa.setEndereco(endereco);
+//		funcionario.setPessoa(pessoaService.save(pessoa));
+//		
+//		Usuario usuario = usuarioService.save(obj.getUsuario());
+//		funcionario.setUsuario(usuario);
+//		
+//		funcionario.setCargaHoraria(obj.getCargaHoraria());
+//		funcionario.setCpf(obj.getCpf());
+//		
+//		return funcionarioService.save(funcionario);
+//
+//	}
 
 }

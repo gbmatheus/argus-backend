@@ -3,10 +3,13 @@ package br.com.argus.argus.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityExistsException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.argus.argus.models.Endereco;
+import br.com.argus.argus.exception.ServicesException;
+import br.com.argus.argus.exception.ValidarColunaException;
 import br.com.argus.argus.models.Pessoa;
 import br.com.argus.argus.repositories.PessoaRepository;
 
@@ -19,28 +22,37 @@ public class PessoaService extends GenericService<Pessoa> {
 	@Autowired
 	PessoaRepository pessoaRepository;
 
-	public Pessoa save(Pessoa pessoaDto) {
+	public Pessoa save(Pessoa pessoaDto) throws EntityExistsException, ValidarColunaException {
+		List<Pessoa> pessoas = findByAll();
+		Pessoa pessoa = new Pessoa();
 
-		for (Pessoa p : findByAll()) {
-			if (p.getNome().equalsIgnoreCase(pessoaDto.getNome())
-					&& p.getNaturalidade().equalsIgnoreCase(pessoaDto.getNaturalidade())
-					&& p.getDataNascimento().getTime() == pessoaDto.getDataNascimento().getTime()) {
-				System.out.println("Pessoa id " + p.getId());
-				return p;
+		if (!pessoaDto.getRg().matches("^[0-9]*$"))
+			throw new ValidarColunaException("Rg inválido");
+
+		if (pessoas.size() != 0) {
+			for (Pessoa p : pessoas) {
+				if (p.getNome().equalsIgnoreCase(pessoaDto.getNome())
+						&& p.getNaturalidade().equalsIgnoreCase(p.getNaturalidade())
+						&& p.getRg().equalsIgnoreCase(pessoaDto.getRg())
+						&& p.getDataNascimento().getTime() == pessoaDto.getDataNascimento().getTime()
+						&& p.getEndereco().equals(pessoaDto.getEndereco()))
+					return p;
+
+				else if (p.getRg().equalsIgnoreCase(pessoaDto.getRg())) {
+					throw new EntityExistsException("Já existe uma pessoa com esse rg");
+				}
 			}
 		}
 
-		Pessoa pessoa = new Pessoa();
 		pessoa.setNome(pessoaDto.getNome());
 		pessoa.setDataNascimento(pessoaDto.getDataNascimento());
 		pessoa.setNaturalidade(pessoaDto.getNaturalidade());
+		pessoa.setRg(pessoaDto.getRg());
 
 		pessoa.setEndereco(enderecoService.save(pessoaDto.getEndereco()));
 
-//		FacadeCreateService
-//		pessoa.setEndereco(pessoaDto.getEndereco());
-
 		return pessoaRepository.save(pessoa);
+
 	}
 
 	public Optional<Pessoa> findById(long id) {
@@ -53,8 +65,12 @@ public class PessoaService extends GenericService<Pessoa> {
 
 	@Override
 	public Pessoa findBy(long id) {
-//		return pessoaRepository.findOne(id);
-		return null;
+		Pessoa pessoa = pessoaRepository.findOne(id);
+		if (pessoa == null)
+			throw new ServicesException("Usuário não está cadastrado");
+
+		return pessoa;
+
 	}
 
 	@Override
@@ -63,6 +79,7 @@ public class PessoaService extends GenericService<Pessoa> {
 			record.setNome(pessoaDto.getNome());
 			record.setDataNascimento(pessoaDto.getDataNascimento());
 			record.setNaturalidade(pessoaDto.getNaturalidade());
+			record.setRg(pessoaDto.getRg());
 			record.setEndereco(pessoaDto.getEndereco());
 
 			Pessoa pessoa = pessoaRepository.save(record);
@@ -81,6 +98,6 @@ public class PessoaService extends GenericService<Pessoa> {
 
 	@Override
 	public void deleteById(long id) {
-
+		pessoaRepository.deleteById(id);
 	}
 }

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import br.com.argus.argus.exception.ValidarColunaException;
 import br.com.argus.argus.models.Funcionario;
 import br.com.argus.argus.responses.Response;
 import br.com.argus.argus.services.FuncionarioService;
@@ -55,22 +56,28 @@ public class FuncionarioController {
 			return ResponseEntity.badRequest().body(response);
 		}
 				
-		Funcionario obj = this.funcionarioService.save(funcionario);
+		Funcionario obj;
+		try {
+			obj = this.funcionarioService.save(funcionario);
+			response.setData(obj);
+		} catch (ValidarColunaException e) {
+			e.printStackTrace();
+		}
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(funcionario.getId()).toUri();
-		response.setData(obj);
 		return ResponseEntity.created(uri).body(response);
 
 	}
 
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<Response<Funcionario>> update(@PathVariable("id") long id, @RequestBody Funcionario funcionario) {
-		Response<Funcionario> response = new Response<Funcionario>();
-
-		return funcionarioService.findById(id).map(record -> {
-			Funcionario updated = funcionarioService.save(funcionario);
-			response.setData(updated);
-			return ResponseEntity.accepted().body(response);
-		}).orElse(ResponseEntity.notFound().build());
+//		Response<Funcionario> response = new Response<Funcionario>();
+//
+//		return funcionarioService.findById(id).map(record -> {
+//			Funcionario updated = funcionarioService.save(funcionario);
+//			response.setData(updated);
+//			return ResponseEntity.accepted().body(response);
+//		}).orElse(ResponseEntity.notFound().build());
+		return ResponseEntity.notFound().build();
 
 	}
 

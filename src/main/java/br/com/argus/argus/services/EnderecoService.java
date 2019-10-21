@@ -92,9 +92,7 @@ public class EnderecoService extends GenericService<Endereco>{
 
 	@Override
 	public void remove(long id) {
-		// TODO Auto-generated method stub
 		
 	}
-
 
 }

@@ -3,75 +3,85 @@ package br.com.argus.argus.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityExistsException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.argus.argus.exception.ServicesException;
+import br.com.argus.argus.exception.ValidarColunaException;
 import br.com.argus.argus.models.Responsavel;
-import br.com.argus.argus.repositories.ResposavelRepository;
+import br.com.argus.argus.repositories.ResponsavelRepository;
 
 @Service
-public class ResponsavelService extends GenericService<Responsavel>{
-	
+public class ResponsavelService extends GenericService<Responsavel> {
+
 	@Autowired
 	PessoaService pessoaService;
-	
+
 	@Autowired
-	ResposavelRepository resposavelRepository;
-	
+	ResponsavelRepository responsavelRepository;
 
 	@Override
 	public Responsavel save(Responsavel responsavelDto) {
 		System.out.println(responsavelDto.toString());
-		
+
 		Responsavel responsavel = new Responsavel();
 		responsavel.setCpf(responsavelDto.getCpf());
-		
-		responsavel.setPessoa(
-				pessoaService.save(
-						responsavelDto.getPessoa()
-						)
-				);
-		
-//		FacadeCreateService
-//		responsavel.setPessoa(responsavelDto.getPessoa());
-		
-		return resposavelRepository.save(responsavel);
+
+		try {
+			responsavel.setPessoa(pessoaService.save(responsavelDto.getPessoa()));
+		} catch (EntityExistsException | ValidarColunaException e) {
+			e.printStackTrace();
+		}
+
+		return responsavelRepository.save(responsavel);
 	}
 
 	@Override
 	public Optional<Responsavel> findById(long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return responsavelRepository.findById(id);
 	}
 
 	@Override
 	public Responsavel findBy(long id) {
-		// TODO Auto-generated method stub
-		return null;
+		Responsavel responsavel = responsavelRepository.findOne(id);
+
+		if (responsavel == null) {
+			try {
+				throw new ServicesException("Aluno não existe");
+			} catch (ServicesException e) {
+				e.printStackTrace();
+			}
+		}
+		return responsavel;
 	}
 
 	@Override
 	public List<Responsavel> findByAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return responsavelRepository.findAll();
 	}
 
 	@Override
 	public void deleteById(long id) {
-		// TODO Auto-generated method stub
-		
+		responsavelRepository.deleteById(id);
 	}
 
 	@Override
-	public Responsavel update(long id, Responsavel obj) {
-		// TODO Auto-generated method stub
-		return null;
+	public Responsavel update(long id, Responsavel responsavelDto) {
+		return findById(id).map(record -> {
+			record.setCpf(responsavelDto.getCpf());
+			record.setPessoa(responsavelDto.getPessoa());
+
+			Responsavel responsavel = responsavelRepository.save(record);
+			return responsavel;
+		}).orElse(null);
 	}
 
 	@Override
 	public void remove(long id) {
-		// TODO Auto-generated method stub
-		
+		Optional<Responsavel> r = findById(id);
+		pessoaService.remove(r.get().getPessoa().getId());
 	}
 
 }

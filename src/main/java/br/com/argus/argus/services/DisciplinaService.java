@@ -1,57 +1,20 @@
 package br.com.argus.argus.services;
 
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Service;
 
 import br.com.argus.argus.models.Disciplina;
 import br.com.argus.argus.repositories.DisciplinaRepositories;
 
-public class DisciplinaService extends GenericService<Disciplina> {
-		
+@Service
+public class DisciplinaService extends ServiceGeneric<Disciplina>{
+
 	@Autowired
 	DisciplinaRepositories disciplinaRepositories;
-
+	
 	@Override
-	public Optional<Disciplina> findById(long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Disciplina findBy(long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Disciplina> findByAll() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Disciplina save(Disciplina obj) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void deleteById(long id) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Disciplina update(long id, Disciplina obj) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void remove(long id) {
-		// TODO Auto-generated method stub
-		
+	public JpaRepository<Disciplina, Long> getRepository() {
+		return disciplinaRepositories;
 	}
 }

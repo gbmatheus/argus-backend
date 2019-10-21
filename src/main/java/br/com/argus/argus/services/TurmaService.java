@@ -1,49 +1,21 @@
 package br.com.argus.argus.services;
 
-import java.util.List;
-import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Service;
 
-public class TurmaService extends GenericService<TurmaService>{
+import br.com.argus.argus.models.Turma;
+import br.com.argus.argus.repositories.TurmaRepository;
 
-	@Override
-	public Optional<TurmaService> findById(long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+@Service
+public class TurmaService extends ServiceGeneric<Turma> {
 
-	@Override
-	public TurmaService findBy(long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	@Autowired
+	TurmaRepository turmaRepository;
 
 	@Override
-	public List<TurmaService> findByAll() {
-		// TODO Auto-generated method stub
-		return null;
+	public JpaRepository<Turma, Long> getRepository() {
+		return turmaRepository;
 	}
 
-	@Override
-	public TurmaService save(TurmaService obj) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public TurmaService update(long id, TurmaService obj) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void remove(long id) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void deleteById(long id) {
-		// TODO Auto-generated method stub
-		
-	}
 }
