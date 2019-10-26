@@ -59,6 +59,11 @@ public class Funcionario implements Serializable {
 	public Pessoa getPessoa() {
 		return pessoa;
 	}
+	
+	@NotNull(message = "Endereco é obrigatório")
+	public Endereco getEndereco() {
+		return pessoa.getEndereco();
+	}
 
 	@NotNull(message = "Usuário é obrigatório")
 	public Usuario getUsuario() {
