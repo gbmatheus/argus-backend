@@ -27,7 +27,7 @@ public class Responsavel implements Serializable{
 
 	@Id
 	@JsonIgnore
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(nullable = false, length = 14)
@@ -61,4 +61,10 @@ public class Responsavel implements Serializable{
 		this.pessoa = pessoa;
 	}
 
+	@Override
+	public String toString() {
+		return "Responsavel [id=" + id + ", cpf=" + cpf + ", pessoa=" + pessoa + "]";
+	}
+	
+	
 }

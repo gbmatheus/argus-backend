@@ -24,6 +24,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import br.com.argus.argus.exception.ServicesException;
 import br.com.argus.argus.models.Usuario;
 import br.com.argus.argus.responses.Response;
+import br.com.argus.argus.services.UService;
 import br.com.argus.argus.services.UsuarioService;
 
 @RestController
@@ -43,12 +44,8 @@ public class UsuarioController {
 	public ResponseEntity<Response<Usuario>> show(@PathVariable long id) {
 		Usuario usuario;
 		Response<Usuario> response = new Response<Usuario>();
-		try {
-			usuario = usuarioService.findBy(id);
-			response.setData(usuario);
-		} catch (ServicesException e) {
-			e.printStackTrace();
-		}
+		usuario = usuarioService.findBy(id);
+		response.setData(usuario);
 		
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
