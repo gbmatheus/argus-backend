@@ -126,30 +126,7 @@ public class AlunoController {
 		response.setData(aluno);
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
-
-<<<<<<< HEAD
-	@Transactional
-	@PostMapping
-	@ResponseBody
-	public ResponseEntity<Response<Aluno>> create(@Valid @RequestBody Aluno aluno, BindingResult result) {
-		Response<Aluno> response = new Response<Aluno>();
-
-		if (result.hasErrors()) {
-			result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()));
-			return ResponseEntity.badRequest().body(response);
-		}
-
-		Aluno obj;
-
-		obj = this.alunoService.save(aluno);
-		response.setData(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(aluno.getId()).toUri();
-		return ResponseEntity.created(uri).body(response);
-
-	}
-
-=======
->>>>>>> refs/remotes/origin/master
+	
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<Response<Aluno>> update(@PathVariable("id") long id, @RequestBody Aluno aluno) {
 //		Response<Aluno> response = new Response<Aluno>();

@@ -22,7 +22,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.argus.argus.models.Usuario;
 import br.com.argus.argus.responses.Response;
-import br.com.argus.argus.services.UService;
 import br.com.argus.argus.services.UsuarioService;
 
 @RestController
