@@ -2,9 +2,7 @@ package br.com.argus.argus.controllers;
 
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -20,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import br.com.argus.argus.exception.ValidarColunaException;
 import br.com.argus.argus.models.Aluno;
 import br.com.argus.argus.models.AtendimentoPedagogico;
 import br.com.argus.argus.models.Curriculo;
@@ -128,12 +125,8 @@ public class Controller {
 		}
 				
 		Pessoa obj;
-		try {
-			obj = this.pessoaService.save(pessoaDto);
-			response.setData(obj);
-		} catch (ValidarColunaException e) {
-			e.printStackTrace();
-		}
+		obj = this.pessoaService.save(pessoaDto);
+		response.setData(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(pessoaDto.getId()).toUri();
 		return ResponseEntity.created(uri).body(response);
 

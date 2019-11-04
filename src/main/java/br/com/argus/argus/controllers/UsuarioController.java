@@ -3,7 +3,6 @@ package br.com.argus.argus.controllers;
 import java.net.URI;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import br.com.argus.argus.exception.ServicesException;
 import br.com.argus.argus.models.Usuario;
 import br.com.argus.argus.responses.Response;
 import br.com.argus.argus.services.UsuarioService;
@@ -43,12 +41,8 @@ public class UsuarioController {
 	public ResponseEntity<Response<Usuario>> show(@PathVariable long id) {
 		Usuario usuario;
 		Response<Usuario> response = new Response<Usuario>();
-		try {
-			usuario = usuarioService.findBy(id);
-			response.setData(usuario);
-		} catch (ServicesException e) {
-			e.printStackTrace();
-		}
+		usuario = usuarioService.findBy(id);
+		response.setData(usuario);
 		
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}

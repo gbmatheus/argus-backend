@@ -10,7 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -30,7 +31,7 @@ public class Funcionario implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(length = 14)
+	@Column(length = 14, nullable = false)
 	private String cpf;
 
 	@OneToOne(cascade = CascadeType.ALL)
@@ -49,23 +50,25 @@ public class Funcionario implements Serializable {
 		return id;
 	}
 
-	@NotBlank(message = "CPF é obrigatório")
+	@NotEmpty(message = "CPF é obrigatório")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "xxx.xxx.xxx-xx")
 	public String getCpf() {
 		return cpf;
 	}
 
-	@NotNull(message = "Pessoa é obrigatório")
+	@Valid
+	@NotNull(message = "Informações do funcionário é obrigatório")
 	public Pessoa getPessoa() {
 		return pessoa;
 	}
 	
-	@NotNull(message = "Endereco é obrigatório")
-	public Endereco getEndereco() {
-		return pessoa.getEndereco();
-	}
+//	@NotNull(message = "Endereco é obrigatório")
+//	public Endereco getEndereco() {
+//		return pessoa.getEndereco();
+//	}
 
-	@NotNull(message = "Usuário é obrigatório")
+	@Valid
+	@NotNull(message = "Infomações do usuário é obrigatório")
 	public Usuario getUsuario() {
 		return usuario;
 	}

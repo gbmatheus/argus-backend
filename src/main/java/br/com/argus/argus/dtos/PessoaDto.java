@@ -3,8 +3,7 @@ package br.com.argus.argus.dtos;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Length;
@@ -46,26 +45,26 @@ public class PessoaDto implements Serializable {
 	}
 	
 	@Size(min = 3, max = 100)
-	@NotBlank(message = "{nome.not.blank}")
+	@NotEmpty(message = "{nome.not.blank}")
 	public String getNome() {
 		return nome;
 	}
 
-	@NotNull
+	@NotEmpty
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-	@NotBlank(message = "Data de nascimento é uma informação obrigatória")
+	@NotEmpty(message = "Data de nascimento é uma informação obrigatória")
 	public Date getDataNascimento() {
 		return dataNascimento;
 	}
 
-	@NotNull
-	@NotBlank(message = "Naturalidade é uma informação obrigatória")
+	@NotEmpty
+	@NotEmpty(message = "Naturalidade é uma informação obrigatória")
 	@Length(min = 2, max = 2)
 	public String getNaturalidade() {
 		return naturalidade;
 	}
 
-	@NotNull(message = "Endereco é uma informação obrigatória")
+	@NotEmpty(message = "Endereco é uma informação obrigatória")
 	public EnderecoDto getEndereco() {
 		return endereco;
 	}

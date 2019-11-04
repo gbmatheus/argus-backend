@@ -13,7 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -27,7 +28,7 @@ public class Curriculo {
 
 	@Id
 	@JsonIgnore
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(length = 10, nullable = false)
@@ -41,8 +42,7 @@ public class Curriculo {
 	private AnoLetivo anoLetivo;
 
 	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "curriculos_id")
-	private List<Turma> turma;
+	private List<Turma> turmas;
 	
 //	@OneToMany
 //	@JoinColumn(name = "pessoa_id")
@@ -59,13 +59,13 @@ public class Curriculo {
 		return id;
 	}
 
-	@NotBlank(message = "Código é obrigatório")
+	@NotEmpty(message = "Código é obrigatório")
 	@Size(min = 5, max = 10)
 	public String getCodigo() {
 		return codigo;
 	}
 
-	@NotBlank(message = "Nome é obrigatório")
+	@NotEmpty(message = "Nome é obrigatório")
 	@Size(min = 5, max = 30)
 	public String getNome() {
 		return nome;
@@ -76,12 +76,14 @@ public class Curriculo {
 		return anoLetivo;
 	}
 
-	@NotNull(message = "Turmas são obrigatório")
-	public List<Turma> getTurma() {
-		return turma;
+	@Valid
+	@NotEmpty(message = "Turmas são obrigatório")
+	public List<Turma> getTurmas() {
+		return turmas;
 	}
 
-	@NotNull(message = "Disciplinas são obrigatórias")
+	@Valid
+	@NotEmpty(message = "Disciplinas são obrigatórias")
 	public List<Disciplina> getDisciplinas() {
 		return disciplinas;
 	}
@@ -98,8 +100,8 @@ public class Curriculo {
 		this.anoLetivo = anoLetivo;
 	}
 
-	public void setTurma(List<Turma> turma) {
-		this.turma = turma;
+	public void setTurmas(List<Turma> turmas) {
+		this.turmas = turmas;
 	}
 
 	public void setDisciplinas(List<Disciplina> disciplinas) {

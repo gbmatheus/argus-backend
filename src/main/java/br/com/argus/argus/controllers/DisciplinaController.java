@@ -19,46 +19,47 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import br.com.argus.argus.models.Matricula;
+import br.com.argus.argus.models.Disciplina;
 import br.com.argus.argus.responses.Response;
-import br.com.argus.argus.services.MatriculaService;
+import br.com.argus.argus.services.DisciplinaService;
 
 @RestController
-@RequestMapping("/api/matriculas")
-public class MatriculaController {
+@RequestMapping("/api/disciplinas")
+public class DisciplinaController {
 
 	@Autowired
-	MatriculaService matriculaService;
+	DisciplinaService disciplinaService;
 
 	@GetMapping
-	ResponseEntity<List<Matricula>> index() {
-		List<Matricula> matriculas = matriculaService.findByAll();
-		return ResponseEntity.status(HttpStatus.OK).body(matriculas);
+	public ResponseEntity<List<Disciplina>> index() {
+		List<Disciplina> disciplinas = disciplinaService.findByAll();
+		return ResponseEntity.status(HttpStatus.OK).body(disciplinas);
 	}
 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Response<Matricula>> show(@PathVariable("id") long id) {
-		Matricula matricula = matriculaService.findBy(id);
-		Response<Matricula> response = new Response<Matricula>();
-		response.setData(matricula);
+	public ResponseEntity<Response<Disciplina>> show(@PathVariable("id") long id) {
+		Disciplina disciplina = disciplinaService.findBy(id);
+		Response<Disciplina> response = new Response<Disciplina>();
+		response.setData(disciplina);
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 
 	@Transactional
 	@PostMapping
 	@ResponseBody
-	public ResponseEntity<Response<Matricula>> create(@Valid @RequestBody Matricula matricula, BindingResult result) {
+	public ResponseEntity<Response<Disciplina>> create(@Valid @RequestBody Disciplina disciplina,
+			BindingResult result) {
 
-		Response<Matricula> response = new Response<Matricula>();
+		Response<Disciplina> response = new Response<Disciplina>();
 
 		if (result.hasErrors()) {
 			result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()));
 			return ResponseEntity.badRequest().body(response);
 		}
 
-		Matricula obj = matriculaService.save(matricula);
+		Disciplina obj = disciplinaService.save(disciplina);
 		response.setData(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(matricula.getId())
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(disciplina.getId())
 				.toUri();
 		return ResponseEntity.created(uri).body(response);
 	}

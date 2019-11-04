@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.argus.argus.exception.ServicesException;
+import br.com.argus.argus.exception.UsuarioException;
 import br.com.argus.argus.models.Usuario;
 import br.com.argus.argus.repositories.UsuarioRepository;
 
@@ -20,34 +22,40 @@ public class UsuarioService extends ServiceGeneric<Usuario> {
 	public JpaRepository<Usuario, Long> getRepository() {
 		return usuarioRepository;
 	}
-	
-	
+
 	public Usuario login() {
 		return null;
 	}
-	
+
 	public Usuario logout() {
 		return null;
 	}
-	
+
 	public Usuario alterPassword() {
 		return null;
 	}
-	
+
 	public void resetPassword() {
-		
+
 	}
-	
-	
+
 	@Override
 	@Transactional
 	public Usuario save(Usuario objetoDto) {
 		List<Usuario> usuarios = findByAll();
 
+		System.out.println("Service");
 		if (usuarios.size() != 0) {
+			System.out.println("Service 00");
 			for (Usuario u : usuarios) {
-				if (u.getLogin().equalsIgnoreCase(objetoDto.getLogin())
-						|| u.getEmail().equalsIgnoreCase(objetoDto.getEmail()))
+				System.out.println("Service 0");
+				System.out.println("Service 1");
+
+				if (!u.getLogin().equalsIgnoreCase(objetoDto.getLogin())
+						&& !u.getEmail().equalsIgnoreCase(objetoDto.getEmail())) {
+					return super.save(objetoDto);
+				
+				}else
 					return null;
 			}
 		}
@@ -63,7 +71,7 @@ public class UsuarioService extends ServiceGeneric<Usuario> {
 			record.setSenha(objetoDto.getSenha());
 			record.setTipo(objetoDto.getTipo());
 			record.setAtivo(objetoDto.isAtivo());
-			Usuario usuario = usuarioRepository.save(record);
+			Usuario usuario = super.save(record);
 			return usuario;
 		}).orElse(null);
 	}

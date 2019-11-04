@@ -2,8 +2,7 @@ package br.com.argus.argus.dtos;
 
 import java.io.Serializable;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -37,15 +36,15 @@ public class EnderecoDto implements Serializable {
 		return id;
 	}
 
-	@NotNull
-	@NotBlank(message = "Rua é uma infromação obrigatória")
+	@NotEmpty
+	@NotEmpty(message = "Rua é uma infromação obrigatória")
 	@Size(min = 1, max = 100, message = "A rua deve ter mais de um caractere")
 	public String getRua() {
 		return rua;
 	}
 
-	@NotNull
-	@NotBlank(message = "Numero da residência é uma informação obrigatória")
+	@NotEmpty
+	@NotEmpty(message = "Numero da residência é uma informação obrigatória")
 	public Integer getNumero() {
 		return numero;
 	}
@@ -55,29 +54,29 @@ public class EnderecoDto implements Serializable {
 		return complemento;
 	}
 
-	@NotNull
-	@NotBlank(message = "Bairro é uma informação obrigatória")
+	@NotEmpty
+	@NotEmpty(message = "Bairro é uma informação obrigatória")
 	@Size(min = 5, max = 30)
 	public String getBairro() {
 		return bairro;
 	}
 
-	@NotNull
-	@NotBlank(message = "Cidade é uma informação obrigatória")
+	@NotEmpty
+	@NotEmpty(message = "Cidade é uma informação obrigatória")
 	@Size(min = 3, max = 30)
 	public String getCidade() {
 		return cidade;
 	}
 
-	@NotNull
-	@NotBlank(message = "UF é uma informação obrigatória")
+	@NotEmpty
+	@NotEmpty(message = "UF é uma informação obrigatória")
 	@Size(min = 2, max = 2)
 	public String getUf() {
 		return uf;
 	}
 
-	@NotNull
-	@NotBlank(message = "CEP é uma informação obrigatória")
+	@NotEmpty
+	@NotEmpty(message = "CEP é uma informação obrigatória")
 	@Size(min = 10, max = 10)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "xx.xxx-xxx")
 	public String getCep() {

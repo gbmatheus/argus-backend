@@ -8,7 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -57,7 +57,7 @@ public class Endereco implements Serializable {
 		return id;
 	}
 
-	@NotBlank(message = "Rua é obrigatório")
+	@NotEmpty(message = "Rua é obrigatório")
 	@Size(max = 100)
 	public String getRua() {
 		return rua;
@@ -73,25 +73,25 @@ public class Endereco implements Serializable {
 		return complemento;
 	}
 
-	@NotBlank(message = "Bairro é obrigatório")
+	@NotEmpty(message = "Bairro é obrigatório")
 	@Size(min = 3, max = 30, message = "Bairro deve ter no mínimo 3 caracteres e no máximo 30")
 	public String getBairro() {
 		return bairro;
 	}
 
-	@NotBlank(message = "Cidade é obrigatório")
+	@NotEmpty(message = "Cidade é obrigatório")
 	@Size(min = 3, max = 30, message = "Cidade deve ter no mínimo 3 caracteres e no máximo 30")
 	public String getCidade() {
 		return cidade;
 	}
 
-	@NotBlank(message = "UF é obrigatório")
+	@NotEmpty(message = "UF é obrigatório")
 	@Size(min = 2, max = 2)
 	public String getUf() {
 		return uf;
 	}
 
-	@NotBlank(message = "Cep é obrigatório")
+	@NotEmpty(message = "Cep é obrigatório")
 	@Size(min = 10, max = 10)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "xx.xxx-xx")
 	public String getCep() {
@@ -133,5 +133,5 @@ public class Endereco implements Serializable {
 				+ ", getComplemento()=" + getComplemento() + ", getBairro()=" + getBairro() + ", getCidade()="
 				+ getCidade() + ", getUf()=" + getUf() + ", getCep()=" + getCep() + "]";
 	}
-
+	
 }

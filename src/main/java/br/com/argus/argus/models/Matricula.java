@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -62,7 +63,7 @@ public class Matricula {
 		return id;
 	}
 
-	@NotNull(message = "Aluno é uma informação obrigatória")
+	@Valid
 	public Aluno getAluno() {
 		return aluno;
 	}

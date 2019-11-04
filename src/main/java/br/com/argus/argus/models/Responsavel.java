@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -18,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "res_fin")
-public class Responsavel implements Serializable{
+public class Responsavel implements Serializable {
 
 	/**
 	 * 
@@ -27,32 +29,35 @@ public class Responsavel implements Serializable{
 
 	@Id
 	@JsonIgnore
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false, length = 14)
+	@Column(length = 14, nullable = false)
 	private String cpf;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	private Pessoa pessoa;
 
-	public Responsavel() {}
+	public Responsavel() {
+	}
 
 	public Long getId() {
 		return id;
 	}
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "xxx.xxx.xxx-xx")
+	@NotEmpty(message = "CPF é obrigratório")
 	@Size(min = 14, max = 14)
 	public String getCpf() {
 		return cpf;
 	}
-	
-	@NotNull(message = "Informações são obrrigatorias")
+
+	@Valid
+	@NotNull(message = "Infomaçções do responsável é obrigatório")
 	public Pessoa getPessoa() {
 		return pessoa;
 	}
-	
+
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}

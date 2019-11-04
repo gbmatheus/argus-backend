@@ -24,12 +24,9 @@ import br.com.argus.argus.models.Funcionario;
 import br.com.argus.argus.models.Pessoa;
 import br.com.argus.argus.models.Usuario;
 import br.com.argus.argus.responses.Response;
-import br.com.argus.argus.services.EndService;
 import br.com.argus.argus.services.EnderecoService;
 import br.com.argus.argus.services.FuncionarioService;
-import br.com.argus.argus.services.PeService;
 import br.com.argus.argus.services.PessoaService;
-import br.com.argus.argus.services.UService;
 import br.com.argus.argus.services.UsuarioService;
 
 @Validated

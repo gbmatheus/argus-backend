@@ -13,7 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -55,13 +56,13 @@ public class Disciplina implements Serializable{
 		return id;
 	}
 
-	@NotBlank(message = "Código é obrigatório")
-	@Size(min = 8, max = 8)
+	@NotEmpty(message = "Código é obrigatório")
+	@Size(min = 4, max = 8)
 	public String getCodigo() {
 		return codigo;
 	}
 
-	@NotBlank(message = "Nome da disciplinha é obrigatório")
+	@NotEmpty(message = "Nome da disciplinha é obrigatório")
 	@Size(min = 4, max = 20)
 	public String getNome() {
 		return nome;
@@ -72,11 +73,12 @@ public class Disciplina implements Serializable{
 		return cargaHoraria;
 	}
 
-	@NotNull(message = "Professor é obrigatório")
+	@Valid
 	public Funcionario getProfessor() {
 		return professor;
 	}
 	
+	@Valid
 	public List<Matricula> getMatricula() {
 		return matricula;
 	}

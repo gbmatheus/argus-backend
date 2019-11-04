@@ -19,47 +19,46 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import br.com.argus.argus.models.Matricula;
+import br.com.argus.argus.models.Turma;
 import br.com.argus.argus.responses.Response;
-import br.com.argus.argus.services.MatriculaService;
+import br.com.argus.argus.services.TurmaService;
 
 @RestController
-@RequestMapping("/api/matriculas")
-public class MatriculaController {
+@RequestMapping("/api/turmas")
+public class TurmaController {
 
 	@Autowired
-	MatriculaService matriculaService;
+	TurmaService turmaService;
 
 	@GetMapping
-	ResponseEntity<List<Matricula>> index() {
-		List<Matricula> matriculas = matriculaService.findByAll();
-		return ResponseEntity.status(HttpStatus.OK).body(matriculas);
+	ResponseEntity<List<Turma>> index() {
+		List<Turma> turmas = turmaService.findByAll();
+		return ResponseEntity.status(HttpStatus.OK).body(turmas);
 	}
 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Response<Matricula>> show(@PathVariable("id") long id) {
-		Matricula matricula = matriculaService.findBy(id);
-		Response<Matricula> response = new Response<Matricula>();
-		response.setData(matricula);
+	public ResponseEntity<Response<Turma>> show(@PathVariable("id") long id) {
+		Turma turma = turmaService.findBy(id);
+		Response<Turma> response = new Response<Turma>();
+		response.setData(turma);
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 
 	@Transactional
 	@PostMapping
 	@ResponseBody
-	public ResponseEntity<Response<Matricula>> create(@Valid @RequestBody Matricula matricula, BindingResult result) {
+	public ResponseEntity<Response<Turma>> create(@Valid @RequestBody Turma turma, BindingResult result) {
 
-		Response<Matricula> response = new Response<Matricula>();
+		Response<Turma> response = new Response<Turma>();
 
 		if (result.hasErrors()) {
 			result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()));
 			return ResponseEntity.badRequest().body(response);
 		}
 
-		Matricula obj = matriculaService.save(matricula);
+		Turma obj = turmaService.save(turma);
 		response.setData(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(matricula.getId())
-				.toUri();
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(turma.getId()).toUri();
 		return ResponseEntity.created(uri).body(response);
 	}
 

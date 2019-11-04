@@ -11,7 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -56,19 +56,19 @@ public class Usuario implements Serializable {
 		return id;
 	}
 
-	@NotBlank(message = "Login é obrigatório")
+	@NotEmpty(message = "Login é obrigatório")
 	@Size(min = 8, max = 50, message = "Login deve ter no mínimo 8 caracteres e no máximo 50")
 	public String getLogin() {
 		return login;
 	}
 
-	@NotBlank(message = "Senha é obrigatório")
+	@NotEmpty(message = "Senha é obrigatório")
 	@Size(min = 8, max = 50, message = "Senha deve ter no mínimo 8 caracteres e no máximo 50")
 	public String getSenha() {
 		return senha;
 	}
 
-	@NotBlank(message = "Email é obrigatório")
+	@NotEmpty(message = "Email é obrigatório")
 	@Email(message = "Formato incorreto. Ex: seuemail@email.com")
 	@Size(min = 8, max = 50, message = "Login deve ter no mínimo 8 caracteres e no máximo 50")
 	public String getEmail() {

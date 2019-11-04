@@ -2,15 +2,17 @@ package br.com.argus.argus.responses;
 
 import java.util.List;
 
+import br.com.argus.argus.exception.ErrorObject;
+
 public class ErrorResponse {
 
 	private final String message;
 	private final int code;
 	private final String status;
 	private final String objectName;
-	private final List<ObjectError> errors;
+	private final List<ErrorObject> errors;
 
-	public ErrorResponse(String message, int code, String status, String objectName, List<ObjectError> errors) {
+	public ErrorResponse(String message, int code, String status, String objectName, List<ErrorObject> errors) {
 		this.message = message;
 		this.code = code;
 		this.status = status;
@@ -34,7 +36,7 @@ public class ErrorResponse {
 		return objectName;
 	}
 
-	public List<ObjectError> getErrors() {
+	public List<ErrorObject> getErrors() {
 		return errors;
 	}
 

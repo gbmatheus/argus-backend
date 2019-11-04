@@ -34,17 +34,17 @@ public class AlunoDto implements Serializable {
 		return id;
 	}
 	
-	@NotNull(message = "{pessoa.not.null}")
+	@NotEmpty(message = "{pessoa.not.null}")
 	public PessoaDto getPessoa() {
 		return pessoa;
 	}
 
-	@NotNull(message = "{mae.not.null}")
+	@NotEmpty(message = "{mae.not.null}")
 	public PessoaDto getPai() {
 		return pai;
 	}
 
-	@NotNull(message = "{mae.not.null}")
+	@NotEmpty(message = "{mae.not.null}")
 	public PessoaDto getMae() {
 		return mae;
 	}
@@ -53,7 +53,7 @@ public class AlunoDto implements Serializable {
 		return responsavelTeste;
 	}
 
-	@NotNull(message = "{responsavel.not.null}")
+	@NotEmpty(message = "{responsavel.not.null}")
 	public ResponsavelDto getResponsavel() {
 		return responsavel;
 	}

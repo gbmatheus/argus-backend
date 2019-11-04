@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -42,22 +43,26 @@ public class Aluno implements Serializable {
 	public Aluno() {
 	}
 
-	@NotNull(message = "Informação pessoais são obrigatórias")
+	@Valid
+	@NotNull(message = "Infomaçções do aluno é obrigatório")
 	public Pessoa getPessoa() {
 		return pessoa;
 	}
 
-	@NotNull(message = "Infomação do pai são obrigatórias")
+	@Valid
+	@NotNull(message = "Infomaçções do pai é obrigatório")
 	public Pessoa getPai() {
 		return pai;
 	}
 
-	@NotNull(message = "Informações da mãe são obrigatórias")
+	@Valid
+	@NotNull(message = "Infomaçções da mãe é obrigatório")
 	public Pessoa getMae() {
 		return mae;
 	}
 
-	@NotNull(message = "Informações do responsável são obrigatórias")
+	@Valid
+	@NotNull(message = "Infomaçções do responsável é obrigatório")
 	public Responsavel getResponsavel() {
 		return responsavel;
 	}

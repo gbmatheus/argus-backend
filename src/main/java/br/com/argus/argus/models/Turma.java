@@ -12,14 +12,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "turmas")
-public class Turma implements Serializable{
-	
+public class Turma implements Serializable {
+
 	/**
 	 * 
 	 */
@@ -29,17 +29,18 @@ public class Turma implements Serializable{
 	@JsonIgnore
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@Column(length = 255, nullable = true)
 	private String descicao;
-	
+
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "turmas_id")
 	private List<Matricula> matricula;
-	
-	public Turma() {}
-	
-	@NotBlank(message = "Descri~çao é uma informação obrigatória")
+
+	public Turma() {
+	}
+
+	@NotEmpty(message = "Descri~çao é uma informação obrigatória")
 	public String getDescicao() {
 		return descicao;
 	}

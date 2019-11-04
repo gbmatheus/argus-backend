@@ -3,7 +3,7 @@ package br.com.argus.argus.dtos;
 import java.io.Serializable;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 
 public class UsuarioDto implements Serializable {
 
@@ -25,18 +25,18 @@ public class UsuarioDto implements Serializable {
 		return id;
 	}
 
-	@NotBlank
+	@NotEmpty
 	public String getLogin() {
 		return login;
 	}
 
-	@NotBlank
+	@NotEmpty
 	@Email
 	public String getEmail() {
 		return email;
 	}
 
-	@NotBlank
+	@NotEmpty
 	public String getSenha() {
 		return senha;
 	}

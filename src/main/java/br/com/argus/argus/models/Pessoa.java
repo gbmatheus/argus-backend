@@ -11,7 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -44,7 +45,7 @@ public class Pessoa implements Serializable {
 	@Column(name = "naturalidade", nullable = false, length = 2)
 	private String naturalidade;// Alterar para enum
 
-	@Column(nullable = false, length = 20, unique = true)
+	@Column(nullable = false, length = 20)
 	private String rg;
 
 	@Column(nullable = false)
@@ -56,7 +57,7 @@ public class Pessoa implements Serializable {
 	public Pessoa() {
 	}
 
-	@NotBlank(message = "Nome é obrigatório")
+	@NotEmpty(message = "Nome é obrigatório")
 	@Size(min = 2, max = 100, message = "Nome deve ter mais de 3 caracteres")
 	public String getNome() {
 		return nome;
@@ -68,15 +69,26 @@ public class Pessoa implements Serializable {
 		return dataNascimento;
 	}
 
-	@NotBlank(message = "Naturalidade é obrigatório")
+	@NotEmpty(message = "Naturalidade é obrigatório")
 	@Size(min = 3, max = 3)
 	public String getNaturalidade() {
 		return naturalidade;
 	}
 
-	@NotNull(message = "Endereço é obrigatório")
+	@NotEmpty(message = "Rg é obrigatório")
+	@Size(min = 5, max = 20)
+	public String getRg() {
+		return rg;
+	}
+
+	@Valid
+	@NotNull(message = "Informações do endereço são obrigatórias")
 	public Endereco getEndereco() {
 		return endereco;
+	}
+
+	public boolean isAtivo() {
+		return ativo;
 	}
 
 	public void setNome(String nome) {
@@ -86,16 +98,6 @@ public class Pessoa implements Serializable {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	public void setDataNascimento(Date dataNascimento) {
 		this.dataNascimento = dataNascimento;
-	}
-
-	@NotBlank(message = "Rg é obrigatório")
-	@Size(min = 5, max = 20)
-	public String getRg() {
-		return rg;
-	}
-
-	public boolean isAtivo() {
-		return ativo;
 	}
 
 	public void setNaturalidade(String naturalidade) {

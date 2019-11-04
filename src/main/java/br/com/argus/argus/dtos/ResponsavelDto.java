@@ -2,8 +2,7 @@ package br.com.argus.argus.dtos;
 
 import java.io.Serializable;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -32,12 +31,12 @@ public class ResponsavelDto implements Serializable {
 		return cpf;
 	}
 
-	@NotNull(message = "Os dados do responsável são obrigatórios")
+	@NotEmpty(message = "Os dados do responsável são obrigatórios")
 	public PessoaDto getPessoa() {
 		return pessoa;
 	}
 
-	@NotBlank(message = "Cpf é um dado obrigatório")
+	@NotEmpty(message = "Cpf é um dado obrigatório")
 	@Size(min = 14, max = 14, message = "CPF deve ter 14 caracteres")
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
