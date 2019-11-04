@@ -28,21 +28,15 @@ public class EnderecoService extends ServiceGeneric<Endereco> {
 
 		if (enderecos.size() != 0) {
 			for (Endereco e : enderecos) {
-				if (e.getRua().equalsIgnoreCase(objetoDto.getRua())
-						&& e.getBairro().equalsIgnoreCase(objetoDto.getBairro())
-						&& e.getCidade().equalsIgnoreCase(objetoDto.getCidade())
-						&& e.getUf().equalsIgnoreCase(objetoDto.getUf()) && e.getCep().equalsIgnoreCase(e.getCep())) {
-					Endereco endereco = e;
-					endereco.setNumero(e.getNumero());
-					return super.save(e);
-				} else if (e.getRua().equalsIgnoreCase(objetoDto.getRua()) && e.getNumero() == objetoDto.getNumero()
+				if (e.getRua().equalsIgnoreCase(objetoDto.getRua()) && e.getNumero() == objetoDto.getNumero()
 						&& e.getBairro().equalsIgnoreCase(objetoDto.getBairro())
 						&& e.getCidade().equalsIgnoreCase(objetoDto.getCidade())
 						&& e.getUf().equalsIgnoreCase(objetoDto.getUf()) && e.getCep().equalsIgnoreCase(e.getCep())
 						&& e.getNumero() == e.getNumero()) {
 					System.out.println("Endereco id " + e.getId());
 					return e;
-				}
+				} else
+					return super.save(objetoDto);
 			}
 		}
 

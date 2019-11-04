@@ -61,27 +61,19 @@ public class FuncionarioController {
 
 		Endereco endereco = funcionarioDto.getPessoa().getEndereco();
 		endereco = enderecoService.save(endereco);
-		System.out.println("Passou aki");
-		System.out.println(endereco.toString());
 
 		Pessoa pessoa = funcionarioDto.getPessoa();
-		System.out.println("Passou aki 1");
-		System.out.println(pessoa.toString());
 //		pessoa.setEndereco(enderecoService.save(funcionarioDto.getPessoa().getEndereco()));
 //		pessoa.setEndereco(endereco);
 		pessoa = pessoaService.save(pessoa);
-		System.out.println("Passou aki 2");
 
 		Usuario usuario = usuarioService.save(funcionarioDto.getUsuario());
-		System.out.println(usuario.toString());
 
 		Funcionario funcionario = new Funcionario();
 		funcionario.setPessoa(pessoa);
 		funcionario.setUsuario(usuario);
 		funcionario.setCargaHoraria(funcionarioDto.getCargaHoraria());
 		funcionario.setCpf(funcionarioDto.getCpf());
-		System.out.println(funcionarioDto.toString());
-		System.out.println(funcionario.toString());
 
 		Funcionario obj;
 		obj = this.funcionarioService.save(funcionario);

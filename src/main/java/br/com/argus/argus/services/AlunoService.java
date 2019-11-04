@@ -9,7 +9,11 @@ import br.com.argus.argus.models.Aluno;
 import br.com.argus.argus.repositories.AlunoRepository;
 
 @Service
+<<<<<<< HEAD
 public class AlunoService extends ServiceGeneric<Aluno> {
+=======
+public class AlunoService extends ServiceGeneric<Aluno>{
+>>>>>>> refs/remotes/origin/master
 
 	@Autowired
 	AlunoRepository alunoRepository;

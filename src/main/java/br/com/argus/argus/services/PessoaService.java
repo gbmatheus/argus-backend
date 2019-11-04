@@ -29,14 +29,18 @@ public class PessoaService extends ServiceGeneric<Pessoa> {
 		if (pessoas.size() != 0) {
 			for (Pessoa p : pessoas) {
 				if (p.getNome().equalsIgnoreCase(objetoDto.getNome())
-						&& p.getNaturalidade().equalsIgnoreCase(objetoDto.getNaturalidade())
+//						&& p.getNaturalidade().equalsIgnoreCase(objetoDto.getNaturalidade())
 						&& p.getRg().equalsIgnoreCase(objetoDto.getRg())
-						&& p.getDataNascimento().getTime() == objetoDto.getDataNascimento().getTime()
-						&& p.getEndereco().equals(objetoDto.getEndereco()))
+//						&& p.getDataNascimento().getTime() == objetoDto.getDataNascimento().getTime()
+//						&& p.getEndereco().equals(objetoDto.getEndereco())
+						) {
+					System.out.println("Pessoa é " + p.getId());
 					return p;
 				
-				else if(p.getRg().equalsIgnoreCase(objetoDto.getRg()))
-					return null;//retornar erro
+				}else if(p.getRg().equalsIgnoreCase(objetoDto.getRg())) {
+					System.out.println("RG em uso");
+					return null;
+				}
 			}
 		}
 

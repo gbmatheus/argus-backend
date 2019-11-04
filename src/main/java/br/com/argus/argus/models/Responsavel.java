@@ -66,4 +66,10 @@ public class Responsavel implements Serializable {
 		this.pessoa = pessoa;
 	}
 
+	@Override
+	public String toString() {
+		return "Responsavel [id=" + id + ", cpf=" + cpf + ", pessoa=" + pessoa + "]";
+	}
+	
+	
 }

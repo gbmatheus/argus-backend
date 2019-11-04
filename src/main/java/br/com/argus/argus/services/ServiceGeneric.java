@@ -49,7 +49,8 @@ public abstract class ServiceGeneric<T> {
 			return obj;
 		}).orElse(null);
 	}
-
+	
+	@Transactional
 	public void remove(long id) {
 		findById(id).map(record -> {
 
