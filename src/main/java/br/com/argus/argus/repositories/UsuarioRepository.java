@@ -2,6 +2,7 @@ package br.com.argus.argus.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.argus.argus.models.Usuario;
 
@@ -15,6 +16,10 @@ import br.com.argus.argus.models.Usuario;
  * 			- ID = Tipo da chave primária da classe 
  * */
 @Repository
+@Transactional(readOnly = false)
 public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
+	
+	Usuario findByLogin(String login);
+	Usuario findByEmail(String email);
 
 }
