@@ -1,14 +1,16 @@
 package br.com.argus.argus.exception;
 
-public class ServicesException extends Exception{
+public class CpfException extends RuntimeException{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-	public ServicesException(String mensagem) {
+	
+	public CpfException(String mensagem) {
 		super(mensagem);
 	}
+	
+	
 
 }
