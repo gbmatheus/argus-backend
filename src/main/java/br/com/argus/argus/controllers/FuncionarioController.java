@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,23 +19,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import br.com.argus.argus.models.Endereco;
 import br.com.argus.argus.models.Funcionario;
-import br.com.argus.argus.models.Pessoa;
-import br.com.argus.argus.models.Usuario;
 import br.com.argus.argus.responses.Response;
-import br.com.argus.argus.services.EnderecoService;
 import br.com.argus.argus.services.FuncionarioService;
 import br.com.argus.argus.services.PessoaService;
 import br.com.argus.argus.services.UsuarioService;
 
-@Validated
 @RestController
 @RequestMapping("/api/funcionarios")
 public class FuncionarioController {
-
-	@Autowired
-	private EnderecoService enderecoService;
 
 	@Autowired
 	private PessoaService pessoaService;
@@ -46,37 +38,34 @@ public class FuncionarioController {
 	@Autowired
 	private FuncionarioService funcionarioService;
 
+	@CrossOrigin // Notação cors para ter acesso a api via url
 	@Transactional
 	@PostMapping
 	@ResponseBody
 	public ResponseEntity<Response<Funcionario>> create(@Valid @RequestBody Funcionario funcionarioDto,
 			BindingResult result) {
-		
+		System.out.println(funcionarioDto.toString());
 		Response<Funcionario> response = new Response<Funcionario>();
-		
+
 		if (result.hasErrors()) {
 			result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()));
 			return ResponseEntity.badRequest().body(response);
 		}
 
-		Endereco endereco = funcionarioDto.getPessoa().getEndereco();
-		endereco = enderecoService.save(endereco);
-
-		Pessoa pessoa = funcionarioDto.getPessoa();
-//		pessoa.setEndereco(enderecoService.save(funcionarioDto.getPessoa().getEndereco()));
-//		pessoa.setEndereco(endereco);
-		pessoa = pessoaService.save(pessoa);
-
-		Usuario usuario = usuarioService.save(funcionarioDto.getUsuario());
-
 		Funcionario funcionario = new Funcionario();
-		funcionario.setPessoa(pessoa);
-		funcionario.setUsuario(usuario);
-		funcionario.setCargaHoraria(funcionarioDto.getCargaHoraria());
-		funcionario.setCpf(funcionarioDto.getCpf());
 
-		Funcionario obj;
-		obj = this.funcionarioService.save(funcionario);
+		System.out.println("Settando dados pessoais de funcionario");
+		funcionario.setPessoa(pessoaService.save(funcionarioDto.getPessoa()));
+		System.out.println("Settou pessoa");
+		System.out.println("Settando do usuario do funcionario");
+		funcionario.setUsuario(usuarioService.save(funcionarioDto.getUsuario()));
+		System.out.println("Settou usuario");
+		funcionario.setCargaHoraria(funcionarioDto.getCargaHoraria());
+		
+		funcionario.setCpf(funcionarioDto.getCpf());
+		System.out.println("Settou dados do funcionario");
+
+		Funcionario obj = this.funcionarioService.save(funcionario);
 		response.setData(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(funcionario.getId())
 				.toUri();
@@ -84,6 +73,7 @@ public class FuncionarioController {
 
 	}
 
+	@CrossOrigin
 	@GetMapping
 	@ResponseBody
 	public ResponseEntity<List<Funcionario>> index() {

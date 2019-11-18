@@ -2,14 +2,17 @@ package br.com.argus.argus.controllers;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,24 +34,18 @@ public class UsuarioController {
 	@Autowired
 	private UsuarioService usuarioService;
 
+	@CrossOrigin
 	@GetMapping
 	public ResponseEntity<List<Usuario>> index() {
 		List<Usuario> usuarios = usuarioService.findByAll();
 		return ResponseEntity.status(HttpStatus.OK).body(usuarios);
 	}
 
-	@GetMapping(path = "/{id}")
-	public ResponseEntity<Response<Usuario>> show(@PathVariable long id) {
-		Usuario usuario;
-		Response<Usuario> response = new Response<Usuario>();
-		usuario = usuarioService.findBy(id);
-		response.setData(usuario);
-		
-		return ResponseEntity.status(HttpStatus.OK).body(response);
-	}
-
+	@CrossOrigin
+	@Transactional
 	@PostMapping
-	public ResponseEntity<Response<Usuario>> create(@Valid @RequestBody Usuario usuario, BindingResult result, Model model) {
+	public ResponseEntity<Response<Usuario>> create(@Valid @RequestBody Usuario usuario, BindingResult result,
+			Model model) {
 		Response<Usuario> response = new Response<Usuario>();
 		System.out.println(model);
 
@@ -62,6 +59,19 @@ public class UsuarioController {
 		response.setData(obj);
 		return ResponseEntity.created(uri).body(response);
 
+	}
+
+	@GetMapping(path = "/{id}")
+	public ResponseEntity<Response<Optional<Usuario>>> show(@PathVariable("id") long id) {
+		Optional<Usuario> usuario = usuarioService.findById(id);
+		Response<Optional<Usuario>> response = new Response<Optional<Usuario>>();
+		response.setData(usuario);
+
+		if (response.getData() != null) {
+			return ResponseEntity.status(HttpStatus.OK).body(response);
+
+		}
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
 	}
 
 	@PutMapping(value = "/{id}")
@@ -82,25 +92,7 @@ public class UsuarioController {
 	}
 
 	@DeleteMapping(path = "/delete/{id}")
-	public void delete(@PathVariable long id) {
+	public void destroy(@PathVariable long id) {
 
 	}
-
-//	@PostMapping(value = "/login")
-//	public ResponseEntity<String> Login(Usuario usuario, HttpSession session, BindingResult result) {
-//		Usuario obj = usuarioService.login(usuario);
-//
-//		if (obj != null) {
-//
-//			session.setAttribute("usuarioLogado", usuario);
-//	
-//			return ResponseEntity.status(HttpStatus.OK).body("Logado");
-//		}
-//			
-//
-//
-//		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Não autorizado");
-//
-//	}
-//
 }

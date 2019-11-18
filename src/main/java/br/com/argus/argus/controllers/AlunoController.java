@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,16 +22,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.argus.argus.models.Aluno;
-import br.com.argus.argus.models.Endereco;
-import br.com.argus.argus.models.Pessoa;
-import br.com.argus.argus.models.Responsavel;
 import br.com.argus.argus.responses.Response;
 import br.com.argus.argus.services.AlunoService;
 import br.com.argus.argus.services.EnderecoService;
 import br.com.argus.argus.services.PessoaService;
 import br.com.argus.argus.services.ResponsavelService;
 
-@Validated
 @RestController
 @RequestMapping("/api/alunos")
 public class AlunoController {
@@ -54,61 +49,30 @@ public class AlunoController {
 	@ResponseBody
 	public ResponseEntity<Response<Aluno>> create(@Valid @RequestBody Aluno alunoDto, BindingResult result) {
 		Response<Aluno> response = new Response<Aluno>();
-		Aluno aluno = new Aluno();
-		System.out.println(alunoDto.toString());
-		
+
 		if (result.hasErrors()) {
 			result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()));
 			return ResponseEntity.badRequest().body(response);
 		}
-		//Aluno
-		Endereco endereco = alunoDto.getPessoa().getEndereco();
-		endereco = enderecoService.save(endereco);
+		Aluno aluno = new Aluno();
 		
-		Pessoa pessoa = alunoDto.getPessoa();
-//		pessoa.setEndereco(endereco);
-		pessoa = pessoaService.save(pessoa);
-		aluno.setPessoa(pessoa);
-		
-		
-		//Pai
-		Endereco enderecoPai = alunoDto.getPai().getEndereco();
-		enderecoPai = enderecoService.save(enderecoPai);
-		
-		Pessoa pai = alunoDto.getPai();
-//		pai.setEndereco(enderecoPai);
-		pai = pessoaService.save(pai);
-		aluno.setPai(pai);
-		
-		
-		//Mãe
-		Endereco enderecoMae = alunoDto.getMae().getEndereco();
-		enderecoMae = enderecoService.save(enderecoMae);
+		System.out.println("Settaando dados pessoais de aluno");
+		aluno.setPessoa(pessoaService.save(alunoDto.getPessoa()));
+		System.out.println("Settou aluno");
+		System.out.println("Settando dados do pai");
+		aluno.setPai(pessoaService.save(alunoDto.getPai()));
+		System.out.println("Settou pai");
+		System.out.println("Settando dados do mae");
+		aluno.setMae(pessoaService.save(alunoDto.getMae()));
+		System.out.println("Settou mae");
+		System.out.println("Settando dados do responsavel");
+		aluno.setResponsavel(responsavelService.save(alunoDto.getResponsavel()));
+		System.out.println("Settou responsavel");
 
-		Pessoa mae = alunoDto.getMae();
-//		mae.setEndereco(enderecoMae);
-		mae = pessoaService.save(mae);
-		aluno.setMae(mae);
-		
-		//Responsável
-		Endereco enderecoRes = alunoDto.getResponsavel().getPessoa().getEndereco();
-		enderecoRes = enderecoService.save(enderecoRes);
-		
-		Pessoa res = alunoDto.getResponsavel().getPessoa();
-//		res.setEndereco(enderecoRes);
-		res = pessoaService.save(res);
-		
-		Responsavel responsavel = alunoDto.getResponsavel();
-
-//		responsavel.setPessoa(res);
-//		responsavel.setCpf(alunoDto.getResponsavel().getCpf());
-		responsavel = responsavelService.save(responsavel);
-
-		aluno.setResponsavel(responsavel);
-		
-		Aluno obj = this.alunoService.save(aluno);
+		Aluno obj = this.alunoService.save(alunoDto);
 		response.setData(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(aluno.getId()).toUri();
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(alunoDto.getId())
+				.toUri();
 		return ResponseEntity.created(uri).body(response);
 
 	}
@@ -126,7 +90,7 @@ public class AlunoController {
 		response.setData(aluno);
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
-	
+
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<Response<Aluno>> update(@PathVariable("id") long id, @RequestBody Aluno aluno) {
 //		Response<Aluno> response = new Response<Aluno>();
