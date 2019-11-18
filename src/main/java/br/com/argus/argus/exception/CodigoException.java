@@ -4,26 +4,26 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-public class PessoaException extends RuntimeException {
+public class CodigoException extends RuntimeException {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public PessoaException() {
+	public CodigoException() {
 		super();
 	}
 
-	public PessoaException(String msg) {
-		super(msg);
+	public CodigoException(String mensagem) {
+		super(mensagem);
 	}
 
-	public PessoaException(String message, Throwable cause) {
+	public CodigoException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
-	public PessoaException(Throwable cause) {
+	public CodigoException(Throwable cause) {
 		super(cause);
 	}
 
