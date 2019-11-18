@@ -7,5 +7,7 @@ import br.com.argus.argus.models.Pessoa;
 
 @Repository
 public interface PessoaRepository extends JpaRepository<Pessoa, Long>{
+	
+	Pessoa findByRg(String rg);
 
 }

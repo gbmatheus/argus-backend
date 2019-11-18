@@ -7,7 +7,7 @@ import br.com.argus.argus.models.Curriculo;
 
 @Repository
 public interface CurriculoRepository extends JpaRepository<Curriculo, Long> {
-	
-	Curriculo  findByCodigo(String codigo);
+
+	Curriculo findByCodigo(String codigo);
 
 }

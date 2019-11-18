@@ -7,5 +7,7 @@ import br.com.argus.argus.models.Responsavel;
 
 @Repository
 public interface ResponsavelRepository extends JpaRepository<Responsavel, Long>{
+	
+	Responsavel findByCpf(String cpf);
 
 }

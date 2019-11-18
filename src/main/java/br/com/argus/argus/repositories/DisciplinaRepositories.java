@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 import br.com.argus.argus.models.Disciplina;
 
 @Repository
-public interface DisciplinaRepositories extends JpaRepository<Disciplina, Long>{
+public interface DisciplinaRepositories extends JpaRepository<Disciplina, Long> {
+
+	Disciplina findByCodigo(String codigo);
 
 }
