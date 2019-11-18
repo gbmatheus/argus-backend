@@ -17,5 +17,10 @@ public class TurmaService extends ServiceGeneric<Turma> {
 	public JpaRepository<Turma, Long> getRepository() {
 		return turmaRepository;
 	}
+	
+	@Override
+	public Turma save(Turma objetoDto) {
+		return super.save(objetoDto);
+	}
 
 }

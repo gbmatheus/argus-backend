@@ -5,8 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.argus.argus.exception.CustomRestExceptionHandler;
-import br.com.argus.argus.exception.RestResponseStatusExceptionResolver;
 import br.com.argus.argus.exception.UsuarioException;
 import br.com.argus.argus.models.Usuario;
 import br.com.argus.argus.repositories.UsuarioRepository;
@@ -43,12 +41,8 @@ public class UsuarioService extends ServiceGeneric<Usuario> {
 	public Usuario save(Usuario objetoDto) {
 		
 		if(usuarioRepository.findByLogin(objetoDto.getLogin()) != null) {
-			System.out.println("Login");
-			System.out.println(usuarioRepository.findByLogin(objetoDto.getLogin()).toString());
 			throw new UsuarioException("Login em uso");
 		}else if(usuarioRepository.findByEmail(objetoDto.getEmail()) != null) {
-			System.out.println("Email");
-			System.out.println(usuarioRepository.findByEmail(objetoDto.getEmail()).toString());
 			throw new UsuarioException("Email em uso");
 		}else
 			return super.save(objetoDto);
@@ -56,7 +50,7 @@ public class UsuarioService extends ServiceGeneric<Usuario> {
 
 	@Override
 	@Transactional
-	public Usuario update(long id, Usuario objetoDto) {
+	public Usuario update(Long id, Usuario objetoDto) {
 		return findById(id).map(record -> {
 			record.setLogin(objetoDto.getLogin());
 			record.setEmail(objetoDto.getEmail());
@@ -70,7 +64,7 @@ public class UsuarioService extends ServiceGeneric<Usuario> {
 
 	@Override
 	@Transactional
-	public void remove(long id) {
+	public void remove(Long id) {
 		findById(id).map(record -> {
 			record.setAtivo(!record.isAtivo());
 			return usuarioRepository.save(record);

@@ -45,7 +45,7 @@ public class EnderecoService extends ServiceGeneric<Endereco> {
 
 	@Override
 	@Transactional
-	public Endereco update(long id, Endereco enderecoDto) {
+	public Endereco update(Long id, Endereco enderecoDto) {
 		return findById(id).map(record -> {
 			record.setRua(enderecoDto.getRua());
 			record.setNumero(enderecoDto.getNumero());

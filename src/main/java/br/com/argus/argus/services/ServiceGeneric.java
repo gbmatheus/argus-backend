@@ -15,11 +15,11 @@ public abstract class ServiceGeneric<T> {
 	// Pega um obj do tipo repository das classe filhas e repassa para os métodos
 	public abstract JpaRepository<T, Long> getRepository();
 
-	public Optional<T> findById(long id) {
+	public Optional<T> findById(Long id) {
 		return getRepository().findById(id);
 	}
 
-	public T findBy(long id) {
+	public T findBy(Long id) {
 		T obj = getRepository().findOne(id);
 		if (obj == null)
 			try {
@@ -42,7 +42,7 @@ public abstract class ServiceGeneric<T> {
 	}
 
 	@Transactional
-	public T update(long id, T objetoDto) {
+	public T update(Long id, T objetoDto) {
 		return findById(id).map(record -> {
 
 			T obj = getRepository().save(record);
@@ -51,14 +51,14 @@ public abstract class ServiceGeneric<T> {
 	}
 	
 	@Transactional
-	public void remove(long id) {
+	public void remove(Long id) {
 		findById(id).map(record -> {
 
 			return getRepository().save(record);
 		}).orElse(null);
 	}
 
-	public void deleteById(long id) {
+	public void deleteById(Long id) {
 		getRepository().deleteById(id);
 	}
 
