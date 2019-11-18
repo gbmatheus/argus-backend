@@ -2,7 +2,6 @@ package br.com.argus.argus.models;
 
 import java.math.BigDecimal;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -10,7 +9,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -28,8 +28,24 @@ public class Matricula {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@ManyToOne
+	@JoinColumn(name = "aluno_id")
 	private Aluno aluno;
+
+	@ManyToOne
+	@JoinColumn(name = "disciplina_id")
+	private Disciplina disciplina;
+
+	@ManyToOne
+	@JoinColumn(name = "professor_id")
+	private Funcionario professor;
+
+	@ManyToOne
+	@JoinColumn(name = "turma_id")
+	private Turma turma;
+
+	@Column(name = "matricula", length = 25)
+	private String codigoMatricula;
 
 	@Column(name = "nota_1", precision = 2, scale = 2, nullable = false)
 	private BigDecimal nota1 = new BigDecimal(0);
@@ -54,7 +70,7 @@ public class Matricula {
 
 	@Column(length = 20, nullable = false)
 	@Enumerated(EnumType.STRING)
-	private Situacao situacao;
+	private Situacao situacao = Situacao.EA;
 
 	public Matricula() {
 	}
@@ -135,6 +151,38 @@ public class Matricula {
 
 	public void setSituacao(Situacao situacao) {
 		this.situacao = situacao;
+	}
+
+	public Disciplina getDisciplina() {
+		return disciplina;
+	}
+
+	public void setDisciplina(Disciplina disciplina) {
+		this.disciplina = disciplina;
+	}
+
+	public Funcionario getProfessor() {
+		return professor;
+	}
+
+	public void setProfessor(Funcionario professor) {
+		this.professor = professor;
+	}
+
+	public Turma getTurma() {
+		return turma;
+	}
+
+	public void setTurma(Turma turma) {
+		this.turma = turma;
+	}
+
+	public String getCodigoMatricula() {
+		return codigoMatricula;
+	}
+
+	public void setCodigoMatricula(String codigoMatricula) {
+		this.codigoMatricula = codigoMatricula;
 	}
 
 }

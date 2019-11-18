@@ -2,12 +2,10 @@ package br.com.argus.argus.models;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.Valid;
@@ -29,17 +27,24 @@ public class Responsavel implements Serializable {
 
 	@Id
 	@JsonIgnore
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(length = 14, nullable = false)
+	@Column(length = 14, nullable = false, unique = true)
 	private String cpf;
 
-	@OneToOne(cascade = CascadeType.ALL)
+//	@OneToOne(mappedBy = "responsavel", cascade = CascadeType.ALL)
+	@OneToOne
+	@MapsId
 	private Pessoa pessoa;
 
 	public Responsavel() {
 	}
+	
+	public Responsavel(Long id, String cpf) {
+		this.id = id;
+		this.cpf = cpf;
+	}
+
 
 	public Long getId() {
 		return id;
@@ -58,6 +63,10 @@ public class Responsavel implements Serializable {
 		return pessoa;
 	}
 
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
@@ -70,6 +79,5 @@ public class Responsavel implements Serializable {
 	public String toString() {
 		return "Responsavel [id=" + id + ", cpf=" + cpf + ", pessoa=" + pessoa + "]";
 	}
-	
-	
+
 }

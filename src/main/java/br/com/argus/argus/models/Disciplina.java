@@ -3,17 +3,14 @@ package br.com.argus.argus.models;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -22,8 +19,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "disciplinas")
-public class Disciplina implements Serializable{
-	
+public class Disciplina implements Serializable {
+
 	/**
 	 * 
 	 */
@@ -33,24 +30,28 @@ public class Disciplina implements Serializable{
 	@JsonIgnore
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@Column(length = 8, nullable = false)
 	private String codigo;
-	
+
 	@Column(length = 20, nullable = false)
 	private String nome;
-	
-	@Column(name = "carga_horaria",nullable = false)
-	private Integer cargaHoraria;
-	
-	@OneToOne(cascade = CascadeType.ALL)
-	private Funcionario professor;
 
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "disciplinas_id")
-	private List<Matricula> matricula;
-	
-	public Disciplina() {}
+	@Column(name = "carga_horaria", nullable = false)
+	private Integer cargaHoraria;
+
+	@JsonIgnore
+	@ManyToMany(mappedBy = "disciplinas")
+	private List<Curriculo> curriculos;
+
+//	@OneToOne(cascade = CascadeType.ALL)
+//	private Funcionario professor;
+
+	@OneToMany(mappedBy = "disciplina")
+	private List<Matricula> matriculas;
+
+	public Disciplina() {
+	}
 
 	public Long getId() {
 		return id;
@@ -73,15 +74,10 @@ public class Disciplina implements Serializable{
 		return cargaHoraria;
 	}
 
-	@Valid
-	public Funcionario getProfessor() {
-		return professor;
-	}
-	
-	@Valid
-	public List<Matricula> getMatricula() {
-		return matricula;
-	}
+//	@Valid
+//	public Funcionario getProfessor() {
+//		return professor;
+//	}
 
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
@@ -95,8 +91,23 @@ public class Disciplina implements Serializable{
 		this.cargaHoraria = cargaHoraria;
 	}
 
-	public void setProfessor(Funcionario professor) {
-		this.professor = professor;
+	public List<Curriculo> getCurriculos() {
+		return curriculos;
 	}
+
+	public void setCurriculos(List<Curriculo> curriculos) {
+		this.curriculos = curriculos;
+	}
+
+//	@Override
+//	public String toString() {
+//		return "Disciplina [id=" + id + ", codigo=" + codigo + ", nome=" + nome + ", cargaHoraria=" + cargaHoraria
+//				+ ", curriculos=" + curriculos.toString() + ", matriculas=" + matriculas + "]";
+//	}
+
+//	public void setProfessor(Funcionario professor) {
+//		this.professor = professor;
+//	}
+	
 	
 }

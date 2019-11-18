@@ -1,12 +1,14 @@
 package br.com.argus.argus.models;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.Valid;
@@ -31,14 +33,20 @@ public class Aluno implements Serializable {
 	@OneToOne(cascade = CascadeType.ALL)
 	private Pessoa pessoa;
 
+	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL)
 	private Pessoa pai;
 
+	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL)
 	private Pessoa mae;
 
+	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL)
 	private Responsavel responsavel;
+
+	@OneToMany(mappedBy = "aluno")
+	private List<Matricula> matriculas;
 
 	public Aluno() {
 	}
@@ -87,10 +95,12 @@ public class Aluno implements Serializable {
 		this.responsavel = responsavel;
 	}
 
-	@Override
-	public String toString() {
-		return "Aluno [getPessoa()=" + getPessoa() + ", getPai()=" + getPai() + ", getMae()=" + getMae()
-				+ ", getResponsavel()=" + getResponsavel() + ", getId()=" + getId() + "]";
+	public List<Matricula> getMatriculas() {
+		return matriculas;
+	}
+
+	public void setMatriculas(List<Matricula> matriculas) {
+		this.matriculas = matriculas;
 	}
 
 }

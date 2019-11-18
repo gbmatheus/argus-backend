@@ -11,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.Valid;
@@ -37,19 +39,22 @@ public class Curriculo {
 	@Column(length = 30, nullable = false)
 	private String nome;
 
-	@Column(name = "ano_letivo", nullable = false)
+	@Column(name = "ano_letivo", nullable = false, length = 10)
 	@Enumerated(EnumType.STRING)
 	private AnoLetivo anoLetivo;
 
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "curriculo",cascade = CascadeType.ALL)
 	private List<Turma> turmas;
-	
+
 //	@OneToMany
 //	@JoinColumn(name = "pessoa_id")
 //	private List<Cachorro> cachorros;
 
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "curriculos_id")
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JsonIgnore
+	@JoinTable(name = "disciplina_curriculo", 
+		joinColumns = @JoinColumn(name = "disciplina_id", referencedColumnName = "id"), 
+		inverseJoinColumns = @JoinColumn(name = "curriculo_id", referencedColumnName = "id"))
 	private List<Disciplina> disciplinas;
 
 	public Curriculo() {
@@ -77,15 +82,8 @@ public class Curriculo {
 	}
 
 	@Valid
-	@NotEmpty(message = "Turmas são obrigatório")
 	public List<Turma> getTurmas() {
 		return turmas;
-	}
-
-	@Valid
-	@NotEmpty(message = "Disciplinas são obrigatórias")
-	public List<Disciplina> getDisciplinas() {
-		return disciplinas;
 	}
 
 	public void setCodigo(String codigo) {
@@ -104,8 +102,32 @@ public class Curriculo {
 		this.turmas = turmas;
 	}
 
+//	public List<CurriculoDisciplina> getRegistros() {
+//		return registros;
+//	}
+//
+//	public void setRegistros(List<CurriculoDisciplina> registros) {
+//		this.registros = registros;
+//	}
+
+	public List<Disciplina> getDisciplinas() {
+		return disciplinas;
+	}
+
 	public void setDisciplinas(List<Disciplina> disciplinas) {
 		this.disciplinas = disciplinas;
 	}
+
+//	@Override
+//	public String toString() {
+//		return "Curriculo [id=" + id + ", codigo=" + codigo + ", nome=" + nome + ", anoLetivo=" + anoLetivo
+//				+ ", turmas=" + turmas + ", disciplinas=" + disciplinas.toString()+ "]";
+//	}
+
+//	public void setDisciplinas(List<Disciplina> disciplinas) {
+//		this.disciplinas = disciplinas;
+//	}
+	
+	
 
 }

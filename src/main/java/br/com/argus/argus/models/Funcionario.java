@@ -1,6 +1,7 @@
 package br.com.argus.argus.models;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -8,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.Valid;
@@ -27,7 +29,7 @@ public class Funcionario implements Serializable {
 	private static final long serialVersionUID = -6431287336617436606L;
 
 	@Id
-	@JsonIgnore
+//	@JsonIgnore
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
@@ -42,6 +44,10 @@ public class Funcionario implements Serializable {
 
 	@Column(name = "carga_horaria", nullable = false)
 	private Integer cargaHoraria;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "professor")
+	private List<Matricula> matriculas;
 
 	public Funcionario() {
 	}
@@ -61,11 +67,6 @@ public class Funcionario implements Serializable {
 	public Pessoa getPessoa() {
 		return pessoa;
 	}
-	
-//	@NotNull(message = "Endereco é obrigatório")
-//	public Endereco getEndereco() {
-//		return pessoa.getEndereco();
-//	}
 
 	@Valid
 	@NotNull(message = "Infomações do usuário é obrigatório")
@@ -93,6 +94,14 @@ public class Funcionario implements Serializable {
 
 	public void setCargaHoraria(Integer cargaHoraria) {
 		this.cargaHoraria = cargaHoraria;
+	}
+
+	public List<Matricula> getMatriculas() {
+		return matriculas;
+	}
+
+	public void setMatriculas(List<Matricula> matriculas) {
+		this.matriculas = matriculas;
 	}
 
 	@Override

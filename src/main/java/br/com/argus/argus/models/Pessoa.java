@@ -42,10 +42,10 @@ public class Pessoa implements Serializable {
 	@Column(name = "data_nascimento", nullable = false)
 	private Date dataNascimento;
 
-	@Column(name = "naturalidade", nullable = false, length = 2)
-	private String naturalidade;// Alterar para enum
+	@Column(name = "naturalidade", nullable = false, length = 3)
+	private String naturalidade;
 
-	@Column(nullable = false, length = 20)
+	@Column(nullable = false, length = 25)
 	private String rg;
 
 	@Column(nullable = false)
@@ -53,6 +53,9 @@ public class Pessoa implements Serializable {
 
 	@OneToOne(cascade = CascadeType.ALL)
 	private Endereco endereco;
+
+	@OneToOne(mappedBy = "pessoa", cascade = CascadeType.ALL)
+	private Responsavel responsavel;
 
 	public Pessoa() {
 	}
@@ -76,7 +79,7 @@ public class Pessoa implements Serializable {
 	}
 
 	@NotEmpty(message = "Rg é obrigatório")
-	@Size(min = 5, max = 20)
+	@Size(min = 5, max = 22)
 	public String getRg() {
 		return rg;
 	}
@@ -118,6 +121,10 @@ public class Pessoa implements Serializable {
 
 	public Long getId() {
 		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	@Override

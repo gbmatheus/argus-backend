@@ -49,7 +49,7 @@ public class Endereco implements Serializable {
 
 	@Column(nullable = false, length = 10)
 	private String cep;
-
+	
 	public Endereco() {
 	}
 
@@ -133,5 +133,5 @@ public class Endereco implements Serializable {
 				+ ", getComplemento()=" + getComplemento() + ", getBairro()=" + getBairro() + ", getCidade()="
 				+ getCidade() + ", getUf()=" + getUf() + ", getCep()=" + getCep() + "]";
 	}
-	
+
 }

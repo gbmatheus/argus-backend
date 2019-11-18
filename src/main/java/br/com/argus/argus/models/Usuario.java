@@ -33,13 +33,15 @@ public class Usuario implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false, length = 50, unique = true)
+	//adicionar random 
+	@Column(nullable = false, length = 50)
 	private String login;
 
+	//adicionar senha padrao e hash
 	@Column(nullable = false, length = 50)
 	private String senha;
 
-	@Column(nullable = false, length = 100, unique = true)
+	@Column(nullable = false, length = 100)
 	private String email;
 
 	@Column(nullable = false)
