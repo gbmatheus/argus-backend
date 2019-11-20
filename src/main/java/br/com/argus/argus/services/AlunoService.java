@@ -22,7 +22,6 @@ public class AlunoService extends ServiceGeneric<Aluno> {
 	@Override
 	@Transactional
 	public Aluno save(Aluno objetoDto) {
-		System.out.println("Salvando aluno");
 		return super.save(objetoDto);
 	}
 }

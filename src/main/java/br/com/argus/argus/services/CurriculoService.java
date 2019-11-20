@@ -55,6 +55,7 @@ public class CurriculoService extends ServiceGeneric<Curriculo> {
 		return findById(curriculoID).get().getTurmas();
 	}
 
+	@Transactional
 	public Curriculo addDisciplina(Long curriculoID, Long disciplinaID) {
 		Optional<Curriculo> curriculo = curriculoRepository.findById(curriculoID);
 		Optional<Disciplina> disciplina = disciplinaRepositories.findById(disciplinaID);
@@ -76,6 +77,7 @@ public class CurriculoService extends ServiceGeneric<Curriculo> {
 	}
 	
 
+	@Transactional
 	public Curriculo addTurma(Long curriculoID, Turma turmaDto) {
 		Optional<Curriculo> curriculo = curriculoRepository.findById(curriculoID);
 		Turma turma = new Turma();
