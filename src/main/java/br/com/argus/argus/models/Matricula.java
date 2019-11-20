@@ -2,74 +2,56 @@ package br.com.argus.argus.models;
 
 import java.math.BigDecimal;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import br.com.argus.argus.enums.Situacao;
 
-@Entity
-@Table(name = "matriculas")
 public class Matricula {
-
-	@Id
-	@JsonIgnore
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne
-	@JoinColumn(name = "aluno_id")
+//	@ManyToOne
+//	@JoinColumn(name = "aluno_id")
 	private Aluno aluno;
 
-	@ManyToOne
-	@JoinColumn(name = "disciplina_id")
+//	@ManyToOne
+//	@JoinColumn(name = "disciplina_id")
 	private Disciplina disciplina;
 
-	@ManyToOne
-	@JoinColumn(name = "professor_id")
+//	@ManyToOne
+//	@JoinColumn(name = "professor_id")
 	private Funcionario professor;
 
-	@ManyToOne
-	@JoinColumn(name = "turma_id")
+//	@ManyToOne
+//	@JoinColumn(name = "turma_id")
 	private Turma turma;
 
-	@Column(name = "matricula", length = 25)
+//	@Column(name = "matricula", length = 25)
 	private String codigoMatricula;
 
-	@Column(name = "nota_1", precision = 2, scale = 2, nullable = false)
+//	@Column(name = "nota_1", precision = 2, scale = 2, nullable = false)
 	private BigDecimal nota1 = new BigDecimal(0);
 
-	@Column(name = "nota_2", precision = 2, scale = 2, nullable = false)
+//	@Column(name = "nota_2", precision = 2, scale = 2, nullable = false)
 	private BigDecimal nota2 = new BigDecimal(0);
 
-	@Column(name = "nota_3", precision = 2, scale = 2, nullable = false)
+//	@Column(name = "nota_3", precision = 2, scale = 2, nullable = false)
 	private BigDecimal nota3 = new BigDecimal(0);
 
-	@Column(name = "nota_4", precision = 2, scale = 2, nullable = false)
+//	@Column(name = "nota_4", precision = 2, scale = 2, nullable = false)
 	private BigDecimal nota4 = new BigDecimal(0);
 
-	@Column(name = "media_geral", precision = 2, scale = 2, nullable = false)
+//	@Column(name = "media_geral", precision = 2, scale = 2, nullable = false)
 	private BigDecimal mediaGeral = new BigDecimal(0);
 
-	@Column(name = "prova_final", precision = 2, scale = 2, nullable = false)
+//	@Column(name = "prova_final", precision = 2, scale = 2, nullable = false)
 	private BigDecimal provaFinal = new BigDecimal(0);
 
-	@Column(name = "media_final", precision = 2, scale = 2, nullable = false)
+//	@Column(name = "media_final", precision = 2, scale = 2, nullable = false)
 	private BigDecimal mediaFinal = new BigDecimal(0);
 
-	@Column(length = 20, nullable = false)
-	@Enumerated(EnumType.STRING)
+//	@Column(length = 20, nullable = false)
+//	@Enumerated(EnumType.STRING)
 	private Situacao situacao = Situacao.EA;
 
 	public Matricula() {
