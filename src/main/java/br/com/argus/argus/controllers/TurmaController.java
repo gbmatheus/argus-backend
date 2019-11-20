@@ -6,15 +6,19 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.argus.argus.facade.FacadeService;
+import br.com.argus.argus.models.Aluno;
 import br.com.argus.argus.models.Turma;
 import br.com.argus.argus.responses.Response;
 import br.com.argus.argus.services.ServiceGeneric;
@@ -26,6 +30,9 @@ public class TurmaController extends Controller<Turma> {
 
 	@Autowired
 	TurmaService turmaService;
+	
+	@Autowired
+	FacadeService facadeService;
 
 	@Override
 	public ServiceGeneric<Turma> getService() {
@@ -47,6 +54,17 @@ public class TurmaController extends Controller<Turma> {
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<Response<Optional<Turma>>> show(@PathVariable("id") Long id) {
 		return super.show(id);
+	}
+	
+	@PutMapping(path = "/{t_id}/alunos/{a_id}")
+	public ResponseEntity<Response<List<Aluno>>> matricula(@PathVariable("t_id") Long turmaID, @PathVariable("a_id") Long alunoID){
+		Response<List<Aluno>> response = new Response<List<Aluno>>();
+//		Turma turma = turmaService.maticular(turmaID, alunoID);
+		Turma turma = facadeService.matricular(turmaID, alunoID);
+		
+		response.setData(turma.getAlunos());
+		
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
 	}
 
 }

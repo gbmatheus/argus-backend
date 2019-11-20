@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -46,7 +45,6 @@ public class AlunoController {
 
 	@Transactional
 	@PostMapping
-	@ResponseBody
 	public ResponseEntity<Response<Aluno>> create(@Valid @RequestBody Aluno alunoDto, BindingResult result) {
 		Response<Aluno> response = new Response<Aluno>();
 
@@ -55,7 +53,7 @@ public class AlunoController {
 			return ResponseEntity.badRequest().body(response);
 		}
 		Aluno aluno = new Aluno();
-		
+
 		System.out.println("Settaando dados pessoais de aluno");
 		aluno.setPessoa(pessoaService.save(alunoDto.getPessoa()));
 		System.out.println("Settou aluno");

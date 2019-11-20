@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.argus.argus.facade.FacadeService;
 import br.com.argus.argus.models.Disciplina;
+import br.com.argus.argus.models.DisciplinaProfessor;
 import br.com.argus.argus.responses.Response;
 import br.com.argus.argus.services.DisciplinaService;
 import br.com.argus.argus.services.ServiceGeneric;
@@ -28,7 +31,10 @@ public class DisciplinaController extends Controller<Disciplina> {
 
 	@Autowired
 	DisciplinaService disciplinaService;
-
+	
+	@Autowired
+	FacadeService facadeService;
+	
 	@Override
 	public ServiceGeneric<Disciplina> getService() {
 		return disciplinaService;
@@ -63,6 +69,14 @@ public class DisciplinaController extends Controller<Disciplina> {
 	@DeleteMapping(path = "/{id}")
 	public ResponseEntity<Response<Disciplina>> delete(@PathVariable("id") Long id) {
 		return super.delete(id);
+	}
+	
+	@PutMapping(path="/{d_id}/professor/{p_id}")
+	public ResponseEntity<Response<DisciplinaProfessor>> addDisciplinaProfessor(@PathVariable("d_id") Long disciplinaID, @PathVariable("p_id") Long professorID){
+		Response<DisciplinaProfessor> response = new Response<DisciplinaProfessor>();
+		DisciplinaProfessor data = facadeService.ministrada(disciplinaID, professorID);  
+		response.setData(data);
+		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 
 }

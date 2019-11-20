@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.argus.argus.exception.ServicesException;
+import br.com.argus.argus.facade.FacadeService;
 import br.com.argus.argus.models.Curriculo;
 import br.com.argus.argus.models.Disciplina;
 import br.com.argus.argus.models.Turma;
@@ -26,137 +26,96 @@ import br.com.argus.argus.repositories.CurriculoRepository;
 import br.com.argus.argus.repositories.DisciplinaRepositories;
 import br.com.argus.argus.responses.Response;
 import br.com.argus.argus.services.CurriculoService;
-import br.com.argus.argus.services.DisciplinaService;
 import br.com.argus.argus.services.ServiceGeneric;
 
 @RestController
 @RequestMapping("/api/curriculos")
-public class CurriculoController extends Controller<Curriculo>{
+public class CurriculoController extends Controller<Curriculo> {
 
 	@Autowired
 	CurriculoService curriculoService;
+
 	@Autowired
-	DisciplinaService disciplinaService;
+	FacadeService facadeService;
+
 	@Autowired
 	CurriculoRepository curriculoRepository;
 	@Autowired
 	DisciplinaRepositories disciplinaRepositories;
-	
+
 	@Override
 	public ServiceGeneric<Curriculo> getService() {
 		return curriculoService;
 	}
-	
+
 	@Override
 	@GetMapping
 	public ResponseEntity<List<Curriculo>> index() {
 		return super.index();
 	}
-	
+
 	@Override
 	@PostMapping
 	public ResponseEntity<Response<Curriculo>> create(@Valid @RequestBody Curriculo objetoDto, BindingResult result) {
 		return super.create(objetoDto, result);
 	}
-	
+
 	@Override
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<Response<Optional<Curriculo>>> show(@PathVariable("id") Long id) {
 		System.out.println(id);
 		return super.show(id);
 	}
-	
+
 	@Override
 	@PutMapping(path = "/{id}")
-	public ResponseEntity<Response<Curriculo>> update(@PathVariable("id") Long id, @Valid @RequestBody Curriculo objetoDto) {
+	public ResponseEntity<Response<Curriculo>> update(@PathVariable("id") Long id,
+			@Valid @RequestBody Curriculo objetoDto) {
 		return super.update(id, objetoDto);
 	}
-	
+
 	@Override
 	@DeleteMapping(path = "/{id}")
 	public ResponseEntity<Response<Curriculo>> delete(@PathVariable("id") Long id) {
 		return super.delete(id);
 	}
 
-	@GetMapping(path = "/{c_id}/disciplinas/{d_id}")
-	public ResponseEntity<String> akiEntity(@PathVariable("c_id") Long curriculoID, @PathVariable("d_id") Long disciplinaID){
-		System.out.println("CUrriculo id - " + curriculoID + "\nDisciplina id - "+ disciplinaID);
-		
-		Optional<Curriculo> curriculo = curriculoRepository.findById(curriculoID); 
-		Optional<Disciplina> disciplina = disciplinaRepositories.findById(disciplinaID);
-		
-		if(!curriculo.isPresent()) {
-			throw new ServicesException("Curriculo não encontrado");
-		}
-		System.out.println(curriculo.toString());
-		if(!disciplina.isPresent()) {
-			throw new ServicesException("Disciplina não encontrada");
-		}
-		
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body("FUNCIONA \nCurriculos \n"+curriculo.get().toString() +"\n Disciplina \n"+disciplina.get().toString());
-		
-	}
-	
 	@GetMapping(path = "/{c_id}/disciplinas")
 	public ResponseEntity<List<Disciplina>> listDisciplinas(@PathVariable("c_id") Long curriculoID) {
 		List<Disciplina> disciplinas = curriculoService.listDisciplina(curriculoID);
 		return ResponseEntity.status(HttpStatus.OK).body(disciplinas);
-		
+
 	}
-	
-	@PutMapping(path = "/{c_id}/disciplinas/{d_id}")//, produces = "application/json")
-	public ResponseEntity<Response<List<Disciplina>>> addDisciplina(@PathVariable("c_id") Long curriculoID, @PathVariable("d_id") Long disciplinaID) {
-		System.out.println("Adicionnando disciplina \nCurriculo "+curriculoID + "\nDIsciplina"+disciplinaID);
+
+	@PutMapping(path = "/{c_id}/disciplinas/{d_id}") // , produces = "application/json")
+	public ResponseEntity<Response<List<Disciplina>>> addDisciplina(@PathVariable("c_id") Long curriculoID,
+			@PathVariable("d_id") Long disciplinaID) {
+		System.out.println("Adicionnando disciplina \nCurriculo " + curriculoID + "\nDIsciplina" + disciplinaID);
 		Response<List<Disciplina>> response = new Response<List<Disciplina>>();
-		Curriculo curriculo = curriculoService.addDisciplina(curriculoID, disciplinaID);
-		
+		Curriculo curriculo = facadeService.addDisciplina(curriculoID, disciplinaID);
+
 		response.setData(curriculo.getDisciplinas());
-		
-		return ResponseEntity.status(HttpStatus.CREATED).body(response); 
+
+		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
-	
+
 	@GetMapping(path = "{c_id}/turmas")
-	ResponseEntity<List<Turma>> listTurmas(@PathVariable("c_id") Long curriculoID){
+	ResponseEntity<List<Turma>> listTurmas(@PathVariable("c_id") Long curriculoID) {
 		List<Turma> turmas = curriculoService.listTurma(curriculoID);
 		return ResponseEntity.status(HttpStatus.OK).body(turmas);
 	}
-	
-	@PutMapping(path = "/{c_id}/turmas")//, produces = "application/json")
-	public ResponseEntity<Response<Curriculo>> addCurriculo(@PathVariable("c_id") Long curriculoID, @Valid @RequestBody Turma turmaDto) {
+
+	@PutMapping(path = "/{c_id}/turmas/{t_id}") // , produces = "application/json")
+	public ResponseEntity<Response<Curriculo>> addCurriculo(@PathVariable("c_id") Long curriculoID,
+			@PathVariable("t_id") Long turmaID) {
 		System.out.println("Adicionanto turma");
-		
+
 		Response<Curriculo> response = new Response<Curriculo>();
-		Curriculo curriculo = curriculoService.addTurma(curriculoID, turmaDto);
-		
+		Curriculo curriculo = facadeService.addTurma(curriculoID, turmaID);
+
 		response.setData(curriculo);
-		
-		return ResponseEntity.status(HttpStatus.CREATED).body(response);	
+
+		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 }

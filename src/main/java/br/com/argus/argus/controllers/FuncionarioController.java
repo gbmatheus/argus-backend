@@ -12,7 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,11 +25,12 @@ import br.com.argus.argus.models.Funcionario;
 import br.com.argus.argus.responses.Response;
 import br.com.argus.argus.services.FuncionarioService;
 import br.com.argus.argus.services.PessoaService;
+import br.com.argus.argus.services.ServiceGeneric;
 import br.com.argus.argus.services.UsuarioService;
 
 @RestController
 @RequestMapping("/api/funcionarios")
-public class FuncionarioController {
+public class FuncionarioController extends Controller<Funcionario>{
 
 	@Autowired
 	private PessoaService pessoaService;
@@ -37,6 +40,11 @@ public class FuncionarioController {
 
 	@Autowired
 	private FuncionarioService funcionarioService;
+	
+	@Override
+	public ServiceGeneric<Funcionario> getService() {
+		return funcionarioService;
+	}
 
 	@CrossOrigin // Notação cors para ter acesso a api via url
 	@Transactional
@@ -80,14 +88,24 @@ public class FuncionarioController {
 		List<Funcionario> funcionarios = funcionarioService.findByAll();
 		return ResponseEntity.status(HttpStatus.OK).body(funcionarios);
 	}
-//
-//	@GetMapping(value = "/{id}")
-//	@ResponseBody
-//	public ResponseEntity<Response<Funcionario>> show(@PathVariable("id") long id) {
-//		Funcionario funcionario = funcionarioService.findBy(id);
-//		Response<Funcionario> response = new Response<Funcionario>();
-//		response.setData(funcionario);
-//		return ResponseEntity.status(HttpStatus.OK).body(response);
-//	}
+
+	@GetMapping(path = "/{id}")
+	@ResponseBody
+	public ResponseEntity<Response<Funcionario>> show(@PathVariable("id") long id) {
+		Funcionario funcionario = funcionarioService.findBy(id);
+		Response<Funcionario> response = new Response<Funcionario>();
+		response.setData(funcionario);
+		return ResponseEntity.status(HttpStatus.OK).body(response);
+	}
+	
+	@Override
+	@PutMapping(path = "/{id}")
+	public ResponseEntity<Response<Funcionario>> update(Long id, @Valid Funcionario objetoDto) {
+		Response<Funcionario> response = new Response<Funcionario>();
+		Funcionario funcionario = funcionarioService.update(id, objetoDto);
+		
+		response.setData(funcionario);
+		return ResponseEntity.status(HttpStatus.OK).body(response);
+	}
 
 }
