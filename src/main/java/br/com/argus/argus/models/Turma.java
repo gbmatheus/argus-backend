@@ -3,15 +3,19 @@ package br.com.argus.argus.models;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -38,18 +42,29 @@ public class Turma implements Serializable {
 	@Column(length = 10, nullable = true)
 	private String turno = "manhã";
 
+	@OneToMany(mappedBy = "turma", cascade = CascadeType.ALL)
+	private List<Aluno> alunos;
+
 	@JsonIgnore
 	@ManyToOne
-	@JoinColumn(name = "curriculo_id", nullable = false)
+	@JoinColumn(name = "curriculo_id")
 	private Curriculo curriculo;
 
-	@OneToMany(mappedBy = "turma")
-	private List<Matricula> matriculas;
+//	@OneToMany(mappedBy = "turma")
+//	private List<TurmaDisciplinaProfessor> registro;
+	
+	@ManyToMany
+	@JoinTable(
+			name = "tur_dis_pro",
+			joinColumns = @JoinColumn(name = "dis_pro_id", referencedColumnName = "id"),
+			inverseJoinColumns = @JoinColumn(name = "turma_id", referencedColumnName = "id")
+			)
+	private List<DisciplinaProfessor> disciplinaProfessor;
+	
 
 	public Turma() {
 	}
 
-//	@NotEmpty(message = "Descrição é uma informação obrigatória")
 	public String getDescricao() {
 		return descricao;
 	}
@@ -70,6 +85,7 @@ public class Turma implements Serializable {
 		this.curriculo = curriculo;
 	}
 
+	@NotEmpty(message = "Ano escolar é uma informação obrigatória")
 	public String getAnoEscolar() {
 		return anoEscolar;
 	}
@@ -86,12 +102,20 @@ public class Turma implements Serializable {
 		this.turno = turno;
 	}
 
-	public List<Matricula> getMatriculas() {
-		return matriculas;
+	public List<Aluno> getAlunos() {
+		return alunos;
 	}
 
-	public void setMatriculas(List<Matricula> matriculas) {
-		this.matriculas = matriculas;
+	public void setAlunos(List<Aluno> alunos) {
+		this.alunos = alunos;
+	}
+
+	public List<DisciplinaProfessor> getDisciplinaProfessor() {
+		return disciplinaProfessor;
+	}
+
+	public void setDisciplinaProfessor(List<DisciplinaProfessor> disciplinaProfessor) {
+		this.disciplinaProfessor = disciplinaProfessor;
 	}
 	
 	

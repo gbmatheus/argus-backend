@@ -85,7 +85,7 @@ public class Pessoa implements Serializable {
 	}
 
 	@Valid
-	@NotNull(message = "Informações do endereço são obrigatórias")
+	@NotNull(message = "Endereço é obrigatórias")
 	public Endereco getEndereco() {
 		return endereco;
 	}
@@ -129,9 +129,9 @@ public class Pessoa implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Pessoa [getNome()=" + getNome() + ", getDataNascimento()=" + getDataNascimento()
-				+ ", getNaturalidade()=" + getNaturalidade() + ", getEndereco()=" + getEndereco() + ", getId()="
-				+ getId() + "]";
+		return "Pessoa [id=" + id + ", nome=" + nome + ", dataNascimento=" + dataNascimento + ", naturalidade="
+				+ naturalidade + ", rg=" + rg + ", ativo=" + ativo + ", endereco=" + endereco + ", responsavel="
+				+ responsavel + "]";
 	}
 
 }

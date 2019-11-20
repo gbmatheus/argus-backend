@@ -47,7 +47,7 @@ public class Funcionario implements Serializable {
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "professor")
-	private List<Matricula> matriculas;
+	private List<DisciplinaProfessor> registro;
 
 	public Funcionario() {
 	}
@@ -96,18 +96,12 @@ public class Funcionario implements Serializable {
 		this.cargaHoraria = cargaHoraria;
 	}
 
-	public List<Matricula> getMatriculas() {
-		return matriculas;
+	public List<DisciplinaProfessor> getRegistro() {
+		return registro;
 	}
 
-	public void setMatriculas(List<Matricula> matriculas) {
-		this.matriculas = matriculas;
+	public void setRegistro(List<DisciplinaProfessor> registro) {
+		this.registro = registro;
 	}
-
-	@Override
-	public String toString() {
-		return "Funcionario [id=" + id + ", cpf=" + cpf + ", pessoa=" + pessoa + ", usuario=" + usuario
-				+ ", cargaHoraria=" + cargaHoraria + "]";
-	}
-
+	
 }

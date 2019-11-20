@@ -1,14 +1,14 @@
 package br.com.argus.argus.models;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.Valid;
@@ -40,37 +40,39 @@ public class Aluno implements Serializable {
 	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL)
 	private Pessoa mae;
-
+	
 	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL)
 	private Responsavel responsavel;
 
-	@OneToMany(mappedBy = "aluno")
-	private List<Matricula> matriculas;
+	@JsonIgnore
+	@ManyToOne
+	@JoinColumn(name = "turma_id", nullable = true)
+	private Turma turma;
 
 	public Aluno() {
 	}
 
 	@Valid
-	@NotNull(message = "Infomaçções do aluno é obrigatório")
+	@NotNull(message = "Aluno é obrigatório")
 	public Pessoa getPessoa() {
 		return pessoa;
 	}
 
 	@Valid
-	@NotNull(message = "Infomaçções do pai é obrigatório")
+	@NotNull(message = "Pai é obrigatório")
 	public Pessoa getPai() {
 		return pai;
 	}
 
 	@Valid
-	@NotNull(message = "Infomaçções da mãe é obrigatório")
+	@NotNull(message = "Mãe é obrigatório")
 	public Pessoa getMae() {
 		return mae;
 	}
 
 	@Valid
-	@NotNull(message = "Infomaçções do responsável é obrigatório")
+	@NotNull(message = "Responsável é obrigatório")
 	public Responsavel getResponsavel() {
 		return responsavel;
 	}
@@ -95,12 +97,12 @@ public class Aluno implements Serializable {
 		this.responsavel = responsavel;
 	}
 
-	public List<Matricula> getMatriculas() {
-		return matriculas;
+	public Turma getTurma() {
+		return turma;
 	}
 
-	public void setMatriculas(List<Matricula> matriculas) {
-		this.matriculas = matriculas;
+	public void setTurma(Turma turma) {
+		this.turma = turma;
 	}
 
 }

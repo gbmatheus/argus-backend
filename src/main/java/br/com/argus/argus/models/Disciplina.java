@@ -43,12 +43,11 @@ public class Disciplina implements Serializable {
 	@JsonIgnore
 	@ManyToMany(mappedBy = "disciplinas")
 	private List<Curriculo> curriculos;
-
-//	@OneToOne(cascade = CascadeType.ALL)
-//	private Funcionario professor;
-
+	
+	@JsonIgnore
 	@OneToMany(mappedBy = "disciplina")
-	private List<Matricula> matriculas;
+	private List<DisciplinaProfessor> registro; 
+
 
 	public Disciplina() {
 	}
@@ -74,11 +73,6 @@ public class Disciplina implements Serializable {
 		return cargaHoraria;
 	}
 
-//	@Valid
-//	public Funcionario getProfessor() {
-//		return professor;
-//	}
-
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
 	}
@@ -99,15 +93,12 @@ public class Disciplina implements Serializable {
 		this.curriculos = curriculos;
 	}
 
-//	@Override
-//	public String toString() {
-//		return "Disciplina [id=" + id + ", codigo=" + codigo + ", nome=" + nome + ", cargaHoraria=" + cargaHoraria
-//				+ ", curriculos=" + curriculos.toString() + ", matriculas=" + matriculas + "]";
-//	}
+	public List<DisciplinaProfessor> getRegistro() {
+		return registro;
+	}
 
-//	public void setProfessor(Funcionario professor) {
-//		this.professor = professor;
-//	}
-	
+	public void setRegistro(List<DisciplinaProfessor> registro) {
+		this.registro = registro;
+	}
 	
 }
