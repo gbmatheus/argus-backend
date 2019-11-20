@@ -104,8 +104,13 @@ public class FacadeService {
 	public Curriculo addTurma(Long curriculoID, Long turmaID) {
 		Optional<Curriculo> curriculo = curriculoService.findById(curriculoID);
 		Optional<Turma> turma = turmaService.findById(turmaID);
-
+		
 		turma.get().setCurriculo(curriculo.get());
+//		Adicionando disciplinas na turma a partir das disciplinas no curriculo
+//		for (Disciplina d : curriculo.get().getDisciplinas()) {
+//			d.getTurmas().add(turma.get());
+//			turma.get().getDisciplinas().add(disciplinaService.update(d));
+//		}
 		curriculo.get().getTurmas().add(turmaService.update(turma.get()));
 		return curriculoService.update(curriculo.get());
 

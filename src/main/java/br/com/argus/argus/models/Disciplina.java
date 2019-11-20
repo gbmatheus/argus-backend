@@ -43,11 +43,15 @@ public class Disciplina implements Serializable {
 	@JsonIgnore
 	@ManyToMany(mappedBy = "disciplinas")
 	private List<Curriculo> curriculos;
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "disciplina")
-	private List<DisciplinaProfessor> registro; 
+	private List<DisciplinaProfessor> registro;
 
+//	Para teste entre disciplina e turma
+//	@JsonIgnore
+//	@ManyToMany(mappedBy = "disciplinas")
+//	private List<Turma> turmas;
 
 	public Disciplina() {
 	}
@@ -100,5 +104,5 @@ public class Disciplina implements Serializable {
 	public void setRegistro(List<DisciplinaProfessor> registro) {
 		this.registro = registro;
 	}
-	
+
 }

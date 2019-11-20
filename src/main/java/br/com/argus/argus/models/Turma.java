@@ -50,17 +50,14 @@ public class Turma implements Serializable {
 	@JoinColumn(name = "curriculo_id")
 	private Curriculo curriculo;
 
-//	@OneToMany(mappedBy = "turma")
-//	private List<TurmaDisciplinaProfessor> registro;
-	
 	@ManyToMany
-	@JoinTable(
-			name = "tur_dis_pro",
-			joinColumns = @JoinColumn(name = "dis_pro_id", referencedColumnName = "id"),
-			inverseJoinColumns = @JoinColumn(name = "turma_id", referencedColumnName = "id")
-			)
+	@JoinTable(name = "tur_dis_pro", joinColumns = @JoinColumn(name = "dis_pro_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "turma_id", referencedColumnName = "id"))
 	private List<DisciplinaProfessor> disciplinaProfessor;
-	
+
+//	Teste para adicionar disciplinas a partir do curriculo
+//	@ManyToMany
+//	@JoinTable(name = "disciplina_turma", joinColumns = @JoinColumn(name = "disciplina_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "turma_id", referencedColumnName = "id"))
+//	private List<Disciplina> disciplinas;
 
 	public Turma() {
 	}
@@ -117,7 +114,5 @@ public class Turma implements Serializable {
 	public void setDisciplinaProfessor(List<DisciplinaProfessor> disciplinaProfessor) {
 		this.disciplinaProfessor = disciplinaProfessor;
 	}
-	
-	
 
 }
