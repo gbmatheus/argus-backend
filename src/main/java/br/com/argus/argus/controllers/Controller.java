@@ -47,10 +47,9 @@ public abstract class Controller<T> {
 	public ResponseEntity<Response<Optional<T>>> show(Long id) {
 
 		Response<Optional<T>> response = new Response<Optional<T>>();
-//		T t = serviceGeneric.findBy(id);
 		Optional<T> t = getService().findById(id);
 
-		if (t == null) {
+		if (!t.isPresent()) {
 			ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
 		}
 		response.setData(t);
