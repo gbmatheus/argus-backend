@@ -33,15 +33,12 @@ public class Aluno implements Serializable {
 	@OneToOne(cascade = CascadeType.ALL)
 	private Pessoa pessoa;
 
-	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL)
 	private Pessoa pai;
 
-	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL)
 	private Pessoa mae;
 	
-	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL)
 	private Responsavel responsavel;
 
