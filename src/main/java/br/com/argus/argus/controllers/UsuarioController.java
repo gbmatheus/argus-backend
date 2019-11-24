@@ -61,6 +61,7 @@ public class UsuarioController {
 
 	}
 
+	@CrossOrigin
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<Response<Optional<Usuario>>> show(@PathVariable("id") long id) {
 		Optional<Usuario> usuario = usuarioService.findById(id);
@@ -74,6 +75,7 @@ public class UsuarioController {
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
 	}
 
+	@CrossOrigin
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<Response<Usuario>> update(@PathVariable("id") long id, @RequestBody Usuario usuario) {
 		Response<Usuario> response = new Response<Usuario>();
@@ -86,11 +88,13 @@ public class UsuarioController {
 
 	}
 
+	@CrossOrigin
 	@DeleteMapping(path = "/{id}")
 	public void remove(@PathVariable Long id) {
 
 	}
 
+	@CrossOrigin
 	@DeleteMapping(path = "/delete/{id}")
 	public void destroy(@PathVariable long id) {
 

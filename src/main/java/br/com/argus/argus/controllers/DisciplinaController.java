@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,12 +42,14 @@ public class DisciplinaController extends Controller<Disciplina> {
 	}
 
 	@Override
+	@CrossOrigin
 	@GetMapping
 	public ResponseEntity<List<Disciplina>> index() {
 		return super.index();
 	}
 
 	@Override
+	@CrossOrigin
 	@PostMapping
 	public ResponseEntity<Response<Disciplina>> create(@Valid @RequestBody Disciplina objetoDto, BindingResult result) {
 		System.out.println(objetoDto.toString());
@@ -54,23 +57,27 @@ public class DisciplinaController extends Controller<Disciplina> {
 	}
 
 	@Override
+	@CrossOrigin
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<Response<Optional<Disciplina>>> show(@PathVariable("id") Long id) {
 		return super.show(id);
 	}
 
 	@Override
+	@CrossOrigin
 	@PutMapping(path = "/{id}")
 	public ResponseEntity<Response<Disciplina>> update(@PathVariable("id") Long id, @Valid @RequestBody Disciplina objetoDto) {
 		return super.update(id, objetoDto);
 	}
 
 	@Override
+	@CrossOrigin
 	@DeleteMapping(path = "/{id}")
 	public ResponseEntity<Response<Disciplina>> delete(@PathVariable("id") Long id) {
 		return super.delete(id);
 	}
 	
+	@CrossOrigin
 	@PutMapping(path="/{d_id}/professor/{p_id}")
 	public ResponseEntity<Response<DisciplinaProfessor>> addDisciplinaProfessor(@PathVariable("d_id") Long disciplinaID, @PathVariable("p_id") Long professorID){
 		Response<DisciplinaProfessor> response = new Response<DisciplinaProfessor>();

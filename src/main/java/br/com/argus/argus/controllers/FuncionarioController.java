@@ -89,6 +89,7 @@ public class FuncionarioController extends Controller<Funcionario>{
 		return ResponseEntity.status(HttpStatus.OK).body(funcionarios);
 	}
 
+	@CrossOrigin
 	@GetMapping(path = "/{id}")
 	@ResponseBody
 	public ResponseEntity<Response<Funcionario>> show(@PathVariable("id") long id) {
@@ -99,6 +100,7 @@ public class FuncionarioController extends Controller<Funcionario>{
 	}
 	
 	@Override
+	@CrossOrigin
 	@PutMapping(path = "/{id}")
 	public ResponseEntity<Response<Funcionario>> update(Long id, @Valid Funcionario objetoDto) {
 		Response<Funcionario> response = new Response<Funcionario>();

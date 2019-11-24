@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,18 +50,21 @@ public class CurriculoController extends Controller<Curriculo> {
 	}
 
 	@Override
+	@CrossOrigin
 	@GetMapping
 	public ResponseEntity<List<Curriculo>> index() {
 		return super.index();
 	}
 
 	@Override
+	@CrossOrigin
 	@PostMapping
 	public ResponseEntity<Response<Curriculo>> create(@Valid @RequestBody Curriculo objetoDto, BindingResult result) {
 		return super.create(objetoDto, result);
 	}
 
 	@Override
+	@CrossOrigin
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<Response<Optional<Curriculo>>> show(@PathVariable("id") Long id) {
 		System.out.println(id);
@@ -68,6 +72,7 @@ public class CurriculoController extends Controller<Curriculo> {
 	}
 
 	@Override
+	@CrossOrigin
 	@PutMapping(path = "/{id}")
 	public ResponseEntity<Response<Curriculo>> update(@PathVariable("id") Long id,
 			@Valid @RequestBody Curriculo objetoDto) {
@@ -75,11 +80,13 @@ public class CurriculoController extends Controller<Curriculo> {
 	}
 
 	@Override
+	@CrossOrigin
 	@DeleteMapping(path = "/{id}")
 	public ResponseEntity<Response<Curriculo>> delete(@PathVariable("id") Long id) {
 		return super.delete(id);
 	}
 
+	@CrossOrigin
 	@GetMapping(path = "/{c_id}/disciplinas")
 	public ResponseEntity<List<Disciplina>> listDisciplinas(@PathVariable("c_id") Long curriculoID) {
 		List<Disciplina> disciplinas = curriculoService.listDisciplina(curriculoID);
@@ -87,6 +94,7 @@ public class CurriculoController extends Controller<Curriculo> {
 
 	}
 
+	@CrossOrigin
 	@PutMapping(path = "/{c_id}/disciplinas/{d_id}") // , produces = "application/json")
 	public ResponseEntity<Response<List<Disciplina>>> addDisciplina(@PathVariable("c_id") Long curriculoID,
 			@PathVariable("d_id") Long disciplinaID) {
@@ -99,12 +107,14 @@ public class CurriculoController extends Controller<Curriculo> {
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 
+	@CrossOrigin
 	@GetMapping(path = "{c_id}/turmas")
 	ResponseEntity<List<Turma>> listTurmas(@PathVariable("c_id") Long curriculoID) {
 		List<Turma> turmas = curriculoService.listTurma(curriculoID);
 		return ResponseEntity.status(HttpStatus.OK).body(turmas);
 	}
 
+	@CrossOrigin
 	@PutMapping(path = "/{c_id}/turmas/{t_id}") // , produces = "application/json")
 	public ResponseEntity<Response<Curriculo>> addCurriculo(@PathVariable("c_id") Long curriculoID,
 			@PathVariable("t_id") Long turmaID) {

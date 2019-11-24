@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,24 +39,28 @@ public class TurmaController extends Controller<Turma> {
 	public ServiceGeneric<Turma> getService() {
 		return turmaService;
 	}
-
+	
 	@Override
+	@CrossOrigin
 	@GetMapping
 	public ResponseEntity<List<Turma>> index() {
 		return super.index();
 	}
 
+	@CrossOrigin
 	@PostMapping
 	public ResponseEntity<Response<Turma>> create(@Valid @RequestBody Turma objetoDto, BindingResult result) {
 		return super.create(objetoDto, result);
 	}
 
 	@Override
+	@CrossOrigin
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<Response<Optional<Turma>>> show(@PathVariable("id") Long id) {
 		return super.show(id);
 	}
 	
+	@CrossOrigin
 	@PutMapping(path = "/{t_id}/alunos/{a_id}")
 	public ResponseEntity<Response<List<Aluno>>> matricula(@PathVariable("t_id") Long turmaID, @PathVariable("a_id") Long alunoID){
 		Response<List<Aluno>> response = new Response<List<Aluno>>();
