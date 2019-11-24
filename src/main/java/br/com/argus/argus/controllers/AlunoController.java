@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,10 +27,11 @@ import br.com.argus.argus.services.AlunoService;
 import br.com.argus.argus.services.EnderecoService;
 import br.com.argus.argus.services.PessoaService;
 import br.com.argus.argus.services.ResponsavelService;
+import br.com.argus.argus.services.ServiceGeneric;
 
 @RestController
 @RequestMapping("/api/alunos")
-public class AlunoController {
+public class AlunoController extends Controller<Aluno>{
 
 	@Autowired
 	EnderecoService enderecoService;
@@ -43,6 +45,13 @@ public class AlunoController {
 	@Autowired
 	ResponsavelService responsavelService;
 
+	@Override
+	public ServiceGeneric<Aluno> getService() {
+		return alunoService;
+	}
+
+
+	@CrossOrigin
 	@Transactional
 	@PostMapping
 	public ResponseEntity<Response<Aluno>> create(@Valid @RequestBody Aluno alunoDto, BindingResult result) {
@@ -75,12 +84,14 @@ public class AlunoController {
 
 	}
 
+	@CrossOrigin
 	@GetMapping
 	public ResponseEntity<List<Aluno>> index() {
 		List<Aluno> alunos = alunoService.findByAll();
 		return ResponseEntity.status(HttpStatus.OK).body(alunos);
 	}
 
+	@CrossOrigin
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Response<Aluno>> show(@PathVariable("id") long id) {
 		Aluno aluno = alunoService.findBy(id);
@@ -89,6 +100,7 @@ public class AlunoController {
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 
+	@CrossOrigin
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<Response<Aluno>> update(@PathVariable("id") long id, @RequestBody Aluno aluno) {
 //		Response<Aluno> response = new Response<Aluno>();
@@ -102,11 +114,13 @@ public class AlunoController {
 
 	}
 
+	@CrossOrigin
 	@DeleteMapping(path = "/{id}")
 	public void remove(@PathVariable long id) {
 
 	}
 
+	@CrossOrigin
 	@DeleteMapping(path = "/delete/{id}")
 	public ResponseEntity<?> delete(@PathVariable long id) {
 		return alunoService.findById(id).map(record -> {
