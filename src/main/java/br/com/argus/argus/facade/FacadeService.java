@@ -1,5 +1,6 @@
 package br.com.argus.argus.facade;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import br.com.argus.argus.services.DisciplinaProfessorService;
 import br.com.argus.argus.services.DisciplinaService;
 import br.com.argus.argus.services.FuncionarioService;
 import br.com.argus.argus.services.TurmaService;
+import br.com.argus.argus.services.UsuarioService;
 
 @Service
 public class FacadeService {
@@ -29,6 +31,9 @@ public class FacadeService {
 
 	@Autowired
 	FuncionarioService funcionarioService;
+	
+	@Autowired
+	UsuarioService usuarioService;
 
 	@Autowired
 	DisciplinaService disciplinaService;
@@ -42,6 +47,86 @@ public class FacadeService {
 	@Autowired
 	CurriculoService curriculoService;
 
+	public Aluno createAluno(Aluno aluno) {
+		return alunoService.save(aluno);
+	}
+	
+	public Aluno updateAluno(Aluno aluno) {
+		return alunoService.update(aluno);
+	}
+	
+	public Aluno showAluno(Long id) {
+		return alunoService.findById(id).get();
+	}
+	
+	public List<Aluno> indexAluno() {
+		return alunoService.findByAll();
+	}
+
+	public Funcionario createFuncionario(Funcionario funcionario) {
+		return funcionarioService.save(funcionario);
+	}
+	
+	public Funcionario updateAluno(Funcionario funcionario) {
+		return funcionarioService.update(funcionario);
+	}
+	
+	public Funcionario showFuncionario(Long id) {
+		return funcionarioService.findById(id).get();
+	}
+	
+	public List<Funcionario> indexFuncionario() {
+		return funcionarioService.findByAll();
+	}
+	
+	public Disciplina createDisciplina(Disciplina disciplina) {
+	    return disciplinaService.save(disciplina);
+	}
+
+	public Disciplina updateAluno(Disciplina disciplina) {
+	    return disciplinaService.update(disciplina);
+	}
+
+	public Disciplina showDisciplina(Long id) {
+	    return disciplinaService.findById(id).get();
+	}
+
+	public List<Disciplina> indexDisciplina() {
+	    return disciplinaService.findByAll();
+	}
+
+	public Turma createTurma(Turma turma) {
+	    return turmaService.save(turma);
+	}
+
+	public Turma updateAluno(Turma turma) {
+	    return turmaService.update(turma);
+	}
+
+	public Turma showTurma(Long id) {
+	    return turmaService.findById(id).get();
+	}
+
+	public List<Turma> indexTurma() {
+	    return turmaService.findByAll();
+	}
+
+	public Curriculo createCurriculo(Curriculo curriculo) {
+	    return curriculoService.save(curriculo);
+	}
+
+	public Curriculo updateCurriculo(Curriculo curriculo) {
+	    return curriculoService.update(curriculo);
+	}
+
+	public Curriculo showCurriculo(Long id) {
+	    return curriculoService.findById(id).get();
+	}
+
+	public List<Curriculo> indexCurriculo() {
+	    return curriculoService.findByAll();
+	}
+	
 	// Realizar matricula do aluno na turma
 	@Transactional
 	public Turma matricular(Long turmaID, Long alunoID) {
