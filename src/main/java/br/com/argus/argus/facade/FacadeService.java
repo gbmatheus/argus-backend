@@ -55,6 +55,10 @@ public class FacadeService {
 		return alunoService.update(aluno);
 	}
 	
+	public Aluno updateAluno(Long id, Aluno aluno) {
+		return alunoService.update(aluno);
+	}
+	
 	public Aluno showAluno(Long id) {
 		return alunoService.findById(id).get();
 	}
@@ -62,12 +66,16 @@ public class FacadeService {
 	public List<Aluno> indexAluno() {
 		return alunoService.findByAll();
 	}
-
+	
 	public Funcionario createFuncionario(Funcionario funcionario) {
 		return funcionarioService.save(funcionario);
 	}
 	
-	public Funcionario updateAluno(Funcionario funcionario) {
+	public Funcionario updateFuncionario(Funcionario funcionario) {
+		return funcionarioService.update(funcionario);
+	}
+	
+	public Funcionario updateFuncionario(Long id, Funcionario funcionario) {
 		return funcionarioService.update(funcionario);
 	}
 	

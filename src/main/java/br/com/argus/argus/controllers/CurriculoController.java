@@ -109,7 +109,7 @@ public class CurriculoController extends Controller<Curriculo> {
 
 	@CrossOrigin
 	@GetMapping(path = "{c_id}/turmas")
-	ResponseEntity<List<Turma>> listTurmas(@PathVariable("c_id") Long curriculoID) {
+	public ResponseEntity<List<Turma>> listTurmas(@PathVariable("c_id") Long curriculoID) {
 		List<Turma> turmas = curriculoService.listTurma(curriculoID);
 		return ResponseEntity.status(HttpStatus.OK).body(turmas);
 	}

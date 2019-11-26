@@ -38,6 +38,7 @@ public class Usuario implements Serializable {
 	private String login;
 
 	//adicionar senha padrao e hash
+	@JsonIgnore
 	@Column(nullable = false, length = 50)
 	private String senha;
 

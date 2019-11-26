@@ -30,7 +30,7 @@ import br.com.argus.argus.services.UsuarioService;
 
 @RestController
 @RequestMapping("/api/funcionarios")
-public class FuncionarioController extends Controller<Funcionario>{
+public class FuncionarioController {
 
 	@Autowired
 	private PessoaService pessoaService;
@@ -41,10 +41,10 @@ public class FuncionarioController extends Controller<Funcionario>{
 	@Autowired
 	private FuncionarioService funcionarioService;
 	
-	@Override
-	public ServiceGeneric<Funcionario> getService() {
-		return funcionarioService;
-	}
+//	@Override
+//	public ServiceGeneric<Funcionario> getService() {
+//		return funcionarioService;
+//	}
 
 	@CrossOrigin // Notação cors para ter acesso a api via url
 	@Transactional
@@ -99,7 +99,6 @@ public class FuncionarioController extends Controller<Funcionario>{
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 	
-	@Override
 	@CrossOrigin
 	@PutMapping(path = "/{id}")
 	public ResponseEntity<Response<Funcionario>> update(Long id, @Valid Funcionario objetoDto) {
