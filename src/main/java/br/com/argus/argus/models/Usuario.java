@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -29,21 +30,21 @@ public class Usuario implements Serializable {
 	private static final long serialVersionUID = -323345484627801915L;
 
 	@Id
-	@JsonIgnore
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	//adicionar random 
 	@Column(nullable = false, length = 50)
 	private String login;
+	
+	@Column(nullable = false, length = 100)
+	private String email;
 
-	//adicionar senha padrao e hash
 	@JsonIgnore
 	@Column(nullable = false, length = 50)
 	private String senha;
 
-	@Column(nullable = false, length = 100)
-	private String email;
+	@Transient
+	private String confirmaSenha;
 
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)

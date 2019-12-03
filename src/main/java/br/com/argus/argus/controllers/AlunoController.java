@@ -8,7 +8,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,38 +20,33 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import br.com.argus.argus.facade.FacadeService;
 import br.com.argus.argus.models.Aluno;
 import br.com.argus.argus.responses.Response;
-import br.com.argus.argus.services.AlunoService;
-import br.com.argus.argus.services.EnderecoService;
-import br.com.argus.argus.services.PessoaService;
-import br.com.argus.argus.services.ResponsavelService;
-import br.com.argus.argus.services.ServiceGeneric;
 
 @RestController
 @RequestMapping("/api/alunos")
-public class AlunoController extends Controller<Aluno>{
+public class AlunoController implements IController<Aluno>{// extends Controller<Aluno>{
 
 	@Autowired
-	EnderecoService enderecoService;
-
-	@Autowired
-	PessoaService pessoaService;
-
-	@Autowired
-	AlunoService alunoService;
-
-	@Autowired
-	ResponsavelService responsavelService;
-
-	@Override
-	public ServiceGeneric<Aluno> getService() {
-		return alunoService;
+	private FacadeService facadeService;
+	
+//	@Autowired
+//	AlunoService alunoService; 
+//	
+//	@Override
+//	public ServiceGeneric<Aluno> getService() {
+//		return alunoService;
+//	}
+	
+	@CrossOrigin
+	@GetMapping
+	public ResponseEntity<List<Aluno>> index() {
+		List<Aluno> alunos = facadeService.indexAluno();
+		return ResponseEntity.status(HttpStatus.OK).body(alunos);
 	}
 
-
 	@CrossOrigin
-	@Transactional
 	@PostMapping
 	public ResponseEntity<Response<Aluno>> create(@Valid @RequestBody Aluno alunoDto, BindingResult result) {
 		Response<Aluno> response = new Response<Aluno>();
@@ -61,73 +55,96 @@ public class AlunoController extends Controller<Aluno>{
 			result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()));
 			return ResponseEntity.badRequest().body(response);
 		}
-		Aluno aluno = new Aluno();
-
-		System.out.println("Settaando dados pessoais de aluno");
-		aluno.setPessoa(pessoaService.save(alunoDto.getPessoa()));
-		System.out.println("Settou aluno");
-		System.out.println("Settando dados do pai");
-		aluno.setPai(pessoaService.save(alunoDto.getPai()));
-		System.out.println("Settou pai");
-		System.out.println("Settando dados do mae");
-		aluno.setMae(pessoaService.save(alunoDto.getMae()));
-		System.out.println("Settou mae");
-		System.out.println("Settando dados do responsavel");
-		aluno.setResponsavel(responsavelService.save(alunoDto.getResponsavel()));
-		System.out.println("Settou responsavel");
-
-		Aluno obj = this.alunoService.save(alunoDto);
-		response.setData(obj);
+		
+		Aluno aluno = this.facadeService.createAluno(alunoDto);
+		response.setData(aluno);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(alunoDto.getId())
 				.toUri();
 		return ResponseEntity.created(uri).body(response);
 
 	}
-
-	@CrossOrigin
-	@GetMapping
-	public ResponseEntity<List<Aluno>> index() {
-		List<Aluno> alunos = alunoService.findByAll();
-		return ResponseEntity.status(HttpStatus.OK).body(alunos);
-	}
-
+	
 	@CrossOrigin
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Response<Aluno>> show(@PathVariable("id") long id) {
-		Aluno aluno = alunoService.findBy(id);
+	public ResponseEntity<Response<Aluno>> show(@PathVariable("id") Long id) {
 		Response<Aluno> response = new Response<Aluno>();
+		Aluno aluno = facadeService.showAluno(id);
 		response.setData(aluno);
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 
 	@CrossOrigin
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Response<Aluno>> update(@PathVariable("id") long id, @RequestBody Aluno aluno) {
-//		Response<Aluno> response = new Response<Aluno>();
-
-//		return alunoService.findById(id).map(record -> {
-//			Aluno updated = alunoService.save(aluno);
-//			response.setData(updated);
-//			return ResponseEntity.accepted().body(response);
-//		}).orElse(ResponseEntity.notFound().build());
-		return ResponseEntity.notFound().build();
-
+	public ResponseEntity<Response<Aluno>> update(@PathVariable("id") Long id, @RequestBody Aluno alunoDto) {
+		Response<Aluno> response = new Response<Aluno>();
+		
+		Aluno aluno = this.facadeService.updateAluno(id, alunoDto);
+		response.setData(aluno);
+				
+		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
-
+	
 	@CrossOrigin
 	@DeleteMapping(path = "/{id}")
-	public void remove(@PathVariable long id) {
-
+	public ResponseEntity<Response<Aluno>> remove(@PathVariable Long id) {
+//		alunoService.findById(id).map(record -> {
+//			alunoService.delete(id);
+//			return ResponseEntity.ok().build();
+//		}).orElse(ResponseEntity.notFound().build());
+		return null;
+		
 	}
 
 	@CrossOrigin
 	@DeleteMapping(path = "/delete/{id}")
-	public ResponseEntity<?> delete(@PathVariable long id) {
-		return alunoService.findById(id).map(record -> {
-			alunoService.deleteById(id);
-			return ResponseEntity.ok().build();
-		}).orElse(ResponseEntity.notFound().build());
+	public ResponseEntity<List<Aluno>> delete(@PathVariable Long id) {
+//		alunoService.findById(id).map(record -> {
+//			alunoService.delete(id);
+//			return ResponseEntity.ok().build();
+//		}).orElse(ResponseEntity.notFound().build());
+		return null;
 
 	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

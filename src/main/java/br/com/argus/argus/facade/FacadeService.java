@@ -46,7 +46,13 @@ public class FacadeService {
 
 	@Autowired
 	CurriculoService curriculoService;
-
+	
+//	Métodos do aluno -----------------------------------------------------------
+	
+	public List<Aluno> indexAluno() {
+		return alunoService.findByAll();
+	}
+	
 	public Aluno createAluno(Aluno aluno) {
 		return alunoService.save(aluno);
 	}
@@ -56,17 +62,14 @@ public class FacadeService {
 	}
 	
 	public Aluno updateAluno(Long id, Aluno aluno) {
-		return alunoService.update(aluno);
+		return alunoService.update(id, aluno);
 	}
 	
 	public Aluno showAluno(Long id) {
 		return alunoService.findById(id).get();
 	}
 	
-	public List<Aluno> indexAluno() {
-		return alunoService.findByAll();
-	}
-	
+//	Métodos do funcionário -----------------------------------------------------
 	public Funcionario createFuncionario(Funcionario funcionario) {
 		return funcionarioService.save(funcionario);
 	}
@@ -76,7 +79,7 @@ public class FacadeService {
 	}
 	
 	public Funcionario updateFuncionario(Long id, Funcionario funcionario) {
-		return funcionarioService.update(funcionario);
+		return funcionarioService.update(id, funcionario);
 	}
 	
 	public Funcionario showFuncionario(Long id) {
@@ -87,12 +90,17 @@ public class FacadeService {
 		return funcionarioService.findByAll();
 	}
 	
+//	Métodos da disciplina -------------------------------------------------------
 	public Disciplina createDisciplina(Disciplina disciplina) {
 	    return disciplinaService.save(disciplina);
 	}
 
-	public Disciplina updateAluno(Disciplina disciplina) {
+	public Disciplina updateDisciplina(Disciplina disciplina) {
 	    return disciplinaService.update(disciplina);
+	}
+	
+	public Disciplina updateDisciplina(Long id, Disciplina disciplina) {
+	    return disciplinaService.update(id, disciplina);
 	}
 
 	public Disciplina showDisciplina(Long id) {
@@ -103,12 +111,17 @@ public class FacadeService {
 	    return disciplinaService.findByAll();
 	}
 
+//	Métodos da turma ------------------------------------------------------------
 	public Turma createTurma(Turma turma) {
 	    return turmaService.save(turma);
 	}
 
-	public Turma updateAluno(Turma turma) {
+	public Turma updateTurma(Turma turma) {
 	    return turmaService.update(turma);
+	}
+	
+	public Turma updateTurma(Long id, Turma turma) {
+	    return turmaService.update(id, turma);
 	}
 
 	public Turma showTurma(Long id) {
@@ -119,12 +132,37 @@ public class FacadeService {
 	    return turmaService.findByAll();
 	}
 
-	public Curriculo createCurriculo(Curriculo curriculo) {
+	public List<Aluno> listAlunos(Long id) {
+		return turmaService.findAlunos(id);
+	}
+
+//	 Realizar matricula do aluno na turma
+	@Transactional
+	public Turma matricular(Long turmaID, Aluno alunoDto) {
+		return turmaService.maticular(turmaID, alunoDto);
+	}
+	
+//	 Realizar matricula do aluno na turma
+	@Transactional
+	public Turma matricular(Long turmaID, Long alunoID) {
+		return turmaService.maticular(turmaID, alunoID);
+	}
+	
+	public List<Disciplina> listDisciplinas(Long id) {
+		return null;
+	}
+	
+//	Métodos do cúrriculo --------------------------------------------------------
+ 	public Curriculo createCurriculo(Curriculo curriculo) {
 	    return curriculoService.save(curriculo);
 	}
 
 	public Curriculo updateCurriculo(Curriculo curriculo) {
 	    return curriculoService.update(curriculo);
+	}
+
+	public Curriculo updateCurriculo(Long id, Curriculo curriculo) {
+	    return curriculoService.update(id, curriculo);
 	}
 
 	public Curriculo showCurriculo(Long id) {
@@ -134,21 +172,9 @@ public class FacadeService {
 	public List<Curriculo> indexCurriculo() {
 	    return curriculoService.findByAll();
 	}
-	
-	// Realizar matricula do aluno na turma
-	@Transactional
-	public Turma matricular(Long turmaID, Long alunoID) {
-		Optional<Turma> turma = turmaService.findById(turmaID);
-		Optional<Aluno> aluno = alunoService.findById(alunoID);
 
-		aluno.get().setTurma(turma.get());
 
-		turma.get().getAlunos().add(alunoService.save(aluno.get()));
-
-		return turmaService.update(turma.get());
-	}
-
-	// Adicionar a disciplina e professor
+//	 Adicionar a disciplina e professor
 	@Transactional
 	public DisciplinaProfessor ministrada(Long disciplinaID, Long professorID) {
 		DisciplinaProfessor registro = new DisciplinaProfessor();
@@ -166,7 +192,7 @@ public class FacadeService {
 		return dpService.save(registro);
 	}
 
-	// Adicionar à turma
+//	 Adicionar disciplina ao turma
 	@Transactional
 	public Turma registrarDisciplina(Long turmaID, Long dpID) {
 		Optional<DisciplinaProfessor> disciplinaProfessor = dpService.findById(dpID);
@@ -180,7 +206,7 @@ public class FacadeService {
 		return turmaService.update(turma.get());
 	}
 
-	// Adicionar disciplina ao curriculo
+//	 Adicionar disciplina ao curriculo
 	@Transactional
 	public Curriculo addDisciplina(Long curriculoID, Long disciplinaID) {
 		Optional<Curriculo> curriculo = curriculoService.findById(curriculoID);
@@ -192,7 +218,7 @@ public class FacadeService {
 		return curriculoService.update(curriculo.get());
 	}
 
-	// Adicionar turma ao curriculo
+//	 Adicionar turma ao curriculo
 	@Transactional
 	public Curriculo addTurma(Long curriculoID, Long turmaID) {
 		Optional<Curriculo> curriculo = curriculoService.findById(curriculoID);
@@ -209,4 +235,6 @@ public class FacadeService {
 
 	}
 
+	
+	
 }

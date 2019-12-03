@@ -15,23 +15,18 @@ import br.com.argus.argus.models.Disciplina;
 import br.com.argus.argus.models.Turma;
 import br.com.argus.argus.repositories.CurriculoRepository;
 import br.com.argus.argus.repositories.DisciplinaRepositories;
-import br.com.argus.argus.repositories.TurmaRepository;
 
 @Service
 public class CurriculoService extends ServiceGeneric<Curriculo> {
 
 	@Autowired
-	DisciplinaService disciplinaService;
+	DisciplinaRepositories disciplinaRepositories;
 
 	@Autowired
 	TurmaService turmaService;
 
 	@Autowired
 	CurriculoRepository curriculoRepository;
-	@Autowired
-	DisciplinaRepositories disciplinaRepositories;
-	@Autowired
-	TurmaRepository turmaRepository;
 
 	@Override
 	public JpaRepository<Curriculo, Long> getRepository() {
@@ -59,9 +54,7 @@ public class CurriculoService extends ServiceGeneric<Curriculo> {
 	public Curriculo addDisciplina(Long curriculoID, Long disciplinaID) {
 		Optional<Curriculo> curriculo = curriculoRepository.findById(curriculoID);
 		Optional<Disciplina> disciplina = disciplinaRepositories.findById(disciplinaID);
-
-		System.out.println("Adicinoando disciplina service");
-
+		
 		if (!curriculo.isPresent()) {
 			throw new ServicesException("Curriculo não encontrado");
 		}
@@ -69,20 +62,19 @@ public class CurriculoService extends ServiceGeneric<Curriculo> {
 			throw new ServicesException("Disciplina não encontrada");
 		}
 
-//		disciplina.get().getCurriculos().add(curriculo.get());
+		disciplina.get().getCurriculos().add(curriculo.get());
+		Disciplina d = disciplinaRepositories.save(disciplina.get());
 
-		curriculo.get().getDisciplinas().add(disciplina.get());
+//		curriculo.get().getDisciplinas().add(disciplina.get());
+		curriculo.get().getDisciplinas().add(d);
 		
 		return curriculoRepository.save(curriculo.get());
 	}
-	
 
 	@Transactional
 	public Curriculo addTurma(Long curriculoID, Turma turmaDto) {
 		Optional<Curriculo> curriculo = curriculoRepository.findById(curriculoID);
 		Turma turma = new Turma();
-
-		System.out.println("Adicinoando curriculo a turma");
 
 		if (!curriculo.isPresent()) {
 			throw new ServicesException("Curriculo não encontrado");
@@ -92,7 +84,8 @@ public class CurriculoService extends ServiceGeneric<Curriculo> {
 		turma.setTurno(turmaDto.getTurno());
 		turma.setDescricao(turmaDto.getDescricao());
 		turma.setCurriculo(curriculo.get());
-		curriculo.get().getTurmas().add(turma);
+//		curriculo.get().getTurmas().add(turma);
+		curriculo.get().getTurmas().add(turmaService.save(turma));
 
 		return curriculoRepository.save(curriculo.get());
 	}

@@ -8,51 +8,40 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import br.com.argus.argus.facade.FacadeService;
 import br.com.argus.argus.models.Funcionario;
 import br.com.argus.argus.responses.Response;
-import br.com.argus.argus.services.FuncionarioService;
-import br.com.argus.argus.services.PessoaService;
-import br.com.argus.argus.services.ServiceGeneric;
-import br.com.argus.argus.services.UsuarioService;
 
 @RestController
 @RequestMapping("/api/funcionarios")
-public class FuncionarioController {
+public class FuncionarioController implements IController<Funcionario> {
 
 	@Autowired
-	private PessoaService pessoaService;
+	private FacadeService facadeService;
 
-	@Autowired
-	private UsuarioService usuarioService;
+	@CrossOrigin
+	@GetMapping
+	public ResponseEntity<List<Funcionario>> index() {
+		List<Funcionario> funcionarios = facadeService.indexFuncionario();
+		return ResponseEntity.status(HttpStatus.OK).body(funcionarios);
+	}
 
-	@Autowired
-	private FuncionarioService funcionarioService;
-	
-//	@Override
-//	public ServiceGeneric<Funcionario> getService() {
-//		return funcionarioService;
-//	}
-
-	@CrossOrigin // Notação cors para ter acesso a api via url
-	@Transactional
+	@CrossOrigin
 	@PostMapping
-	@ResponseBody
 	public ResponseEntity<Response<Funcionario>> create(@Valid @RequestBody Funcionario funcionarioDto,
 			BindingResult result) {
-		System.out.println(funcionarioDto.toString());
 		Response<Funcionario> response = new Response<Funcionario>();
 
 		if (result.hasErrors()) {
@@ -60,53 +49,44 @@ public class FuncionarioController {
 			return ResponseEntity.badRequest().body(response);
 		}
 
-		Funcionario funcionario = new Funcionario();
-
-		System.out.println("Settando dados pessoais de funcionario");
-		funcionario.setPessoa(pessoaService.save(funcionarioDto.getPessoa()));
-		System.out.println("Settou pessoa");
-		System.out.println("Settando do usuario do funcionario");
-		funcionario.setUsuario(usuarioService.save(funcionarioDto.getUsuario()));
-		System.out.println("Settou usuario");
-		funcionario.setCargaHoraria(funcionarioDto.getCargaHoraria());
-		
-		funcionario.setCpf(funcionarioDto.getCpf());
-		System.out.println("Settou dados do funcionario");
-
-		Funcionario obj = this.funcionarioService.save(funcionario);
-		response.setData(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(funcionario.getId())
+		Funcionario funcionario = this.facadeService.createFuncionario(funcionarioDto);
+		response.setData(funcionario);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(funcionarioDto.getId())
 				.toUri();
 		return ResponseEntity.created(uri).body(response);
 
 	}
 
 	@CrossOrigin
-	@GetMapping
-	@ResponseBody
-	public ResponseEntity<List<Funcionario>> index() {
-		List<Funcionario> funcionarios = funcionarioService.findByAll();
-		return ResponseEntity.status(HttpStatus.OK).body(funcionarios);
+	@GetMapping(path = "/{id}")
+	public ResponseEntity<Response<Funcionario>> show(@PathVariable("id") Long id) {
+		Response<Funcionario> response = new Response<Funcionario>();
+		Funcionario funcionario = facadeService.showFuncionario(id);
+		response.setData(funcionario);
+		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 
 	@CrossOrigin
-	@GetMapping(path = "/{id}")
-	@ResponseBody
-	public ResponseEntity<Response<Funcionario>> show(@PathVariable("id") long id) {
-		Funcionario funcionario = funcionarioService.findBy(id);
+	@PutMapping(path = "/{id}")
+	public ResponseEntity<Response<Funcionario>> update(Long id, @Valid Funcionario funcionarioDto) {
 		Response<Funcionario> response = new Response<Funcionario>();
+		Funcionario funcionario = this.facadeService.updateFuncionario(id, funcionarioDto);
 		response.setData(funcionario);
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
-	
+
 	@CrossOrigin
-	@PutMapping(path = "/{id}")
-	public ResponseEntity<Response<Funcionario>> update(Long id, @Valid Funcionario objetoDto) {
-		Response<Funcionario> response = new Response<Funcionario>();
-		Funcionario funcionario = funcionarioService.update(id, objetoDto);
-		
-		response.setData(funcionario);
-		return ResponseEntity.status(HttpStatus.OK).body(response);
+	@DeleteMapping(path = "/{id}")
+	public ResponseEntity<Response<Funcionario>> remove(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@CrossOrigin
+	@DeleteMapping(path = "/delete/{id}")
+	public ResponseEntity<List<Funcionario>> delete(Long id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

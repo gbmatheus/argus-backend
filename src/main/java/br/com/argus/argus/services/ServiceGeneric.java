@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.argus.argus.exception.NoContentException;
 import br.com.argus.argus.exception.ServicesException;
 
 @Service
@@ -19,21 +18,8 @@ public abstract class ServiceGeneric<T> {
 	public Optional<T> findById(Long id) {
 		Optional<T> t = getRepository().findById(id);
 		if (!t.isPresent())
-			throw new NoContentException(t.getClass() + " não encontrado");
+			throw new ServicesException(t.getClass() + " não encontrado");
 		return t;
-	}
-
-	public T findBy(Long id) {
-		T obj = getRepository().findOne(id);
-		if (obj == null)
-			try {
-				throw new ServicesException(obj.getClass().getName() + " não existe");
-
-			} catch (ServicesException e) {
-				e.printStackTrace();
-			}
-
-		return obj;
 	}
 
 	public List<T> findByAll() {
@@ -51,9 +37,8 @@ public abstract class ServiceGeneric<T> {
 	}
 
 	@Transactional
-	public T update(Long id, T objetoDto) {
+	public T update(Long id, T objeto) {
 		return findById(id).map(record -> {
-
 			T obj = getRepository().save(record);
 			return obj;
 		}).orElse(null);
@@ -62,14 +47,21 @@ public abstract class ServiceGeneric<T> {
 	@Transactional
 	public void remove(Long id) {
 		findById(id).map(record -> {
-
 			return getRepository().save(record);
 		}).orElse(null);
 	}
 
 	@Transactional
-	public void deleteById(Long id) {
+	public void delete(Long id) {
 		getRepository().deleteById(id);
+	}
+	
+	@Transactional
+	public List<T> delete(T objeto) {
+		getRepository().delete(objeto);
+		
+		return getRepository().findAll();
+		
 	}
 
 }

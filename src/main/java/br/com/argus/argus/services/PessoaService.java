@@ -20,14 +20,23 @@ public class PessoaService extends ServiceGeneric<Pessoa> {
 		return pessoaRepository;
 	}
 
+	public Pessoa findRg(String rg) {
+		Pessoa pessoa = pessoaRepository.findByRg(rg);
+		if(pessoa == null) {
+			System.out.println("Não existe");
+		}
+		
+		return pessoa;
+		
+	}
+	
 	@Override
 	@Transactional
 	public Pessoa save(Pessoa objetoDto) {
 		if (pessoaRepository.findByRg(objetoDto.getRg()) != null) {
 			throw new PessoaException("RG já foi cadastrado");
 		}
-		System.out.println("Salvou");
-		return pessoaRepository.save(objetoDto);
+		return super.save(objetoDto);
 	}
 
 	@Override
@@ -40,18 +49,9 @@ public class PessoaService extends ServiceGeneric<Pessoa> {
 			record.setRg(objetoDto.getRg());
 			record.setEndereco(objetoDto.getEndereco());
 
-			Pessoa pessoa = pessoaRepository.save(record);
+			Pessoa pessoa = super.save(record);
 			return pessoa;
 		}).orElse(null);
-	}
-
-	public Pessoa findByPessoa(Pessoa objetoDto) {
-		Pessoa p = pessoaRepository.findByRg(objetoDto.getRg());
-		if (!p.getNome().equalsIgnoreCase(objetoDto.getNome())) {
-			System.out.println("Existe mas rg diferente");
-			throw new PessoaException("RG já foi cadastrado");
-		}
-		return p;
 	}
 
 }

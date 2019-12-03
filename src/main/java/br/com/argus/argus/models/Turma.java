@@ -36,7 +36,7 @@ public class Turma implements Serializable {
 	@Column(length = 255, nullable = true)
 	private String descricao;
 
-	@Column(length = 10, nullable = false)
+	@Column(length = 10, nullable = true)
 	private String anoEscolar;
 
 	@Column(length = 10, nullable = true)
@@ -116,3 +116,38 @@ public class Turma implements Serializable {
 	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

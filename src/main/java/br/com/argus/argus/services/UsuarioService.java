@@ -39,7 +39,6 @@ public class UsuarioService extends ServiceGeneric<Usuario> {
 	@Override
 	@Transactional
 	public Usuario save(Usuario objetoDto) {
-		
 		if(usuarioRepository.findByLogin(objetoDto.getLogin()) != null) {
 			throw new UsuarioException("Login em uso");
 		}else if(usuarioRepository.findByEmail(objetoDto.getEmail()) != null) {
@@ -57,8 +56,7 @@ public class UsuarioService extends ServiceGeneric<Usuario> {
 			record.setSenha(objetoDto.getSenha());
 			record.setTipo(objetoDto.getTipo());
 			record.setAtivo(objetoDto.isAtivo());
-			Usuario usuario = super.save(record);
-			return usuario;
+			return super.save(record);
 		}).orElse(null);
 	}
 
@@ -67,7 +65,7 @@ public class UsuarioService extends ServiceGeneric<Usuario> {
 	public void remove(Long id) {
 		findById(id).map(record -> {
 			record.setAtivo(!record.isAtivo());
-			return usuarioRepository.save(record);
+			return super.save(record);
 		}).orElse(null);
 	}
 

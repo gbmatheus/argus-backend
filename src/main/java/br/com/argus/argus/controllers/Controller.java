@@ -21,7 +21,6 @@ public abstract class Controller<T> {
 	public abstract ServiceGeneric<T> getService();
 
 	public ResponseEntity<List<T>> index() {
-//		List<T> registros = serviceGeneric.findByAll();
 		List<T> registros = getService().findByAll();
 		return ResponseEntity.status(HttpStatus.OK).body(registros);
 	}
@@ -37,22 +36,20 @@ public abstract class Controller<T> {
 //		T t = this.serviceGeneric.save(objetoDto);
 		T t = this.getService().save(objetoDto);
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(objetoDto).toUri();
-//		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(objetoDto.getId()).toUri();
 
 		response.setData(t);
 		return ResponseEntity.created(location).body(response);
 
 	}
 
-	public ResponseEntity<Response<Optional<T>>> show(Long id) {
-
-		Response<Optional<T>> response = new Response<Optional<T>>();
+	public ResponseEntity<Response<T>> show(Long id) {
+		Response<T> response = new Response<T>();
 		Optional<T> t = getService().findById(id);
 
 		if (!t.isPresent()) {
 			ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
 		}
-		response.setData(t);
+		response.setData(t.get());
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 
@@ -67,8 +64,8 @@ public abstract class Controller<T> {
 
 	public ResponseEntity<Response<T>> delete(Long id) {
 		Response<T> response = new Response<T>();
-		T t = getService().findBy(id);
-		getService().deleteById(id);
+		T t = getService().findById(id).get();
+		getService().delete(id);
 
 		response.setData(t);
 		return ResponseEntity.status(HttpStatus.OK).body(response);

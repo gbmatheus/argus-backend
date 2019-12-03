@@ -13,6 +13,12 @@ import br.com.argus.argus.repositories.FuncionarioReporitory;
 public class FuncionarioService extends ServiceGeneric<Funcionario> {
 
 	@Autowired
+	PessoaService pessoaService;
+
+	@Autowired
+	UsuarioService usuarioService;
+
+	@Autowired
 	FuncionarioReporitory funcionarioReporitory;
 
 	@Override
@@ -22,12 +28,20 @@ public class FuncionarioService extends ServiceGeneric<Funcionario> {
 
 	@Override
 	@Transactional
-	public Funcionario save(Funcionario objetoDto) {
+	public Funcionario save(Funcionario funcionarioDto) {
 
-		if (funcionarioReporitory.findByCpf(objetoDto.getCpf()) != null) {
+		if (funcionarioReporitory.findByCpf(funcionarioDto.getCpf()) != null) {
 			throw new CpfException("CPF já está em uso");
-		} 
-		return funcionarioReporitory.save(objetoDto);
+		}
+		Funcionario funcionario = new Funcionario();
+
+		funcionario.setPessoa(pessoaService.save(funcionarioDto.getPessoa()));
+		funcionario.setUsuario(usuarioService.save(funcionarioDto.getUsuario()));
+		funcionario.setCargaHoraria(funcionarioDto.getCargaHoraria());
+
+		funcionario.setCpf(funcionarioDto.getCpf());
+
+		return super.save(funcionarioDto);
 	}
 
 	@Override
@@ -39,7 +53,7 @@ public class FuncionarioService extends ServiceGeneric<Funcionario> {
 			record.setCargaHoraria(funcionarioDto.getCargaHoraria());
 			record.setCpf(record.getCpf());
 
-			Funcionario funcionario = funcionarioReporitory.save(record);
+			Funcionario funcionario = getRepository().save(record);
 			return funcionario;
 		}).orElse(null);
 	}

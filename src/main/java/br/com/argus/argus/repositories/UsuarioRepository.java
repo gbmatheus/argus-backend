@@ -16,7 +16,7 @@ import br.com.argus.argus.models.Usuario;
  * 			- ID = Tipo da chave primária da classe 
  * */
 @Repository
-@Transactional(readOnly = false)
+@Transactional
 public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
 	
 	Usuario findByLogin(String login);
